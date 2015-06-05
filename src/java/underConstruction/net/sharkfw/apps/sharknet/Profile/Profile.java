@@ -14,7 +14,7 @@ public interface Profile {
      *
      * @return The owner of the profile.
      */
-    PeerSemanticTag getProfileOwner();
+    PeerSemanticTag getProfileTarget();
 
     /**Returns the creator of the profile.
      *

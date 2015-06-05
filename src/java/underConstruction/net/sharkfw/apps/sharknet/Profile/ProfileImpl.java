@@ -2,6 +2,7 @@ package Profile;
 
 import net.sharkfw.knowledgeBase.*;
 import net.sharkfw.knowledgeBase.inmemory.InMemoInformation;
+import net.sharkfw.knowledgeBase.inmemory.InMemoSharkKB;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -13,13 +14,13 @@ import java.util.Date;
 public class ProfileImpl implements Profile, Serializable {
     private ContextPoint cp;
     private SharkKB kb;
-    private PeerSemanticTag profileOwner = null;
+    private PeerSemanticTag profileTarget = null;
     private PeerSemanticTag profileCreator = null;
     ProfileImpl(SharkKB kb, PeerSemanticTag creator, PeerSemanticTag target) throws SharkKBException {
         this.kb = kb;
-        this.profileOwner = target;
+        this.profileTarget = target;
         this.profileCreator = creator;
-        SemanticTag pr = this.kb.createSemanticTag("Profile", "http://www.sharksystem.net/Profile.html");
+        SemanticTag pr = InMemoSharkKB.createInMemoSemanticTag("Profile", "http://www.sharksystem.net/Profile.html");
         //ist jetzt der Originator also der erste PST Tag der creator oder ist er das Target?
         ContextCoordinates cc = kb.createContextCoordinates(pr, creator, target, null, null, null, SharkCS.DIRECTION_INOUT);
         cp = this.kb.createContextPoint(cc);
@@ -28,7 +29,7 @@ public class ProfileImpl implements Profile, Serializable {
     ProfileImpl(SharkKB kb, ContextPoint cp) {
         this.kb = kb;
         this.cp = cp;
-        profileOwner = cp.getContextCoordinates().getPeer();
+        profileTarget = cp.getContextCoordinates().getPeer();
         profileCreator = cp.getContextCoordinates().getOriginator();
     }
 
@@ -55,8 +56,8 @@ public class ProfileImpl implements Profile, Serializable {
     }
 
     @Override
-    public PeerSemanticTag getProfileOwner() {
-        return profileOwner;
+    public PeerSemanticTag getProfileTarget() {
+        return profileTarget;
     }
 
     @Override
@@ -105,7 +106,7 @@ public class ProfileImpl implements Profile, Serializable {
 
     @Override
     public String[] getProfileAddresses() {
-        return profileOwner.getAddresses();
+        return profileTarget.getAddresses();
     }
 
     @Override

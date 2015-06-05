@@ -3,6 +3,10 @@ package Profile;
 import net.sharkfw.knowledgeBase.*;
 import net.sharkfw.knowledgeBase.inmemory.InMemoSharkKB;
 
+import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.List;
+
 /**
  * Created by Mr.T on 06.05.2015.
  */
@@ -12,14 +16,50 @@ public class ProfileFactoryImpl implements ProfileFactory {
     public ProfileFactoryImpl(SharkKB kb) throws SharkKBException {
         this.kb = kb;
     }
-    //To Do
+
     @Override
-    public Profile getProfile(PeerSemanticTag creator, PeerSemanticTag target) throws SharkKBException {
-        SemanticTag pr = this.kb.createSemanticTag("Profile", "http://www.sharksystem.net/Profile.html");
-        ContextCoordinates cc = InMemoSharkKB.createInMemoContextCoordinates(pr, creator, target, null, null, null, SharkCS.DIRECTION_INOUT);
-        Knowledge k = SharkCSAlgebra.extract(kb, cc);
-        Profile p = new ProfileImpl(kb, k.contextPoints().nextElement());
-        return p;
+    public List<Profile> getAllProfiles() throws SharkKBException {
+        Enumeration<ContextPoint> contextPointEnumerations = kb.getAllContextPoints();
+        List<Profile> profileList = new ArrayList<Profile>();
+        while (contextPointEnumerations.hasMoreElements() == true) {
+            profileList.add(new ProfileImpl(kb, contextPointEnumerations.nextElement()));
+            //System.out.println(L.cp2String(contextPointEnumerations.nextElement()));
+        }
+        return profileList;
+    }
+    //To Do
+    //To dO getAllProfilesWhereOwnerAndCreatorAreEqual
+    @Override
+    public List<Profile> getProfile(PeerSemanticTag creator, PeerSemanticTag target) throws SharkKBException {
+        List<Profile> profileList = new ArrayList<Profile>();
+        List<Profile> tempProfileList = new ArrayList<Profile>();
+        SemanticTag pr = InMemoSharkKB.createInMemoSemanticTag("Profile", "http://www.sharksystem.net/Profile.html");
+        if (creator != null && target != null) {
+            ContextCoordinates cc = InMemoSharkKB.createInMemoContextCoordinates(pr, creator, target, null, null, null, SharkCS.DIRECTION_INOUT);
+            if (kb.getContextPoint(cc) != null) {
+                profileList.add(new ProfileImpl(kb, kb.getContextPoint(cc)));
+            }
+        }
+        else if (creator == null && target != null) {
+            tempProfileList.addAll(getAllProfiles());
+            for (int i = 0; i < tempProfileList.size(); i++) {
+                if (tempProfileList.get(i).getProfileTarget().equals(target)) {
+                    profileList.add(tempProfileList.get(i));
+                }
+            }
+        }
+        else if (creator != null && target == null) {
+            tempProfileList.addAll(getAllProfiles());
+            for (int i = 0; i < tempProfileList.size(); i++) {
+                if (tempProfileList.get(i).getProfileCreator().equals(creator)) {
+                    profileList.add(tempProfileList.get(i));
+                }
+            }
+        }
+        else if (creator == null && target == null) {
+            profileList.addAll(getAllProfiles());
+        }
+        return profileList;
     }
 
     @Override

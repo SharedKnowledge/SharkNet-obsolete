@@ -32,6 +32,9 @@ public class ProfileImpl implements Profile, Serializable {
         profileTarget = cp.getContextCoordinates().getPeer();
         profileCreator = cp.getContextCoordinates().getOriginator();
     }
+    //This Function should increase a property every time when a setter changes something of the Profile
+    //The name of the property should be very unique
+    //private increaseVersion
 
     private void addAndSerializeObjInContextPoint(String objName, Object obj) throws SharkKBException {
         Information i = new InMemoInformation();

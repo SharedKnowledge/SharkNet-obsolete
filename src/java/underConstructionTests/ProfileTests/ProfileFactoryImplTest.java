@@ -85,26 +85,26 @@ public class ProfileFactoryImplTest {
     public void testGetAllProfilesFromTheSameCreator() throws Exception {
         createProfileAlice();
         createProfileFromAliceOfBob();
-        List<Profile> allProfilesThatAliceCreated = profileFactory.getProfile(alice, null);
-        System.out.println(allProfilesThatAliceCreated.get(0).getName().getSurname());
-        System.out.println(allProfilesThatAliceCreated.get(1).getName().getSurname());
+        List<Profile> allProfilesThatAliceCreated = profileFactory.getProfiles(alice, null);
+        assertTrue(allProfilesThatAliceCreated.get(0).getName().getSurname().equals("Alice") && allProfilesThatAliceCreated.get(1).getName().getSurname().equals("Bob"));
     }
     @Test
     public void testGetProfile() throws Exception {
         createProfileAlice();
-        List<Profile> aliceProfile = profileFactory.getProfile(alice, alice);
-        assertEquals("Alice", aliceProfile.get(0).getName().getSurname());
-        //System.out.println(aliceProfile.get(0).getName().getSurname());
+        Profile aliceProfile = profileFactory.getProfile(alice, alice);
+        assertEquals("Alice", aliceProfile.getName().getSurname());
+        //System.out.println(aliceProfile.getName().getSurname());
     }
 
     @Test
     public void testGetProfileThatNotExists() throws SharkKBException {
-        List<Profile> aliceProfile = profileFactory.getProfile(clara, clara);
-       assertTrue(aliceProfile.isEmpty());
+        Profile claraProfile = profileFactory.getProfile(clara, clara);
+        assertTrue(claraProfile == null);
     }
 
     @Test
     public void testCreateProfile() throws Exception {
-
+        Profile testProfile = profileFactory.createProfile(bob, alice);
+        assertTrue(testProfile.getProfileCreator().equals(bob) && testProfile.getProfileTarget().equals(alice));
     }
 }

@@ -30,7 +30,31 @@ public class ProfileFactoryImpl implements ProfileFactory {
     //To Do
     //To dO getAllProfilesWhereOwnerAndCreatorAreEqual
     @Override
-    public List<Profile> getProfile(PeerSemanticTag creator, PeerSemanticTag target) throws SharkKBException {
+    public Profile getProfile(PeerSemanticTag creatorAndTarget) throws SharkKBException {
+        List<Profile> profiles = new ArrayList<Profile>();
+        profiles.addAll(this.getProfiles(creatorAndTarget, creatorAndTarget));
+        if (!profiles.isEmpty()) {
+            return profiles.get(0);
+        }
+        else {
+            return null;
+        }
+    }
+
+    @Override
+    public Profile getProfile(PeerSemanticTag creator, PeerSemanticTag target) throws SharkKBException {
+        List<Profile> profiles = new ArrayList<Profile>();
+        profiles.addAll(this.getProfiles(creator, target));
+        if (!profiles.isEmpty()) {
+            return profiles.get(0);
+        }
+        else {
+            return null;
+        }
+    }
+
+    @Override
+    public List<Profile> getProfiles(PeerSemanticTag creator, PeerSemanticTag target) throws SharkKBException {
         List<Profile> profileList = new ArrayList<Profile>();
         List<Profile> tempProfileList = new ArrayList<Profile>();
         SemanticTag pr = InMemoSharkKB.createInMemoSemanticTag("Profile", "http://www.sharksystem.net/Profile.html");

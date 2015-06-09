@@ -10,7 +10,9 @@ import java.util.List;
  */
 public interface ProfileFactory {
     List<Profile> getAllProfiles() throws SharkKBException;
-    List<Profile> getProfile(PeerSemanticTag creator, PeerSemanticTag target) throws SharkKBException;
+    Profile getProfile(PeerSemanticTag creatorAndTarget) throws SharkKBException;
+    Profile getProfile(PeerSemanticTag creator, PeerSemanticTag target) throws SharkKBException;
+    List<Profile> getProfiles(PeerSemanticTag creator, PeerSemanticTag target) throws SharkKBException;
     Profile createProfile(PeerSemanticTag creator, PeerSemanticTag target) throws SharkKBException;
 
 }

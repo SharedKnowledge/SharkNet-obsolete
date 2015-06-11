@@ -1,13 +1,17 @@
 package Profile.ProfileTests;
 
 import Profile.*;
+import net.sharkfw.knowledgeBase.Knowledge;
 import net.sharkfw.knowledgeBase.PeerSemanticTag;
 import net.sharkfw.knowledgeBase.SharkKB;
 import net.sharkfw.knowledgeBase.SharkKBException;
 import net.sharkfw.knowledgeBase.inmemory.InMemoSharkKB;
+import net.sharkfw.system.L;
+import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -62,10 +66,19 @@ public class ProfileFactoryImplTest {
         return bobProfile;
     }
 
+    private Profile createProfileFromBobOfAlice() throws SharkKBException {
+        Profile bobProfileOfAlice = profileFactory.createProfile(bob, alice);
+        ProfileName profileName = new ProfileNameImpl("Alice");
+        profileName.setLastName("Alpha");
+        profileName.setTitle("This is Bobs Alice");
+        bobProfileOfAlice.setName(profileName);
+        return bobProfileOfAlice;
+    }
+
     @Test
     public void testGetAllProfiles() throws SharkKBException {
-        Profile aliceProfile = createProfileAlice();
-        Profile bobProfile = createProfileBob();
+        createProfileAlice();
+        createProfileBob();
         List<Profile> profileList = new ArrayList<Profile>();
         profileList.addAll(profileFactory.getAllProfiles());
         Profile newAlice = null;
@@ -86,14 +99,31 @@ public class ProfileFactoryImplTest {
         createProfileAlice();
         createProfileFromAliceOfBob();
         List<Profile> allProfilesThatAliceCreated = profileFactory.getProfiles(alice, null);
-        assertTrue(allProfilesThatAliceCreated.get(0).getName().getSurname().equals("Alice") && allProfilesThatAliceCreated.get(1).getName().getSurname().equals("Bob"));
+        assertTrue(allProfilesThatAliceCreated.get(0).getProfileCreator().equals(alice) && allProfilesThatAliceCreated.get(1).getProfileCreator().equals(alice));
+    }
+
+    @Test
+    public void testGetAllProfilesFromTheSameTarget() throws SharkKBException {
+        createProfileAlice();
+        createProfileFromBobOfAlice();
+        List<Profile> allProfilesWhereAliceIsTheTarget = profileFactory.getProfiles(null, alice);
+        assertTrue(allProfilesWhereAliceIsTheTarget.get(0).getProfileTarget().equals(alice) && allProfilesWhereAliceIsTheTarget.get(1).getProfileTarget().equals(alice));
     }
     @Test
-    public void testGetProfile() throws Exception {
+    public void testGetProfileWithDifferentPeers() throws Exception {
+        L.setLogLevel(L.LOGLEVEL_ALL);
+        createProfileFromAliceOfBob();
+        Profile aliceProfileOfBob = profileFactory.getProfile(alice, bob);
+        assertEquals("Bob", aliceProfileOfBob.getName().getSurname());
+        L.d(aliceProfileOfBob.getName().getSurname(), this);
+        L.d("TestGetProfile", this);
+    }
+
+    @Test
+    public void testGetProfileWithSamePeers() throws SharkKBException {
         createProfileAlice();
-        Profile aliceProfile = profileFactory.getProfile(alice, alice);
-        assertEquals("Alice", aliceProfile.getName().getSurname());
-        //System.out.println(aliceProfile.getName().getSurname());
+        Profile aliceProfile = profileFactory.getProfile(alice);
+        assertEquals(aliceProfile.getName().getSurname(), "Alice");
     }
 
     @Test
@@ -101,10 +131,34 @@ public class ProfileFactoryImplTest {
         Profile claraProfile = profileFactory.getProfile(clara, clara);
         assertTrue(claraProfile == null);
     }
-
+    @Test
+    public void testGetKnowledge4Profiles() throws SharkKBException {
+        //L.setLogLevel(L.LOGLEVEL_ALL);
+        List<Profile> profileList = new ArrayList<Profile>();
+        profileList.add(createProfileAlice());
+        profileList.add(createProfileBob());
+        profileList.add(createProfileFromAliceOfBob());
+        profileList.add(createProfileFromBobOfAlice());
+        Iterator<Profile> pi = profileList.iterator();
+        Knowledge k = profileFactory.getKnowledge4Profiles(pi);
+        L.d(Integer.toString(k.getNumberOfContextPoints()), this);
+        for (int i = 0; i < k.getNumberOfContextPoints(); i++) {
+            L.d(k.getCP(i).getContextCoordinates().getOriginator().getName(), this);
+        }
+        Assert.assertEquals(k.getNumberOfContextPoints(), 4);
+    }
     @Test
     public void testCreateProfile() throws Exception {
         Profile testProfile = profileFactory.createProfile(bob, alice);
         assertTrue(testProfile.getProfileCreator().equals(bob) && testProfile.getProfileTarget().equals(alice));
+    }
+
+    @Test
+    public void testRemoveProfile() throws SharkKBException {
+        Profile aliceProfile = createProfileAlice();
+        L.d(aliceProfile.getName().getSurname(), this);
+        profileFactory.removeProfile(alice, alice);
+        aliceProfile = profileFactory.getProfile(alice, alice);
+        Assert.assertNull(aliceProfile);
     }
 }

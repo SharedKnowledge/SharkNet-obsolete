@@ -1,5 +1,6 @@
 package Profile;
 
+import net.sharkfw.knowledgeBase.ContextPoint;
 import net.sharkfw.knowledgeBase.Information;
 import net.sharkfw.knowledgeBase.PeerSemanticTag;
 import net.sharkfw.knowledgeBase.SharkKBException;
@@ -10,6 +11,16 @@ import java.util.Date;
  * Created by Mr.T on 16.04.2015.
  */
 public interface Profile {
+    String SPVP = "SHARK_PROFILE_VERSION_PROPERTY";
+    ContextPoint getContextPoint();
+    /**Returns the current Version of the Profile.
+     * Every time the Profile is altered the version will increase by 1.
+     * If the Profile is created the version starts by 0.
+     *
+     * @return The current Version number.
+     * @throws SharkKBException This message is thrown when no SharkKB is found or if there is another problem with the SharkKB.
+     */
+    String getProfileVersion() throws SharkKBException;
     /**Returns the owner of the profile.
      *
      * @return The owner of the profile.
@@ -49,8 +60,8 @@ public interface Profile {
      *
      * @param content This is the picture itself as byte array.
      * @param contentType This is the type of the content.
-     * @param identifier
-     * @throws SharkKBException
+     * @param identifier The name of the picture, it specifies the picture so it can be found later.
+     * @throws SharkKBException This message is thrown when no SharkKB is found or if there is another problem with the SharkKB.
      */
     void setPicture(byte[] content, String contentType, String identifier) throws SharkKBException;
 
@@ -70,7 +81,7 @@ public interface Profile {
      * You have to specify this profile picture with an identifier.
      * The identifier is like a little description or the name of the picture.
      *
-     * @param identifier This string identifies the Picture which shluld be deleted.
+     * @param identifier This string identifies the Picture which should be deleted.
      * @throws SharkKBException This message is thrown when no SharkKB is found or if there is another problem with the SharkKB.
      */
     void clearPicture(String identifier) throws SharkKBException;
@@ -92,7 +103,7 @@ public interface Profile {
 
     //das setProfileAdress ist überflüssig, aber das get ist gut in dem Fall
 
-    /**Returns the addresses of the ProfileOwner.
+    /**Returns the addresses of the ProfileTarget.
      *
      * @return The addresses.
      */
@@ -139,19 +150,53 @@ public interface Profile {
     void setQualifications(ProfileQualification profileQualification, String identifier) throws SharkKBException;
 
     /**Returns a specified ProfileQualification.
-     * The ProfileQualification must be specified by
-     *
-     * @param identifier
-     * @return
+     * A ProfileQualification consists of several things.
+     * -a content(description) and a content type.
+     * The other features are optional.
+     * Options:
+     *      -a location of the qualification
+     *      -a beginning time of the qualification
+     *      -an ending time of the qualification
+     *      -a unique ID of the qualification
+     * To get this ProfileQualification Object you have to
+     * know an identifying string which specifies the ProfileQualification
+     * so it can be refund.
+     * @param identifier The identifying String.
+     * @return An specified ProfileQualification.
      * @throws SharkKBException This message is thrown when no SharkKB is found or if there is another problem with the SharkKB.
      */
     ProfileQualification getQualification(String identifier) throws SharkKBException;
 
     //Standart für z.B. dt.dt oder eng.eng oder dt.sz suchen und überlegen, in welchem Format ich die Sprachen abspeichern möchte
     //ISO 639-1 Sprachcodes z.B. Germany = Deutschland = de, French = Französisch = fr
+
+    /**Sets the languages which the profileOwner knows.
+     * These languages only can be stored in a special form.
+     * The ISO defined a norm 639-1 about language codes.
+     * Every code is unique for a country.
+     * The country/language codes are well explained in the class ProfileKnownLanguages.
+     *
+     * @param knownLanguages The languages the ProfileOwner knows.
+     * @throws SharkKBException This message is thrown when no SharkKB is found or if there is another problem with the SharkKB.
+     */
     void setKnownLanguages(ProfileKnownLanguages knownLanguages) throws SharkKBException;
+
+    /**Returns the languages the ProfileOwner knows.
+     *
+     * @return The languages the Profile Owner knows.
+     * @throws SharkKBException This message is thrown when no SharkKB is found or if there is another problem with the SharkKB.
+     */
     ProfileKnownLanguages getKnownLanguages() throws SharkKBException;
-    //1,2,
+
+    /**Sets a ProfileProblem.
+     * A ProfileProblem is similar to an ProfileQualification.
+     * The difference between these two is a ProfileProblem should describe a Problem which occurs
+     * and a ProfileQualification should describe a qualification or a skill from the ProfileTarget.
+     *
+     * @param profileProblem
+     * @param identifier
+     * @throws SharkKBException
+     */
     void setProblem(ProfileProblem profileProblem, String identifier) throws SharkKBException;
     ProfileProblem getProblem(String identifier) throws SharkKBException;
 
@@ -160,4 +205,5 @@ public interface Profile {
 
     void setSupportPossibilities(ProfileSupportPossibilities profileSupportPossibilities, String identifier) throws SharkKBException;
     ProfileSupportPossibilities getSupportPossibilities(String identifier) throws SharkKBException;
+
 }

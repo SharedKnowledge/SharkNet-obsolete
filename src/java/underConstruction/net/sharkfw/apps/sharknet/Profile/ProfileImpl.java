@@ -2,7 +2,6 @@ package Profile;
 
 import net.sharkfw.knowledgeBase.*;
 import net.sharkfw.knowledgeBase.inmemory.InMemoInformation;
-import net.sharkfw.knowledgeBase.inmemory.InMemoSharkKB;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -12,6 +11,10 @@ import java.util.Date;
  * Created by Mr.T on 16.04.2015.
  */
 public class ProfileImpl implements Profile, Serializable {
+    public static final String PROFILENAME = "ProfileName";
+    public static final String PROFILEBIRTHDAY = "ProfileBirthday";
+    public static final String KNOWNLANGUAGES = "KnownLanguages";
+    public static final String CURRENTPOSITION = "CurrentPosition";
     private ContextPoint cp;
     private SharkKB kb;
     private PeerSemanticTag profileTarget = null;
@@ -20,11 +23,12 @@ public class ProfileImpl implements Profile, Serializable {
         this.kb = kb;
         this.profileTarget = target;
         this.profileCreator = creator;
-        SemanticTag pr = InMemoSharkKB.createInMemoSemanticTag("Profile", "http://www.sharksystem.net/Profile.html");
-        //ist jetzt der Originator also der erste PST Tag der creator oder ist er das Target?
+        SemanticTag pr = ProfileFactoryImpl.getProfileSemanticTag();
+        pr.setProperty(Profile.SPVP, "0");
         ContextCoordinates cc = kb.createContextCoordinates(pr, creator, target, null, null, null, SharkCS.DIRECTION_INOUT);
         cp = this.kb.createContextPoint(cc);
     }
+
 
     ProfileImpl(SharkKB kb, ContextPoint cp) {
         this.kb = kb;
@@ -35,6 +39,12 @@ public class ProfileImpl implements Profile, Serializable {
     //This Function should increase a property every time when a setter changes something of the Profile
     //The name of the property should be very unique
     //private increaseVersion
+    private void increaseVersion() throws SharkKBException {
+        String version = cp.getContextCoordinates().getTopic().getProperty(Profile.SPVP);
+        int versionCount = Integer.parseInt(version);
+        versionCount += 1;
+        cp.getContextCoordinates().getTopic().setProperty(Profile.SPVP, Integer.toString(versionCount));
+    }
 
     private void addAndSerializeObjInContextPoint(String objName, Object obj) throws SharkKBException {
         Information i = new InMemoInformation();
@@ -44,18 +54,34 @@ public class ProfileImpl implements Profile, Serializable {
             throw new SharkKBException(e.getMessage());
         }
         i.setName(objName);
+        if (cp.getInformation(objName).hasNext() == true) {
+            cp.removeInformation(cp.getInformation(objName).next());
+        }
         cp.addInformation(i);
     }
 
     private Object getAndDeserializeObjFromContextPoint(String objName) throws SharkKBException {
-        Information i = cp.getInformation(objName).next();
-        try {
-            return Serializer.deserialize(i.getContentAsByte());
-        } catch (IOException e) {
-            throw new SharkKBException(e.getMessage());
-        } catch (ClassNotFoundException e) {
-            throw new SharkKBException(e.getMessage());
+        if (cp.getInformation(objName).hasNext() == true) {
+            Information i = cp.getInformation(objName).next();
+            try {
+                return Serializer.deserialize(i.getContentAsByte());
+            } catch (IOException e) {
+                throw new SharkKBException(e.getMessage());
+            } catch (ClassNotFoundException e) {
+                throw new SharkKBException(e.getMessage());
+            }
         }
+        else {
+            return null;
+        }
+    }
+    @Override
+    public ContextPoint getContextPoint() {
+        return cp;
+    }
+    @Override
+    public String getProfileVersion() throws SharkKBException {
+        return this.cp.getContextCoordinates().getTopic().getProperty(Profile.SPVP);
     }
 
     @Override
@@ -70,21 +96,21 @@ public class ProfileImpl implements Profile, Serializable {
 
     @Override
     public void setName(ProfileName profileName) throws SharkKBException {
-        addAndSerializeObjInContextPoint("ProfileName", profileName);
+        addAndSerializeObjInContextPoint(PROFILENAME, profileName);
+        increaseVersion();
     }
 
     @Override
     public ProfileName getName() throws SharkKBException {
-        return (ProfileName) getAndDeserializeObjFromContextPoint("ProfileName");
+        return (ProfileName) getAndDeserializeObjFromContextPoint(PROFILENAME);
     }
 
-    //Interface von Information anschauen
-    //Bei jeder Methode überlegen wie ich sie Implementieren würde bis zu nächster Woche
     @Override
     public void setPicture(byte[] content, String contentType, String identifier) throws SharkKBException {
         Information i = cp.addInformation(content);
         i.setContentType(contentType);
         i.setName(identifier);
+        increaseVersion();
     }
 
     @Override
@@ -97,14 +123,16 @@ public class ProfileImpl implements Profile, Serializable {
         cp.removeInformation(getPicture(identifier));
     }
 
+
     @Override
     public void setBirthday(Date datum) throws SharkKBException {
-        addAndSerializeObjInContextPoint("ProfileBirthday", datum);
+        addAndSerializeObjInContextPoint(PROFILEBIRTHDAY, datum);
+        increaseVersion();
     }
 
     @Override
     public Date getBirthday() throws SharkKBException {
-        return (Date) getAndDeserializeObjFromContextPoint("ProfileBirthday");
+        return (Date) getAndDeserializeObjFromContextPoint(PROFILEBIRTHDAY);
     }
 
     @Override
@@ -115,6 +143,7 @@ public class ProfileImpl implements Profile, Serializable {
     @Override
     public void setTelephoneNumber(String number, String identifier) throws SharkKBException {
         addAndSerializeObjInContextPoint(identifier, number);
+        increaseVersion();
     }
 
     @Override
@@ -125,6 +154,7 @@ public class ProfileImpl implements Profile, Serializable {
     @Override
     public void setQualifications(ProfileQualification profileQualification, String identifier) throws SharkKBException {
         addAndSerializeObjInContextPoint(identifier, profileQualification);
+        increaseVersion();
     }
 
     @Override
@@ -134,17 +164,19 @@ public class ProfileImpl implements Profile, Serializable {
 
     @Override
     public void setKnownLanguages(ProfileKnownLanguages knownLanguages) throws SharkKBException {
-        addAndSerializeObjInContextPoint("KnownLanguages", knownLanguages);
+        addAndSerializeObjInContextPoint(KNOWNLANGUAGES, knownLanguages);
+        increaseVersion();
     }
 
     @Override
     public ProfileKnownLanguages getKnownLanguages() throws SharkKBException {
-        return (ProfileKnownLanguages) getAndDeserializeObjFromContextPoint("KnownLanguages");
+        return (ProfileKnownLanguages) getAndDeserializeObjFromContextPoint(KNOWNLANGUAGES);
     }
 
     @Override
     public void setProblem(ProfileProblem profileProblem, String identifier) throws SharkKBException {
         addAndSerializeObjInContextPoint(identifier, profileProblem);
+        increaseVersion();
     }
 
     @Override
@@ -154,17 +186,19 @@ public class ProfileImpl implements Profile, Serializable {
 
     @Override
     public void setCurrentPosition(ProfileCurrentPosition currentPosition) throws SharkKBException {
-        addAndSerializeObjInContextPoint("CurrentPosition", currentPosition);
+        addAndSerializeObjInContextPoint(CURRENTPOSITION, currentPosition);
+        increaseVersion();
     }
 
     @Override
     public ProfileCurrentPosition getCurrentPosition() throws SharkKBException {
-        return (ProfileCurrentPosition) getAndDeserializeObjFromContextPoint("CurrentPosition");
+        return (ProfileCurrentPosition) getAndDeserializeObjFromContextPoint(CURRENTPOSITION);
     }
 
     @Override
     public void setSupportPossibilities(ProfileSupportPossibilities profileSupportPossibilities, String identifier) throws SharkKBException {
         addAndSerializeObjInContextPoint(identifier, profileSupportPossibilities);
+        increaseVersion();
     }
 
     @Override

@@ -11,10 +11,8 @@ import net.sharkfw.system.SharkException;
 import net.sharkfw.system.SharkSecurityException;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Iterator;
-import java.util.List;
 
 /**
  * Created by _Wayne- on 05.05.2015.
@@ -75,8 +73,7 @@ public class ProfileKP extends KnowledgePort implements ProfileKPApp, ProfileKPC
             L.e(e.getMessage(), this);
         }
         //WiFi Direct Connection (bei Allinteresse)
-        //TODO: this.se.setSilentPeriod(); in test, nicht im KP
-        if (SharkCSAlgebra.isAny(interest, 0)){
+        if (SharkCSAlgebra.isAny(interest)){
             if (ask4ProfilesAutomaticallyOnWiFiDirectConnection){
                 ContextCoordinates profileCC = getProfileCC(SharkCS.DIRECTION_IN);
                 try {
@@ -129,6 +126,7 @@ public class ProfileKP extends KnowledgePort implements ProfileKPApp, ProfileKPC
                         int existingProfileVersion = Integer.parseInt(profileCP.getContextCoordinates().getTopic().getProperty(Profile.SPVP));
                         int newProfileVersion = Integer.parseInt(cc.getTopic().getProperty(Profile.SPVP));
 
+                        //compareVersion funktion für 2 cp
                         if (newProfileVersion > existingProfileVersion){
                             pf.removeProfile(cc.getOriginator(), cc.getPeer());
                             SharkCSAlgebra.merge(this.kb, cc, cp, true);
@@ -199,6 +197,7 @@ public class ProfileKP extends KnowledgePort implements ProfileKPApp, ProfileKPC
     }
 
     @Override
+    //recipients als iterator
     public void sendProfiles(Iterator<Profile> profiles, PeerSTSet recipients) {
         Iterator<Profile> profilliste = profiles;
         for (Enumeration<PeerSemanticTag> e = recipients.peerTags(); e.hasMoreElements(); ) {

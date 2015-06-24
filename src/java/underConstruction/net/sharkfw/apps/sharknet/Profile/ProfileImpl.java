@@ -24,7 +24,7 @@ public class ProfileImpl implements Profile, Serializable {
         this.profileTarget = target;
         this.profileCreator = creator;
         SemanticTag pr = ProfileFactoryImpl.getProfileSemanticTag();
-        pr.setProperty(Profile.SPVP, "0");
+        pr.setProperty(Profile.SHARK_PROFILE_VERSION_PROPERTY, "0");
         ContextCoordinates cc = kb.createContextCoordinates(pr, creator, target, null, null, null, SharkCS.DIRECTION_INOUT);
         cp = this.kb.createContextPoint(cc);
     }
@@ -40,10 +40,10 @@ public class ProfileImpl implements Profile, Serializable {
     //The name of the property should be very unique
     //private increaseVersion
     private void increaseVersion() throws SharkKBException {
-        String version = cp.getContextCoordinates().getTopic().getProperty(Profile.SPVP);
+        String version = cp.getContextCoordinates().getTopic().getProperty(Profile.SHARK_PROFILE_VERSION_PROPERTY);
         int versionCount = Integer.parseInt(version);
         versionCount += 1;
-        cp.getContextCoordinates().getTopic().setProperty(Profile.SPVP, Integer.toString(versionCount));
+        cp.getContextCoordinates().getTopic().setProperty(Profile.SHARK_PROFILE_VERSION_PROPERTY, Integer.toString(versionCount));
     }
 
     private void addAndSerializeObjInContextPoint(String objName, Object obj) throws SharkKBException {
@@ -81,7 +81,7 @@ public class ProfileImpl implements Profile, Serializable {
     }
     @Override
     public String getProfileVersion() throws SharkKBException {
-        return this.cp.getContextCoordinates().getTopic().getProperty(Profile.SPVP);
+        return this.cp.getContextCoordinates().getTopic().getProperty(Profile.SHARK_PROFILE_VERSION_PROPERTY);
     }
 
     @Override

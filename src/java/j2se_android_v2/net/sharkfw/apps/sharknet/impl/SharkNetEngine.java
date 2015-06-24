@@ -1,22 +1,15 @@
 package net.sharkfw.apps.sharknet.impl;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import net.sharkfw.apps.sharknet.SharkNet;
-import net.sharkfw.apps.sharknet.SharkNetChat;
-import net.sharkfw.apps.sharknet.SharkNetException;
-import net.sharkfw.apps.sharknet.SharkNetListener;
-import net.sharkfw.apps.sharknet.SharkNetPeerProfile;
-import net.sharkfw.knowledgeBase.PeerSemanticTag;
-import net.sharkfw.knowledgeBase.SemanticTag;
-import net.sharkfw.knowledgeBase.SharkKB;
-import net.sharkfw.knowledgeBase.SharkKBException;
-import net.sharkfw.knowledgeBase.SharkVocabulary;
+import net.sharkfw.apps.sharknet.*;
+import net.sharkfw.knowledgeBase.*;
 import net.sharkfw.peer.SharkEngine;
 import net.sharkfw.subspace.SharkSubSpaceException;
 import net.sharkfw.subspace.SimpleSubSpaceManager;
 import net.sharkfw.subspace.SubSpace;
 import net.sharkfw.subspace.SubSpaceGuardKP;
+
+import java.util.ArrayList;
+import java.util.Iterator;
 
 /**
  * That class is going to become the (better) version 2 
@@ -75,7 +68,7 @@ public class SharkNetEngine implements SharkNet {
     //                        listener stuff                                //
     //////////////////////////////////////////////////////////////////////////
 
-    private ArrayList<SharkNetListener> listener = new ArrayList<>();
+    private ArrayList<SharkNetListener> listener = new ArrayList<SharkNetListener>();
 
     @Override
     public void addListener(SharkNetListener listener) {

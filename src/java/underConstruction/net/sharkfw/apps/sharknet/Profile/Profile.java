@@ -11,7 +11,7 @@ import java.util.Date;
  * Created by Mr.T on 16.04.2015.
  */
 public interface Profile {
-    String SPVP = "SHARK_PROFILE_VERSION_PROPERTY";
+    String SHARK_PROFILE_VERSION_PROPERTY = "SHARK_PROFILE_VERSION_PROPERTY";
     ContextPoint getContextPoint();
     /**Returns the current Version of the Profile.
      * Every time the Profile is altered the version will increase by 1.

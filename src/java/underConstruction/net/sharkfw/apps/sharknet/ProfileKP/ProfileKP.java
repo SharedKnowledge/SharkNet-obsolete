@@ -169,9 +169,17 @@ public class ProfileKP extends KnowledgePort implements ProfileKPApp, ProfileKPC
                     this.sendInterest(profileCC, peer);
                 }
             }
-        } catch (SharkKBException | SharkSecurityException | IOException e) {
+        }
+        catch (SharkKBException e) {
             L.e(e.getMessage(), this);
         }
+        catch (SharkSecurityException e) {
+            L.e(e.getMessage(), this);
+        }
+        catch (IOException e) {
+            L.e(e.getMessage(), this);
+        }
+
     }
 
     @Override
@@ -205,7 +213,14 @@ public class ProfileKP extends KnowledgePort implements ProfileKPApp, ProfileKPC
             try {
                 Knowledge k = pf.getKnowledge4Profiles(profilliste);
                 this.sendKnowledge(k, recipient);
-            } catch (SharkSecurityException | IOException | SharkKBException e1) {
+            }
+            catch (SharkKBException e1) {
+                L.e(e1.getMessage(), this);
+            }
+            catch (SharkSecurityException e1) {
+                L.e(e1.getMessage(), this);
+            }
+            catch (IOException e1) {
                 L.e(e1.getMessage(), this);
             }
         }

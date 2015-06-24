@@ -18,7 +18,7 @@ public class ProfileFactoryImpl implements ProfileFactory {
     public ProfileFactoryImpl(SharkKB kb) throws SharkKBException {
         this.kb = kb;
     }
-    static SemanticTag getProfileSemanticTag() {
+    public static SemanticTag getProfileSemanticTag() {
         if (ProfileFactoryImpl.profileSemanticTag == null) {
             ProfileFactoryImpl.profileSemanticTag = InMemoSharkKB.createInMemoSemanticTag("Profile", "http://www.sharksystem.net/Profile.html");
         }

@@ -1,4 +1,4 @@
-package ProfileKP;
+package Profile;
 
 /**
  * Created by s0539720 on 29.04.2015.

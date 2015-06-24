@@ -1,4 +1,4 @@
-package ProfileKP;
+package Profile;
 
 import Profile.*;
 import net.sharkfw.knowledgeBase.PeerSTSet;

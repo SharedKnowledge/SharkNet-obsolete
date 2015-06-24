@@ -1,4 +1,4 @@
-package ProfileKP;
+package Profile;
 
 import Profile.*;
 import net.sharkfw.knowledgeBase.*;
@@ -123,10 +123,9 @@ public class ProfileKP extends KnowledgePort implements ProfileKPApp, ProfileKPC
                     if (profileCP == null){ //new profile
                         SharkCSAlgebra.merge(this.kb, cc, cp, true);
                     } else { //profile already exists
-                        int existingProfileVersion = Integer.parseInt(profileCP.getContextCoordinates().getTopic().getProperty(Profile.SPVP));
-                        int newProfileVersion = Integer.parseInt(cc.getTopic().getProperty(Profile.SPVP));
+                        int existingProfileVersion = Integer.parseInt(profileCP.getContextCoordinates().getTopic().getProperty(Profile.SHARK_PROFILE_VERSION_PROPERTY));
+                        int newProfileVersion = Integer.parseInt(cc.getTopic().getProperty(Profile.SHARK_PROFILE_VERSION_PROPERTY));
 
-                        //compareVersion funktion für 2 cp
                         if (newProfileVersion > existingProfileVersion){
                             pf.removeProfile(cc.getOriginator(), cc.getPeer());
                             SharkCSAlgebra.merge(this.kb, cc, cp, true);
@@ -148,10 +147,6 @@ public class ProfileKP extends KnowledgePort implements ProfileKPApp, ProfileKPC
             }
         }
     }
-    /**
-    private SemanticTag getProfileTopic(){
-        return InMemoSharkKB.createInMemoSemanticTag("SharkNet Peer Profile", PROFILE_TOPIC_SI);
-    }**/
 
     private ContextCoordinates getProfileCC(int direction){
         SemanticTag profileTopic = ProfileFactoryImpl.getProfileSemanticTag();
@@ -179,7 +174,6 @@ public class ProfileKP extends KnowledgePort implements ProfileKPApp, ProfileKPC
         catch (IOException e) {
             L.e(e.getMessage(), this);
         }
-
     }
 
     @Override

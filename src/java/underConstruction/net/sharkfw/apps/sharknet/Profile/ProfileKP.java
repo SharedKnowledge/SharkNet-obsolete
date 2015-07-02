@@ -13,6 +13,9 @@ import net.sharkfw.system.SharkSecurityException;
 import java.io.IOException;
 import java.util.Enumeration;
 import java.util.Iterator;
+import java.util.List;
+
+import static java.util.Collections.list;
 
 /**
  * Created by _Wayne- on 05.05.2015.
@@ -56,7 +59,7 @@ public class ProfileKP extends KnowledgePort implements ProfileKPApp, ProfileKPC
         PeerSTSet peers = this.kb.getPeerSTSet();
         for (Enumeration<PeerSemanticTag> e = peers.peerTags(); e.hasMoreElements();){
             PeerSemanticTag peer = e.nextElement();
-            if (!SharkCSAlgebra.identical(peer, sender)){
+            if (SharkCSAlgebra.identical(peer, sender)){
                 return true;
             }
         }
@@ -86,7 +89,8 @@ public class ProfileKP extends KnowledgePort implements ProfileKPApp, ProfileKPC
                 PeerSTSet recipients = InMemoSharkKB.createInMemoPeerSTSet();
                 try {
                     recipients.merge(kepConnection.getSender());
-                    sendMyProfile(recipients);
+                    List<PeerSemanticTag> recipientsList = list(recipients.peerTags());
+                    sendMyProfile(recipientsList.iterator());
                 } catch (SharkKBException e) {
                     L.e(e.getMessage(), this);
                 }
@@ -96,10 +100,11 @@ public class ProfileKP extends KnowledgePort implements ProfileKPApp, ProfileKPC
             if (check4ProfileTopic(interest)){
                 PeerSTSet sender = InMemoSharkKB.createInMemoPeerSTSet();
                 sender.merge(kepConnection.getSender());
-                sendAllProfiles(sender);
+                List<PeerSemanticTag> senderList = list(sender.peerTags());
+                sendAllProfiles(senderList.iterator());
 
                 if (ask4ProfilesAutomatically){
-                    ask4Profiles(sender);
+                    ask4Profiles(senderList.iterator());
                 }
             }
         } catch (SharkKBException e) {
@@ -139,7 +144,8 @@ public class ProfileKP extends KnowledgePort implements ProfileKPApp, ProfileKPC
                     try {
                         PeerSTSet recipients = InMemoSharkKB.createInMemoPeerSTSet();
                         recipients.merge(kepConnection.getSender());
-                        sendMyProfile(recipients);
+                        List<PeerSemanticTag> recipientsList = list(recipients.peerTags());
+                        sendMyProfile(recipientsList.iterator());
                     } catch (SharkKBException e) {
                         L.e(e.getMessage(), this);
                     }
@@ -154,12 +160,12 @@ public class ProfileKP extends KnowledgePort implements ProfileKPApp, ProfileKPC
     }
 
     @Override
-    public void ask4Profiles(PeerSTSet peers) {
+    public void ask4Profiles(Iterator<PeerSemanticTag> peers) {
         try {
             ContextCoordinates profileCC = getProfileCC(SharkCS.DIRECTION_IN);
 
-            for (Enumeration<PeerSemanticTag> e = peers.peerTags(); e.hasMoreElements();){
-                PeerSemanticTag peer = e.nextElement();
+            while (peers.hasNext()){
+                PeerSemanticTag peer = peers.next();
                 if (!SharkCSAlgebra.identical(peer, this.owner)){
                     this.sendInterest(profileCC, peer);
                 }
@@ -177,7 +183,7 @@ public class ProfileKP extends KnowledgePort implements ProfileKPApp, ProfileKPC
     }
 
     @Override
-    public void sendMyProfile(PeerSTSet recipients) {
+    public void sendMyProfile(Iterator<PeerSemanticTag> recipients) {
         Iterator<Profile> profiles = null;
         try {
             profiles = pf.getProfiles(this.owner, this.owner).iterator();
@@ -188,7 +194,7 @@ public class ProfileKP extends KnowledgePort implements ProfileKPApp, ProfileKPC
     }
 
     @Override
-    public void sendAllProfiles(PeerSTSet recipients) {
+    public void sendAllProfiles(Iterator<PeerSemanticTag> recipients) {
         Iterator<Profile> profiles = null;
         try {
             profiles = pf.getAllProfiles().iterator();
@@ -200,12 +206,11 @@ public class ProfileKP extends KnowledgePort implements ProfileKPApp, ProfileKPC
 
     @Override
     //recipients als iterator
-    public void sendProfiles(Iterator<Profile> profiles, PeerSTSet recipients) {
-        Iterator<Profile> profilliste = profiles;
-        for (Enumeration<PeerSemanticTag> e = recipients.peerTags(); e.hasMoreElements(); ) {
-            PeerSemanticTag recipient = e.nextElement();
+    public void sendProfiles(Iterator<Profile> profiles, Iterator<PeerSemanticTag> recipients) {
+        while (recipients.hasNext()){
+            PeerSemanticTag recipient = recipients.next();
             try {
-                Knowledge k = pf.getKnowledge4Profiles(profilliste);
+                Knowledge k = pf.getKnowledge4Profiles(profiles);
                 this.sendKnowledge(k, recipient);
             }
             catch (SharkKBException e1) {

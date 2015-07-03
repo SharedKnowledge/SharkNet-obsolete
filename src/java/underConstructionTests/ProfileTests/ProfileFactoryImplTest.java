@@ -1,4 +1,4 @@
-package Profile.ProfileTests;
+package ProfileTests;
 
 import Profile.*;
 import net.sharkfw.knowledgeBase.Knowledge;

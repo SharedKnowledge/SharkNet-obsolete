@@ -7,9 +7,9 @@ import net.sharkfw.knowledgeBase.*;
  */
 public interface ProfileEntry {
     int getUniqueID();
-
-    void setDescription(byte[] description, String type);
-    byte[] getDescription();
+    byte[] getDescriptionByte();
+    String getDescriptionString();
+    String getContentType();
 
     void setLocation(SpatialSemanticTag sst) throws SharkKBException;
     SpatialSemanticTag getLocation() throws SharkKBException;
@@ -19,6 +19,4 @@ public interface ProfileEntry {
 
     void setTimeTo(TimeSemanticTag timeTo) throws SharkKBException;
     TimeSemanticTag getTimeTo() throws SharkKBException;
-
-    String getDescriptionContentType();
 }

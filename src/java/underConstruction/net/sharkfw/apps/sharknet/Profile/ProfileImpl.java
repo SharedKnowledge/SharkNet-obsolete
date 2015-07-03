@@ -2,6 +2,7 @@ package Profile;
 
 import net.sharkfw.knowledgeBase.*;
 import net.sharkfw.knowledgeBase.inmemory.InMemoInformation;
+import net.sharkfw.system.L;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -95,6 +96,32 @@ public class ProfileImpl implements Profile, Serializable {
     }
 
     @Override
+    public void addProfileEntry(ProfileEntry profileEntry, String identifier) {
+        try {
+            addAndSerializeObjInContextPoint(identifier, profileEntry);
+        } catch (SharkKBException e) {
+            L.e(e.getMessage(), this);
+        }
+    }
+
+    @Override
+    public ProfileEntry getProfileEntry(String identifier) {
+        ProfileEntry profileEntry = null;
+        try {
+            profileEntry = (ProfileEntry) getAndDeserializeObjFromContextPoint(identifier);
+        } catch (SharkKBException e) {
+            L.e(e.getMessage(), this);
+        }
+        return profileEntry;
+    }
+
+    @Override
+    public void clearProfileEntry(String identifier) {
+        Information i = cp.getInformation(identifier).next();
+        cp.removeInformation(i);
+    }
+
+    @Override
     public void setName(ProfileName profileName) throws SharkKBException {
         addAndSerializeObjInContextPoint(PROFILENAME, profileName);
         increaseVersion();
@@ -152,17 +179,6 @@ public class ProfileImpl implements Profile, Serializable {
     }
 
     @Override
-    public void setQualifications(ProfileQualification profileQualification, String identifier) throws SharkKBException {
-        addAndSerializeObjInContextPoint(identifier, profileQualification);
-        increaseVersion();
-    }
-
-    @Override
-    public ProfileQualification getQualification(String identifier) throws SharkKBException {
-        return (ProfileQualification) getAndDeserializeObjFromContextPoint(identifier);
-    }
-
-    @Override
     public void setKnownLanguages(ProfileKnownLanguages knownLanguages) throws SharkKBException {
         addAndSerializeObjInContextPoint(KNOWNLANGUAGES, knownLanguages);
         increaseVersion();
@@ -172,38 +188,4 @@ public class ProfileImpl implements Profile, Serializable {
     public ProfileKnownLanguages getKnownLanguages() throws SharkKBException {
         return (ProfileKnownLanguages) getAndDeserializeObjFromContextPoint(KNOWNLANGUAGES);
     }
-
-    @Override
-    public void setProblem(ProfileProblem profileProblem, String identifier) throws SharkKBException {
-        addAndSerializeObjInContextPoint(identifier, profileProblem);
-        increaseVersion();
-    }
-
-    @Override
-    public ProfileProblem getProblem(String identifier) throws SharkKBException {
-        return (ProfileProblem) getAndDeserializeObjFromContextPoint(identifier);
-    }
-
-    @Override
-    public void setCurrentPosition(ProfileCurrentPosition currentPosition) throws SharkKBException {
-        addAndSerializeObjInContextPoint(CURRENTPOSITION, currentPosition);
-        increaseVersion();
-    }
-
-    @Override
-    public ProfileCurrentPosition getCurrentPosition() throws SharkKBException {
-        return (ProfileCurrentPosition) getAndDeserializeObjFromContextPoint(CURRENTPOSITION);
-    }
-
-    @Override
-    public void setSupportPossibilities(ProfileSupportPossibilities profileSupportPossibilities, String identifier) throws SharkKBException {
-        addAndSerializeObjInContextPoint(identifier, profileSupportPossibilities);
-        increaseVersion();
-    }
-
-    @Override
-    public ProfileSupportPossibilities getSupportPossibilities(String identifier) throws SharkKBException {
-        return (ProfileSupportPossibilities) getAndDeserializeObjFromContextPoint(identifier);
-    }
-
 }

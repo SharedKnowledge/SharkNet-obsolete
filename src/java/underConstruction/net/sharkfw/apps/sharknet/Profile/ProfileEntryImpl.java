@@ -3,22 +3,37 @@ package Profile;
 import net.sharkfw.kep.format.XMLSerializer;
 import net.sharkfw.knowledgeBase.*;
 import net.sharkfw.knowledgeBase.inmemory.InMemoSharkKB;
+import net.sharkfw.system.L;
 
+import java.io.IOException;
 import java.io.Serializable;
 
 /**
  * Created by Mr.T on 06.05.2015.
+ * Wir brauchen noch eine Art allgemeine Entry die von jedem datentyp sein kann also generic,
+ * davon muss dann mindestens einer im konstruktor erstellt werden und es können aber beliebig
+ * viele erstellt werden.
+ * Damit solche Entrys wie setLocation und getLocation erstellt werden können^^
  */
 public class ProfileEntryImpl implements ProfileEntry, Serializable {
     private static int uniqueID = 0;
-    private byte[] description = null;
+    private byte[] descriptionByte = null;
+    private String descriptionString = null;
     private String location = null;
     private String timeFrom = null;
     private String timeTo = null;
     private String contentType = null;
 
-    ProfileEntryImpl() {
+    ProfileEntryImpl(String descriptionString, String content) {
         this.uniqueID += 1;
+        this.descriptionString = descriptionString;
+        this.contentType = content;
+    }
+
+    ProfileEntryImpl(byte[] descriptionByte, String content) {
+        this.uniqueID += 1;
+        this.descriptionByte = descriptionByte;
+        this.contentType = content;
     }
 
     @Override
@@ -27,14 +42,34 @@ public class ProfileEntryImpl implements ProfileEntry, Serializable {
     }
 
     @Override
-    public void setDescription(byte[] description, String type) {
-        this.description = description;
-        this.contentType = type;
+    public byte[] getDescriptionByte() {
+        byte[] bytes = null;
+        if (descriptionByte != null) {
+            bytes = descriptionByte;
+        }
+        else {
+            try {
+                bytes = Serializer.serialize(descriptionString);
+            } catch (IOException e) {
+                L.e(e.getMessage(), this);
+            }
+        }
+        return bytes;
     }
 
     @Override
-    public byte[] getDescription() {
-        return description;
+    public String getDescriptionString() {
+        if (descriptionString != null) {
+            return descriptionString;
+        }
+        else {
+            throw new NullPointerException("Description can not be returned with type string.");
+        }
+    }
+
+    @Override
+    public String getContentType() {
+        return contentType;
     }
 
     @Override
@@ -83,10 +118,5 @@ public class ProfileEntryImpl implements ProfileEntry, Serializable {
         XMLSerializer xs = new XMLSerializer();
         xs.deserializeSTSet(TSTSet, timeTo);
         return TSTSet.timeTags().nextElement();
-    }
-
-    @Override
-    public String getDescriptionContentType() {
-        return contentType;
     }
 }

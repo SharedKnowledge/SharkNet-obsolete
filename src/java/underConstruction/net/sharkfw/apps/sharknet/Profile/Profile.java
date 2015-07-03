@@ -33,6 +33,9 @@ public interface Profile {
      */
     PeerSemanticTag getProfileCreator();
 
+    void addProfileEntry(ProfileEntry profileEntry, String identifier);
+    ProfileEntry getProfileEntry(String identifier);
+    void clearProfileEntry(String identifier);
     /**Sets a profile name.
      * A profile name is represented as an profileName object.
      * A surname, a lastname and a title can be stored in such an profileName object.
@@ -129,44 +132,6 @@ public interface Profile {
      */
     String getTelephoneNumber(String identifier) throws SharkKBException;
 
-    /**Sets a ProfileQualification.
-     * A ProfileQualification consists of several things.
-     * By the construction of an ProfileQualification object
-     * you only have to set a content(description) and a content type.
-     * The other features are optional.
-     * Options:
-     *      setting and getting a location of the qualification
-     *      setting and getting a beginning time of the qualification
-     *      setting and getting an ending time of the qualification
-     *      getting a unique ID of the qualification
-     * To store this ProfileQualification Object in a given SharkKB you have to
-     * set an identifier string which specified the ProfileQualification
-     * so it could be refund and returned later.
-     *
-     * @param profileQualification The profile qualification.
-     * @param identifier The string which specifies the profile qualification.
-     * @throws SharkKBException This message is thrown when no SharkKB is found or if there is another problem with the SharkKB.
-     */
-    void setQualifications(ProfileQualification profileQualification, String identifier) throws SharkKBException;
-
-    /**Returns a specified ProfileQualification.
-     * A ProfileQualification consists of several things.
-     * -a content(description) and a content type.
-     * The other features are optional.
-     * Options:
-     *      -a location of the qualification
-     *      -a beginning time of the qualification
-     *      -an ending time of the qualification
-     *      -a unique ID of the qualification
-     * To get this ProfileQualification Object you have to
-     * know an identifying string which specifies the ProfileQualification
-     * so it can be refund.
-     * @param identifier The identifying String.
-     * @return An specified ProfileQualification.
-     * @throws SharkKBException This message is thrown when no SharkKB is found or if there is another problem with the SharkKB.
-     */
-    ProfileQualification getQualification(String identifier) throws SharkKBException;
-
     //Standart für z.B. dt.dt oder eng.eng oder dt.sz suchen und überlegen, in welchem Format ich die Sprachen abspeichern möchte
     //ISO 639-1 Sprachcodes z.B. Germany = Deutschland = de, French = Französisch = fr
 
@@ -187,23 +152,4 @@ public interface Profile {
      * @throws SharkKBException This message is thrown when no SharkKB is found or if there is another problem with the SharkKB.
      */
     ProfileKnownLanguages getKnownLanguages() throws SharkKBException;
-
-    /**Sets a ProfileProblem.
-     * A ProfileProblem is similar to an ProfileQualification.
-     * The difference between these two is a ProfileProblem should describe a Problem which occurs
-     * and a ProfileQualification should describe a qualification or a skill from the ProfileTarget.
-     *
-     * @param profileProblem
-     * @param identifier
-     * @throws SharkKBException
-     */
-    void setProblem(ProfileProblem profileProblem, String identifier) throws SharkKBException;
-    ProfileProblem getProblem(String identifier) throws SharkKBException;
-
-    void setCurrentPosition(ProfileCurrentPosition currentPosition) throws SharkKBException;//Nur der  Aufenthaltsort /  Aufenthaltsort+Zeitangabe bzw. Ablaufdatum
-    ProfileCurrentPosition getCurrentPosition() throws SharkKBException;
-
-    void setSupportPossibilities(ProfileSupportPossibilities profileSupportPossibilities, String identifier) throws SharkKBException;
-    ProfileSupportPossibilities getSupportPossibilities(String identifier) throws SharkKBException;
-
 }

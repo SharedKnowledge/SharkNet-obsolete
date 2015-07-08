@@ -86,12 +86,14 @@ public class ProfileKP extends KnowledgePort implements ProfileKPApp, ProfileKPC
                 }
             }
             if (sendProfileAutomaticallyOnWiFiDirectConnection){
-                PeerSTSet recipients = InMemoSharkKB.createInMemoPeerSTSet();
+                Iterator<Profile> profiles = null;
                 try {
-                    recipients.merge(kepConnection.getSender());
-                    List<PeerSemanticTag> recipientsList = list(recipients.peerTags());
-                    sendMyProfile(recipientsList.iterator());
+                    profiles = pf.getProfiles(this.owner, this.owner).iterator();
+                    Knowledge k = pf.getKnowledge4Profiles(profiles);
+                    kepConnection.insert(k, "MyProfile");
                 } catch (SharkKBException e) {
+                    L.e(e.getMessage(), this);
+                } catch (SharkException e) {
                     L.e(e.getMessage(), this);
                 }
             }

@@ -34,42 +34,6 @@ public class ProfileKPTest {
 
     }
 
-    /*
-    @org.junit.Test
-    public void testMessageSigning() throws Exception {
-        // kb to store keys
-        FSSharkKB baseKB = new FSSharkKB("testKB");
-        //each store needs an engine - WHY IS THAT?
-        J2SEAndroidSharkEngine se = new J2SEAndroidSharkEngine(
-        );
-        // create storaga
-        SharkPublicKeyStorage ks = new FSSharkKBPublicKeyStorage(baseKB, se);
-        //generate key pair
-        KeyPairGenerator keyGen = KeyPairGenerator.getInstance("DSA", "SUN");
-        SecureRandom random = SecureRandom.getInstance("SHA1PRNG", "SUN");
-        keyGen.initialize(1024, random);
-        KeyPair pair = keyGen.generateKeyPair();
-
-        // create or get private key;
-        PrivateKey privateKey = pair.getPrivate();;
-        // save with key store
-        ks.setPrivateKey(privateKey);
-        // define a peer
-        PeerSemanticTag peer = baseKB.getPeerSTSet().createPeerSemanticTag("Alice", "http://alice.org", "tcp://localhost:5555");;
-        // assume that’s peers public key
-        PublicKey publicKey = pair.getPublic();
-        // assume we have signed that public key
-        byte[] signature = null;
-        // create a structure
-        SigningPeer signingPeer = new SigningPeer(peer, signature);
-        long valid = 1000 * 60 * 24 * 12 * 365; // 365 Tage
-        ks.addPublicKey(publicKey, peer, signingPeer, valid);
-        // retake that structure from key store
-        SharkCertificate certificate = ks.getCertificate(peer);
-        // get private key from key store (there is only one)
-        ks.getPrivateKey();
-    }*/
-
     //Alice knows Bob and asks for his profile
     @org.junit.Test
     public void testAsk4Profiles() throws Exception {
@@ -114,7 +78,7 @@ public class ProfileKPTest {
         //get profiles of Alice' contacts
         List<PeerSemanticTag> aliceContactList = list(aliceContacts.peerTags());
         aliceKP.ask4Profiles(aliceContactList.iterator());
-        Thread.sleep(100);
+        Thread.sleep(1000);
 
         assertEquals("Bob profiles should be the same", bobProfile.getName().getSurname(), alicePF.getProfile(bob, bob).getName().getSurname());
 
@@ -132,10 +96,10 @@ public class ProfileKPTest {
         PeerSemanticTag alice = aliceKB.getPeerSTSet().createPeerSemanticTag("Alice", "http://alice.org", "tcp://localhost:5555");
         aliceKB.setOwner(alice);
 
-        //alice knows bob
+        //Alice knows Bob
         PeerSemanticTag bob = aliceKB.getPeerSTSet().createPeerSemanticTag("Bob", "http://bob.org", "tcp://localhost:5556");
 
-        //create contactlist of alice
+        //create contactlist of Alice
         PeerSTSet aliceContacts = aliceKB.getPeerSTSet();
         ProfileFactory alicePF = new ProfileFactoryImpl(aliceKB);
         ProfileKP aliceKP = new ProfileKP(aliceSE, aliceKB, alicePF, alice);
@@ -144,13 +108,13 @@ public class ProfileKPTest {
         aliceSE.startTCP(5555);
         aliceSE.setConnectionTimeOut(connectionTimeOut);
 
-        //create bob
+        //create Bob
         J2SEAndroidSharkEngine bobSE = new J2SEAndroidSharkEngine();
         SharkKB bobKB = new InMemoSharkKB();
         PeerSemanticTag bobLocal = bobKB.getPeerSTSet().createPeerSemanticTag("Bob", "http://bob.org", "tcp://localhost:5556");
         bobKB.setOwner(bob);
 
-        //create bobs profile
+        //create Bobs profile
         ProfileFactory bobPF = new ProfileFactoryImpl(bobKB);
         Profile bobProfile = bobPF.createProfile(bobLocal, bobLocal);
         ProfileNameImpl profileName = new ProfileNameImpl("Bob");
@@ -162,12 +126,11 @@ public class ProfileKPTest {
         bobSE.startTCP(5556);
         bobSE.setConnectionTimeOut(connectionTimeOut);
 
-        //get profiles of alice' contacts
-        //alices message is not signed. bob doesn't accept messages without verification
+        //get profiles of Alice' contacts
+        //Alices message is not signed. Bob doesn't accept messages without verification
         List<PeerSemanticTag> aliceContactList = list(aliceContacts.peerTags());
         aliceKP.ask4Profiles(aliceContactList.iterator());
         Thread.sleep(1000);
-        //Thread.sleep(Integer.MAX_VALUE);
 
         assertNull("Bob profile should not exist", alicePF.getProfile(bob, bob));
 
@@ -176,14 +139,19 @@ public class ProfileKPTest {
 
         aliceKP.ask4Profiles(aliceContactList.iterator());
         Thread.sleep(1000);
-        //Thread.sleep(Integer.MAX_VALUE);
-        assertEquals("Bob profiles should be the same", bobProfile.getName().getSurname(), alicePF.getProfile(bob, bob).getName().getSurname());
 
-        //TODO: wie verifiziert man?
+        assertEquals("Bob profiles should be the same", bobProfile.getName().getSurname(), alicePF.getProfile(bob, bob).getName().getSurname());
 
         bobSE.stopTCP();
         aliceSE.stopTCP();
         Thread.sleep(100);
+    }
+
+    @org.junit.Test
+    public void testSignedMessage() throws Exception {
+
+        //TODO: test if a signed message can be send if the configuration setAcceptWithoutVerification is false
+
     }
 
     @org.junit.Test
@@ -234,7 +202,7 @@ public class ProfileKPTest {
 
         //get profiles of alice' contacts
         aliceKP.ask4Profiles(aliceContactList.iterator());
-        Thread.sleep(100);
+        Thread.sleep(1000);
 
         //bob doesn't know alice yet and he doesn't want to send his profile to unknown peers
         assertNull("Bob profile should not exist", alicePF.getProfile(bob, bob));
@@ -243,7 +211,7 @@ public class ProfileKPTest {
         bobKP.setSendProfiles2UnknownPeer(true);
 
         aliceKP.ask4Profiles(aliceContactList.iterator());
-        Thread.sleep(100);
+        Thread.sleep(1000);
 
         assertEquals("Bob profiles should be the same", bobProfile.getName().getSurname(), alicePF.getProfile(bob, bob).getName().getSurname());
 
@@ -252,7 +220,7 @@ public class ProfileKPTest {
         List<PeerSemanticTag> bobContactList = list(bobContacts.peerTags());
         bobContactList.add(alice);
         bobKP.ask4Profiles(bobContactList.iterator());
-        Thread.sleep(100);
+        Thread.sleep(1000);
 
         assertEquals("Alice profiles should be the same", aliceProfile.getName().getSurname(), bobPF.getProfile(alice, alice).getName().getSurname());
 
@@ -312,8 +280,7 @@ public class ProfileKPTest {
         //get profiles of alice' contacts
         List<PeerSemanticTag> aliceContactList = list(aliceContacts.peerTags());
         aliceKP.ask4Profiles(aliceContactList.iterator());
-        Thread.sleep(100);
-        //aliceSE.setSilentPeriod(100);
+        Thread.sleep(1000);
 
         assertEquals("Bob profiles should be the same", bobProfile.getName().getSurname(), alicePF.getProfile(bob, bob).getName().getSurname());
         //Alice sends her profile to Bob automatically
@@ -376,12 +343,12 @@ public class ProfileKPTest {
         //get profiles of alice' contacts
         List<PeerSemanticTag> aliceContactList = list(aliceContacts.peerTags());
         aliceKP.ask4Profiles(aliceContactList.iterator());
-        Thread.sleep(100);
+        Thread.sleep(1000);
         //aliceSE.setSilentPeriod(100);
 
         assertEquals("Bob profiles should be the same", bobProfile.getName().getSurname(), alicePF.getProfile(bob, bob).getName().getSurname());
         //Bob asks for Alice's profile automatically
-        Thread.sleep(100);
+        Thread.sleep(1000);
         assertEquals("Alice profiles should be the same", aliceProfile.getName().getSurname(), bobPF.getProfile(alice).getName().getSurname());
 
         bobSE.stopTCP();
@@ -444,7 +411,7 @@ public class ProfileKPTest {
 
         //get profiles of alice' contacts
         aliceKP.ask4Profiles(aliceContactList.iterator());
-        Thread.sleep(100);
+        Thread.sleep(1000);
 
         //Alice doesn't accept profiles with a different owner, so she should only receive Bobs profile
         assertEquals("Bob profiles should be the same", bobProfile.getName().getSurname(), alicePF.getProfile(bob).getName().getSurname());
@@ -454,7 +421,7 @@ public class ProfileKPTest {
         aliceKP.setAcceptProfileWithDifferentOwner(true);
 
         aliceKP.ask4Profiles(aliceContactList.iterator());
-        Thread.sleep(100);
+        Thread.sleep(1000);
         assertEquals("Clara profiles should be the same", claraProfile.getName().getSurname(), alicePF.getProfile(bobLocal, claraLocal).getName().getSurname());
 
         bobSE.stopTCP();
@@ -513,7 +480,7 @@ public class ProfileKPTest {
         //on WiFi direct connection an anyinterest is sent
         SharkCS anyInterest = InMemoSharkKB.createInMemoContextCoordinates(null, null, null, null, null, null, SharkCS.DIRECTION_INOUT);
         bobKP.sendInterest(anyInterest, alice);
-        Thread.sleep(100);
+        Thread.sleep(1000);
 
         assertNull("Bob profile should not exist", alicePF.getProfile(bob));
 
@@ -521,7 +488,7 @@ public class ProfileKPTest {
         aliceKP.setAsk4ProfilesAutomaticallyOnWiFiDirectConnection(true);
 
         bobKP.sendInterest(anyInterest, alice);
-        Thread.sleep(100);
+        Thread.sleep(1000);
 
         assertEquals("Bob profiles should be the same", bobProfile.getName().getSurname(), alicePF.getProfile(bob, bob).getName().getSurname());
 
@@ -580,7 +547,7 @@ public class ProfileKPTest {
         //on WiFi direct connection an anyinterest is sent
         SharkCS anyInterest = InMemoSharkKB.createInMemoContextCoordinates(null, null, null, null, null, null, SharkCS.DIRECTION_INOUT);
         aliceKP.sendInterest(anyInterest, bob);
-        Thread.sleep(100);
+        Thread.sleep(1000);
 
         assertNull("Bob profile should not exist", alicePF.getProfile(bob));
 
@@ -588,7 +555,7 @@ public class ProfileKPTest {
         bobKP.setSendProfileAutomaticallyOnWiFiDirectConnection(true);
 
         aliceKP.sendInterest(anyInterest, bob);
-        Thread.sleep(100);
+        Thread.sleep(1000);
 
         assertEquals("Bob profiles should be the same", bobProfile.getName().getSurname(), alicePF.getProfile(bob, bob).getName().getSurname());
 
@@ -682,7 +649,7 @@ public class ProfileKPTest {
 
         //Clara asks for profiles
         claraKP.ask4Profiles(claraContactList.iterator());
-        Thread.sleep(100);
+        Thread.sleep(1000);
 
         assertEquals("Bob profiles should be the same", bobProfile.getName().getSurname(), claraPF.getProfile(bob).getName().getSurname());
 
@@ -692,7 +659,7 @@ public class ProfileKPTest {
 
         //Alice asks for Bobs profiles
         aliceKP.ask4Profiles(aliceContactList.iterator());
-        Thread.sleep(100);
+        Thread.sleep(1000);
 
         assertEquals("Bob profiles should be the same", bobProfile.getName().getSurname(), alicePF.getProfile(bob).getName().getSurname());
 
@@ -702,7 +669,7 @@ public class ProfileKPTest {
         aliceContactList.remove(1); //remove Bob
 
         aliceKP.ask4Profiles(aliceContactList.iterator());
-        Thread.sleep(100);
+        Thread.sleep(1000);
 
         //Since Clara has an older version ob Bobs profile, it should still be the same
         assertEquals("Bob profiles should be the same", bobProfile.getName().getSurname(), alicePF.getProfile(bob).getName().getSurname());

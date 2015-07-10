@@ -1,10 +1,6 @@
 package Profile;
 
-import Profile.*;
-import net.sharkfw.knowledgeBase.PeerSTSet;
 import net.sharkfw.knowledgeBase.PeerSemanticTag;
-import net.sharkfw.knowledgeBase.SemanticTag;
-
 import java.util.Iterator;
 
 /**
@@ -12,26 +8,26 @@ import java.util.Iterator;
  */
 public interface ProfileKPApp {
     /**
-     * Ask a peer or multiple peers to send their profiles
+     * With this function a peer or multiple peers can be asked to send their profiles to the user.
      * @param peers
      */
     public void ask4Profiles(Iterator<PeerSemanticTag> peers);
 
     /**
-     * Send a list of profiles to one or multiple recipients
+     * This function is used to send the user's profiles to other peers.
      * @param profiles
      * @param recipients
      */
     public void sendProfiles(Iterator<Profile> profiles, Iterator<PeerSemanticTag> recipients);
 
     /**
-     * Send my own profile to one or multiple recipients
+     * With this function only the user's own profile is sent to the peers stated as recipients.
      * @param recipients
      */
     public void sendMyProfile(Iterator<PeerSemanticTag> recipients);
 
     /**
-     * Send all profiles to one or multiple recipients
+     * This function is used to send all profiles of the user to the peers stated as recipients.
      * @param recipients
      */
     public void sendAllProfiles(Iterator<PeerSemanticTag> recipients);

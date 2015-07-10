@@ -1,6 +1,5 @@
 package Profile;
 
-import Profile.*;
 import net.sharkfw.knowledgeBase.*;
 import net.sharkfw.knowledgeBase.inmemory.InMemoSharkKB;
 import net.sharkfw.peer.KEPConnection;
@@ -18,7 +17,7 @@ import java.util.List;
 import static java.util.Collections.list;
 
 /**
- * Created by _Wayne- on 05.05.2015.
+ * Created by s0539720 on 05.05.2015.
  */
 public class ProfileKP extends KnowledgePort implements ProfileKPApp, ProfileKPConfig {
     private final PeerSemanticTag owner;
@@ -40,7 +39,7 @@ public class ProfileKP extends KnowledgePort implements ProfileKPApp, ProfileKPC
     }
 
     /**
-     * Checks whether a context space contains a context coordinate with a profile topic
+     * Checks whether a context space contains a context coordinate with a profile topic.
      * @param interest
      * @return true if there is a profile topic, false otherwise
      * @throws SharkKBException
@@ -55,6 +54,12 @@ public class ProfileKP extends KnowledgePort implements ProfileKPApp, ProfileKPC
         return false;
     }
 
+    /**
+     * Checks if the sender (the PeerSemanticTag) is in the KnowledgeBase (checks if the sender is known).
+     * @param sender
+     * @return true is the sender is known, false otherwise
+     * @throws SharkKBException
+     */
     private boolean checkIfSenderIsKnown(PeerSemanticTag sender) throws SharkKBException {
         PeerSTSet peers = this.kb.getPeerSTSet();
         for (Enumeration<PeerSemanticTag> e = peers.peerTags(); e.hasMoreElements();){
@@ -75,7 +80,7 @@ public class ProfileKP extends KnowledgePort implements ProfileKPApp, ProfileKPC
         } catch (SharkKBException e) {
             L.e(e.getMessage(), this);
         }
-        //WiFi Direct Connection (bei Allinteresse)
+        //WiFi Direct Connection (= any interest)
         if (SharkCSAlgebra.isAny(interest)){
             if (ask4ProfilesAutomaticallyOnWiFiDirectConnection){
                 ContextCoordinates profileCC = getProfileCC(SharkCS.DIRECTION_IN);
@@ -86,7 +91,7 @@ public class ProfileKP extends KnowledgePort implements ProfileKPApp, ProfileKPC
                 }
             }
             if (sendProfileAutomaticallyOnWiFiDirectConnection){
-                Iterator<Profile> profiles = null;
+                Iterator<Profile> profiles;
                 try {
                     profiles = pf.getProfiles(this.owner, this.owner).iterator();
                     Knowledge k = pf.getKnowledge4Profiles(profiles);
@@ -156,6 +161,11 @@ public class ProfileKP extends KnowledgePort implements ProfileKPApp, ProfileKPC
         }
     }
 
+    /**
+     * Creates ContextCoordinates with the profile topic.
+     * @param direction
+     * @return ContextCoordinates with the profile topic
+     */
     private ContextCoordinates getProfileCC(int direction){
         SemanticTag profileTopic = ProfileFactoryImpl.getProfileSemanticTag();
         return InMemoSharkKB.createInMemoContextCoordinates(profileTopic, null, this.owner, null, null, null, direction);
@@ -207,7 +217,6 @@ public class ProfileKP extends KnowledgePort implements ProfileKPApp, ProfileKPC
     }
 
     @Override
-    //recipients als iterator
     public void sendProfiles(Iterator<Profile> profiles, Iterator<PeerSemanticTag> recipients) {
         while (recipients.hasNext()){
             PeerSemanticTag recipient = recipients.next();

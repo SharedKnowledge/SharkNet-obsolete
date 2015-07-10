@@ -2,24 +2,17 @@ package ProfileTests;
 
 import Profile.*;
 import net.sharkfw.knowledgeBase.*;
-import net.sharkfw.knowledgeBase.filesystem.FSSharkKB;
-import net.sharkfw.knowledgeBase.inmemory.InMemoSharkCS;
 import net.sharkfw.knowledgeBase.inmemory.InMemoSharkKB;
 import net.sharkfw.peer.J2SEAndroidSharkEngine;
-import net.sharkfw.pki.SharkCertificate;
-import net.sharkfw.pki.SharkPublicKeyStorage;
-import net.sharkfw.pki.SigningPeer;
 import net.sharkfw.system.L;
 
-import java.security.*;
-import java.util.Iterator;
 import java.util.List;
 
 import static java.util.Collections.list;
 import static org.junit.Assert.*;
 
 /**
- * Created by _Wayne- on 06.05.2015.
+ * Created by s0539720 on 06.05.2015.
  */
 public class ProfileKPTest {
     private long connectionTimeOut = 2000;
@@ -34,7 +27,11 @@ public class ProfileKPTest {
 
     }
 
-    //Alice knows Bob and asks for his profile
+    /**
+     * This scenario tests the ask4Profiles function. The sendProfiles function is tested implicitly as well.
+     * Alice asks for Bobs profiles. Bob sends his profile to Alice.
+     * @throws Exception
+     */
     @org.junit.Test
     public void testAsk4Profiles() throws Exception {
         L.setLogLevel(L.LOGLEVEL_ALL);
@@ -75,7 +72,7 @@ public class ProfileKPTest {
         bobSE.startTCP(5556);
         bobSE.setConnectionTimeOut(connectionTimeOut);
 
-        //get profiles of Alice' contacts
+        //get profiles of Alice's contacts
         List<PeerSemanticTag> aliceContactList = list(aliceContacts.peerTags());
         aliceKP.ask4Profiles(aliceContactList.iterator());
         Thread.sleep(1000);
@@ -87,6 +84,14 @@ public class ProfileKPTest {
         Thread.sleep(100);
     }
 
+    /**
+     * In this scenario the configuration acceptWithoutVerification is tested.
+     * Alice knows Bob and asks for his profiles. She didn't sign her message and Bobs KnowledgePort doesn't accept
+     * unsigned messages. So the request doesn't go through and Alice doesn't receive Bob's  profile.
+     * Then Bob sets the configuration acceptWithoutVerification to true and Alice asks for Bob's profiles again. Now
+     * she should receive it.
+     * @throws Exception
+     */
     @org.junit.Test
     public void testAcceptWithoutVerification() throws Exception {
         L.setLogLevel(L.LOGLEVEL_ALL);
@@ -147,6 +152,10 @@ public class ProfileKPTest {
         Thread.sleep(100);
     }
 
+    /**
+     * 
+     * @throws Exception
+     */
     @org.junit.Test
     public void testSignedMessage() throws Exception {
 
@@ -154,6 +163,16 @@ public class ProfileKPTest {
 
     }
 
+    /**
+     * This scenario tests the the configuration sendProfiles2UnknownPeer.
+     * Alice knows Bob but Bob doesn't know Alice. Alice asks for Bobs profiles but since Bob's configuration
+     * sendProfiles2UnknownPeer is set to false, he doesn't send his profile to Alice.
+     * Now he gets to know Alice (PeerSemanticTag alice is in Bob's KnowledgeBase). Alice asks again for Bob's
+     * profiles and receives it.
+     * Then Bob asks for Alice's profiles. Alice has her sendProfiles2UnknownPeer configuration set to false, but she
+     * already knows Bob, so she sends her profile.
+     * @throws Exception
+     */
     @org.junit.Test
     public void testSendProfiles2UnknownPeer() throws Exception {
         L.setLogLevel(L.LOGLEVEL_ALL);
@@ -200,14 +219,14 @@ public class ProfileKPTest {
         bobSE.startTCP(5556);
         bobSE.setConnectionTimeOut(connectionTimeOut);
 
-        //get profiles of alice' contacts
+        //get profiles of Alice's contacts
         aliceKP.ask4Profiles(aliceContactList.iterator());
         Thread.sleep(1000);
 
-        //bob doesn't know alice yet and he doesn't want to send his profile to unknown peers
+        //Bob doesn't know alice yet and he doesn't want to send his profile to unknown peers
         assertNull("Bob profile should not exist", alicePF.getProfile(bob, bob));
 
-        //now bob wants to send his profile to unknown peers
+        //now Bob wants to send his profile to unknown peers
         bobKP.setSendProfiles2UnknownPeer(true);
 
         aliceKP.ask4Profiles(aliceContactList.iterator());
@@ -216,9 +235,9 @@ public class ProfileKPTest {
         assertEquals("Bob profiles should be the same", bobProfile.getName().getSurname(), alicePF.getProfile(bob, bob).getName().getSurname());
 
         //Alice doesn't want to send her profile to unknown peers. But she knows Bob, so she will send her profile to him if he asks for it
+        PeerSemanticTag aliceLocal = bobKB.getPeerSTSet().createPeerSemanticTag("Alice", "http://alice.org", "tcp://localhost:5555");
         PeerSTSet bobContacts = bobKB.getPeerSTSet();
         List<PeerSemanticTag> bobContactList = list(bobContacts.peerTags());
-        bobContactList.add(alice);
         bobKP.ask4Profiles(bobContactList.iterator());
         Thread.sleep(1000);
 
@@ -229,6 +248,12 @@ public class ProfileKPTest {
         Thread.sleep(100);
     }
 
+    /**
+     * This scenario tests the configuration sendMyProfileAutomatically.
+     * Alice has her configuration sendMyProfileAutomatically set to true. So when she asks Bob for his profiles and he
+     * sends them to Alice, she automatically sends her profile to Bob.
+     * @throws Exception
+     */
     @org.junit.Test
     public void testSendMyProfileAutomatically() throws Exception {
         L.setLogLevel(L.LOGLEVEL_ALL);
@@ -291,7 +316,13 @@ public class ProfileKPTest {
         Thread.sleep(100);
     }
 
-
+    /**
+     * In this scenario the configuration askForProfilesAutomatically is tested.
+     * Bob's configuration aksForProfilesAutomatically is set to true. So when Alice asks for his profiles he
+     * automatically asks Alice for her profiles as well. So he should receive her profile without explicitly calling
+     * the ask4Profiles function.
+     * @throws Exception
+     */
     @org.junit.Test
     public void testAsk4ProfilesAutomatically() throws Exception {
         L.setLogLevel(L.LOGLEVEL_ALL);
@@ -344,7 +375,6 @@ public class ProfileKPTest {
         List<PeerSemanticTag> aliceContactList = list(aliceContacts.peerTags());
         aliceKP.ask4Profiles(aliceContactList.iterator());
         Thread.sleep(1000);
-        //aliceSE.setSilentPeriod(100);
 
         assertEquals("Bob profiles should be the same", bobProfile.getName().getSurname(), alicePF.getProfile(bob, bob).getName().getSurname());
         //Bob asks for Alice's profile automatically
@@ -356,6 +386,14 @@ public class ProfileKPTest {
         Thread.sleep(100);
     }
 
+    /**
+     * This scenario tests the configuration acceptProfileWithDifferentOwner.
+     * Alice's configuration acceptProfileWithDifferentOwner is set to false. She asks Bob for his profiles. Bob has a
+     * profile of Clara which he made himself. So the profile is about someone else (Clara) than the owner (Bob). Since
+     * Alice doesn't accept profiles like that, she doesn't receive Claras profile from Bob.
+     * Then she sets acceptProfileWithDifferentOwner to true and asks again. Now Alice receives the profile of Clara.
+     * @throws Exception
+     */
     @org.junit.Test
     public void testAcceptProfileWithDifferentOwner() throws Exception {
         L.setLogLevel(L.LOGLEVEL_ALL);
@@ -430,6 +468,14 @@ public class ProfileKPTest {
 
     }
 
+    /**
+     * In this scenario the configuration askForProfilesAutomaticallyOnWiFiDirectConnection is tested.
+     * Alice's configuration aksForProfilesAutomaticallyOnWiFiDirectConnection is set to false. So when a WiFi direct
+     * connection to Bob is established (an any interest is sent) nothing happens.
+     * Then she changes the configuration to true and a connection is established again. Now she asks for Bob's profiles
+     * automatically. So he should receive his profile without explicitly calling the ask4Profiles function.
+     * @throws Exception
+     */
     @org.junit.Test
     public void testAsk4ProfilesAutomaticallyOnWiFiDirectConnection() throws Exception {
         L.setLogLevel(L.LOGLEVEL_ALL);
@@ -497,6 +543,14 @@ public class ProfileKPTest {
         Thread.sleep(100);
     }
 
+    /**
+     * In this scenario the configuration sendProfileAutomaticallyOnWiFiDirectConnection is tested.
+     * Bob's configuration sendProfileAutomaticallyOnWiFiDirectConnection is set to false. So when a WiFi direct
+     * connection to Alice is established (an any interest is sent) nothing happens.
+     * Then he changes the configuration to true and a connection is established again. Now Bob sends his profile
+     * automatically. So alice should receive his profile without calling the ask4Profiles function.
+     * @throws Exception
+     */
     @org.junit.Test
     public void testSendProfileAutomaticallyOnWiFiDirectConnection() throws Exception {
         L.setLogLevel(L.LOGLEVEL_ALL);
@@ -564,6 +618,16 @@ public class ProfileKPTest {
         Thread.sleep(100);
     }
 
+    /**
+     * This scenario tests if the profile with the latest version is saved to the KnowledgeBase.
+     * First Clara asks her peer Bob for his profiles and receives them. Then Bob changes hes profile. So
+     * when Alice asks for Bobs profiles she receives a different profile of Bob than Clara did. Now Alice gets to know
+     * Clara and asks for her profiles as well. Clara sends her old profile of Bob, but since Alice has the profile
+     * with the latest profile version, her profile of Bob doesn't change.
+     * Finally Clara asks her peers for their profiles again. The new profile of Bob is sent to her and since it has the
+     * latest profile version the old profile of Bob in Clara's KnowledgeBase is overwritten with Bob's current profile.
+     * @throws Exception
+     */
     @org.junit.Test
     public void testLatestProfileVersion() throws Exception {
         L.setLogLevel(L.LOGLEVEL_ALL);
@@ -626,8 +690,7 @@ public class ProfileKPTest {
         PeerSemanticTag claraPeer = claraKB.getPeerSTSet().createPeerSemanticTag("Clara", "http://clara.org", "tcp://localhost:5557");
         claraKB.setOwner(claraPeer);
 
-        //Clara knows Bob and Alice
-        PeerSemanticTag alicePeer = aliceKB.getPeerSTSet().createPeerSemanticTag("Alice", "http://alice.org", "tcp://localhost:5555");
+        //Clara knows Bob
         PeerSemanticTag bobPeer = aliceKB.getPeerSTSet().createPeerSemanticTag("Bob", "http://bob.org", "tcp://localhost:5556");
 
         //create contactlist of Clara
@@ -653,6 +716,9 @@ public class ProfileKPTest {
 
         assertEquals("Bob profiles should be the same", bobProfile.getName().getSurname(), claraPF.getProfile(bob).getName().getSurname());
 
+        //Now Clara knows Alice too
+        PeerSemanticTag alicePeer = aliceKB.getPeerSTSet().createPeerSemanticTag("Alice", "http://alice.org", "tcp://localhost:5555");
+
         //Bob changes his profile
         bobName.setSurname("Bobby");
         bobProfile.setName(bobName);
@@ -666,13 +732,20 @@ public class ProfileKPTest {
         //Now Alice knows Clara and wants to ask for her profiles
         PeerSemanticTag clara = aliceKB.getPeerSTSet().createPeerSemanticTag("Clara", "http://clara.org", "tcp://localhost:5557");
         aliceContactList = list(aliceKB.getPeerSTSet().peerTags());
-        aliceContactList.remove(1); //remove Bob
+        aliceContactList.remove(1); //remove Bob so only Clara sends the profile ob Bob
 
         aliceKP.ask4Profiles(aliceContactList.iterator());
         Thread.sleep(1000);
 
         //Since Clara has an older version ob Bobs profile, it should still be the same
         assertEquals("Bob profiles should be the same", bobProfile.getName().getSurname(), alicePF.getProfile(bob).getName().getSurname());
+
+        claraKP.ask4Profiles(claraContactList.iterator());
+        Thread.sleep(1000);
+
+        //Clara should now have the latest version ob Bob's profile as well
+        assertEquals("Bob profiles should be the same", bobProfile.getName().getSurname(), claraPF.getProfile(bob).getName().getSurname());
+
 
         bobSE.stopTCP();
         aliceSE.stopTCP();

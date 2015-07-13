@@ -6,6 +6,7 @@ import net.sharkfw.knowledgeBase.PeerSemanticTag;
 import net.sharkfw.knowledgeBase.SharkKBException;
 
 import java.util.Date;
+import java.util.Iterator;
 
 /**
  * Created by Mr.T on 16.04.2015.
@@ -33,8 +34,9 @@ public interface Profile {
      */
     PeerSemanticTag getProfileCreator();
 
-    void addProfileEntry(ProfileEntry profileEntry, String identifier);
-    ProfileEntry getProfileEntry(String identifier);
+    <T> void addProfileEntry(String identifier, T entryContent);
+    Entry<?> getProfileEntry(String identifier);
+    Iterator<Entry<?>> getAllProfileEntries();
     void clearProfileEntry(String identifier);
     /**Sets a profile name.
      * A profile name is represented as an profileName object.

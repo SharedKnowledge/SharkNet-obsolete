@@ -6,7 +6,11 @@ package Profile;
 public class EntryImpl<T> implements Entry<T> {
     private String entryName;
     private T content;
-    EntryImpl(String entryName, T content) {
+    public EntryImpl(String entryName) {
+        this.entryName = entryName;
+    }
+
+    public EntryImpl(String entryName, T content) {
         this.entryName = entryName;
         this.content = content;
     }

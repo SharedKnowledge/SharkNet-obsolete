@@ -34,8 +34,8 @@ public interface Profile {
      */
     PeerSemanticTag getProfileCreator();
 
-    <T> void addProfileEntry(String identifier, T entryContent);
-    Entry<?> getProfileEntry(String identifier);
+    <T> void addProfileEntry(String identifier, T entryContent) throws SharkKBException;
+    Entry<?> getProfileEntry(String identifier) throws SharkKBException;
     Iterator<Entry<?>> getAllProfileEntries();
     void clearProfileEntry(String identifier);
     /**Sets a profile name.

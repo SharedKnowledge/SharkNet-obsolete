@@ -6,8 +6,10 @@ import net.sharkfw.system.L;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
+import java.util.List;
 
 /**
  * Created by Mr.T on 16.04.2015.
@@ -22,11 +24,12 @@ public class ProfileImpl implements Profile, Serializable {
     private SharkKB kb;
     private PeerSemanticTag profileTarget = null;
     private PeerSemanticTag profileCreator = null;
-    private EntryFactory entryFactory = new EntryFactoryImpl();
+    private EntryFactory entryFactory = null;
     ProfileImpl(SharkKB kb, PeerSemanticTag creator, PeerSemanticTag target) throws SharkKBException {
         this.kb = kb;
         this.profileTarget = target;
         this.profileCreator = creator;
+        this.entryFactory = new EntryFactoryImpl();
         SemanticTag pr = ProfileFactoryImpl.getProfileSemanticTag();
         pr.setProperty(Profile.SHARK_PROFILE_VERSION_PROPERTY, "0");
         ContextCoordinates cc = kb.createContextCoordinates(pr, creator, target, null, null, null, SharkCS.DIRECTION_INOUT);
@@ -99,25 +102,14 @@ public class ProfileImpl implements Profile, Serializable {
     }
 
     @Override
-    public <T> void addProfileEntry(String identifier, T entryContent) {
+    public <T> void addProfileEntry(String identifier, T entryContent) throws SharkKBException {
         entryFactory.createEntry(identifier, entryContent);
-        /**
-        try {
-            addAndSerializeObjInContextPoint(identifier, entry);
-        } catch (SharkKBException e) {
-            L.e(e.getMessage(), this);
-        }
-         */
+        addAndSerializeObjInContextPoint(PROFILEENTRYFACTORY, entryFactory);
     }
 
     @Override
-    public Entry<?> getProfileEntry(String identifier) {
-        Entry<?> entry = null;
-        try {
-             entry = (Entry<?>) getAndDeserializeObjFromContextPoint(identifier);
-        } catch (SharkKBException e) {
-            L.e(e.getMessage(), this);
-        }
+    public Entry<?> getProfileEntry(String identifier) throws SharkKBException {
+        entryFactory = (EntryFactory) getAndDeserializeObjFromContextPoint(PROFILEENTRYFACTORY);
         return entryFactory.getEntry(identifier);
     }
 
@@ -144,6 +136,18 @@ public class ProfileImpl implements Profile, Serializable {
         } catch (SharkKBException e) {
             L.e(e.getMessage(), this);
         }
+    }
+
+    public void createEntryName() throws SharkKBException {
+        List<Entry<?>> entryList = new ArrayList<Entry<?>>();
+        entryList.add(new EntryImpl<String>("Surname"));
+        entryList.add(new EntryImpl<String>("LastName"));
+        entryList.add(new EntryImpl<String>("Title"));
+        addProfileEntry("ProfileName", entryList);
+    }
+
+    public Entry<List<Entry<String>>> getEntryName() throws SharkKBException {
+        return (Entry<List<Entry<String>>>) getProfileEntry("ProfileName");
     }
 
     @Override

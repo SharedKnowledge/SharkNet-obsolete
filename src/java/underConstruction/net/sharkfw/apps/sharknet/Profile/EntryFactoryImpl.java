@@ -1,5 +1,6 @@
 package Profile;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -7,7 +8,7 @@ import java.util.List;
 /**
  * Created by Mr.T on 03.07.2015.
  */
-public class EntryFactoryImpl implements EntryFactory {
+public class EntryFactoryImpl implements EntryFactory, Serializable {
     private List<Entry<?>> entryList = new ArrayList<Entry<?>>();
 
     @Override
@@ -22,7 +23,6 @@ public class EntryFactoryImpl implements EntryFactory {
         Entry<?> entry = null;
         for (int i = 0; i < entryList.size(); i++) {
             if (entryList.get(i).getEntryName().equals(identifier)) {
-                System.out.println(entryList.get(i).getContent().toString());
                 entry = entryList.get(i);
             }
         }

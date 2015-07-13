@@ -68,7 +68,14 @@ public class EntryFactoryImplTest {
         }
         System.out.println(entryList1.get(0).getContent());
     }
-
+    @Test
+    public void testCreateProfileName() throws SharkKBException {
+        Profile aliceProfile = createProfileAlice();
+        aliceProfile.addProfileEntry("Surname", "Hannes");
+        Profile newAlice = profileFactory.getProfile(alice, alice);
+        Entry<?> entry = newAlice.getProfileEntry("Surname");
+        System.out.println(entry.getEntryName());
+    }
     @Test
     public void testCreatingProfileProblemEntry() throws SharkKBException, IOException, ClassNotFoundException {
         Profile aliceProfile = createProfileAlice();

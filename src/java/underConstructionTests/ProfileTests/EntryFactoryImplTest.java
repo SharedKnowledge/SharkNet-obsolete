@@ -39,39 +39,16 @@ public class EntryFactoryImplTest {
 
     @Test
     public void testCreateEntry() throws Exception {
-        EntryFactory factory = new EntryFactoryImpl();
-        factory.createEntry("Alter", 22);
-        factory.createEntry("Name", "Thomas");
-        factory.createEntry("Geschlecht", "M");
-        factory.removeEntry("Name");
-        Entry<?> integerEntry = factory.getEntry("Alter");
-        System.out.println(integerEntry.getEntryName());
-        System.out.println(integerEntry.getContent());
-        Iterator<Entry<?>> ie = factory.getEntries();
-        while (ie.hasNext()) {
-            System.out.println(ie.next().getEntryName());
-        }
     }
 
     @Test
     public void testCreatingProfileNameEntry() {
-        EntryFactory factory = new EntryFactoryImpl();
-        List<Entry<?>> entryList = new ArrayList<Entry<?>>();
-        entryList.add(new EntryImpl<String>("Surname"));
-        entryList.add(new EntryImpl<String>("LastName"));
-        entryList.add(new EntryImpl<String>("Title"));
-        factory.createEntry("ProfileName", entryList);
-        Entry<?> profileNameEntry = factory.getEntry("ProfileName");
-        List<Entry<String>> entryList1 = (List<Entry<String>>) profileNameEntry.getContent();
-        if (entryList1.get(0).getEntryName().equals("Surname")) {
-            entryList1.get(0).setContent("Max");
-        }
-        System.out.println(entryList1.get(0).getContent());
+
     }
     @Test
     public void testCreateProfileName() throws SharkKBException {
         Profile aliceProfile = createProfileAlice();
-        aliceProfile.addProfileEntry("Surname", "Hannes");
+        aliceProfile.createProfileEntry("Surname", "Hannes");
         Profile newAlice = profileFactory.getProfile(alice, alice);
         Entry<?> entry = newAlice.getProfileEntry("Surname");
         System.out.println(entry.getEntryName());
@@ -84,7 +61,7 @@ public class EntryFactoryImplTest {
         entryList.add(new EntryImpl<String>("ProblemName", "Bridge is destroyed"));
         entryList.add(new EntryImpl<byte[]>("Content", bytes));
         entryList.add(new EntryImpl<SpatialSemanticTag>("LocationOfTheProblem"));
-        aliceProfile.addProfileEntry("ProfileProblem", entryList);
+        aliceProfile.createProfileEntry("ProfileProblem", entryList);
 
         Profile newAlice = profileFactory.getProfile(alice, alice);
         Entry<?> profileProblem = newAlice.getProfileEntry("ProfileProblem");

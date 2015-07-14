@@ -73,6 +73,16 @@ public class ProfileImplTest {
     }
 
     @Test
+    public void testCreateSimpleProfileEntry() throws SharkKBException {
+        PeerSemanticTag alice = createAlice();
+        Profile p = profileFactory.createProfile(alice, alice);
+        p.createProfileEntry("Name");
+        p.addSubEntryInEntry("Name", "Surname", "Peter");
+        System.out.println(p.getProfileEntry("Name").getEntryFromList("Surname").getEntryName());
+
+    }
+
+    @Test
     public void testProfileName() throws SharkKBException, IOException, ClassNotFoundException {
         PeerSemanticTag alice = createAlice();
         Profile profile = profileFactory.createProfile(alice, alice);
@@ -122,19 +132,5 @@ public class ProfileImplTest {
         Profile profile = profileFactory.createProfile(alice, alice);
         profile.setTelephoneNumber("0151-28764539", "My Mobile");
         Assert.assertEquals("This telephonenumbers sould be equal", "0151-28764539", profile.getTelephoneNumber("My Mobile"));
-    }
-
-    @Test
-    public void testKnownLanguages() throws Exception {
-        PeerSemanticTag alice = createAlice();
-        Profile profile = profileFactory.createProfile(alice, alice);
-        String[] l = {"aa", "english", "informatic", "de", "en"};
-        String[] languagesExpected = {"aa", "de", "en"};
-        ProfileKnownLanguages pkl = new ProfileKnownLanguagesImpl(l);
-        profile.setKnownLanguages(pkl);
-        String[] newL = profile.getKnownLanguages().getKnownLanguages();
-        for (int i = 0; i < newL.length; i++) {
-            Assert.assertEquals(languagesExpected[i], newL[i]);
-        }
     }
 }

@@ -7,6 +7,7 @@ import net.sharkfw.knowledgeBase.SharkKBException;
 
 import java.util.Date;
 import java.util.Iterator;
+import java.util.List;
 
 /**
  * Created by Mr.T on 16.04.2015.
@@ -34,10 +35,13 @@ public interface Profile {
      */
     PeerSemanticTag getProfileCreator();
 
-    <T> void addProfileEntry(String identifier, T entryContent) throws SharkKBException;
+    void createProfileEntry(String identifier) throws SharkKBException;
+    <T> void createProfileEntry(String identifier, T entryContent) throws SharkKBException;
+    <T> void createProfileEntry(String identifier, List<Entry<T>> entryList) throws SharkKBException;
+    <T> void addSubEntryInEntry(String superEntryName, String subEntryName, T content) throws SharkKBException;
     Entry<?> getProfileEntry(String identifier) throws SharkKBException;
-    Iterator<Entry<?>> getAllProfileEntries();
-    void clearProfileEntry(String identifier);
+    void removeProfileEntry(String identifier);
+
     /**Sets a profile name.
      * A profile name is represented as an profileName object.
      * A surname, a lastname and a title can be stored in such an profileName object.
@@ -134,24 +138,4 @@ public interface Profile {
      */
     String getTelephoneNumber(String identifier) throws SharkKBException;
 
-    //Standart für z.B. dt.dt oder eng.eng oder dt.sz suchen und überlegen, in welchem Format ich die Sprachen abspeichern möchte
-    //ISO 639-1 Sprachcodes z.B. Germany = Deutschland = de, French = Französisch = fr
-
-    /**Sets the languages which the profileOwner knows.
-     * These languages only can be stored in a special form.
-     * The ISO defined a norm 639-1 about language codes.
-     * Every code is unique for a country.
-     * The country/language codes are well explained in the class ProfileKnownLanguages.
-     *
-     * @param knownLanguages The languages the ProfileOwner knows.
-     * @throws SharkKBException This message is thrown when no SharkKB is found or if there is another problem with the SharkKB.
-     */
-    void setKnownLanguages(ProfileKnownLanguages knownLanguages) throws SharkKBException;
-
-    /**Returns the languages the ProfileOwner knows.
-     *
-     * @return The languages the Profile Owner knows.
-     * @throws SharkKBException This message is thrown when no SharkKB is found or if there is another problem with the SharkKB.
-     */
-    ProfileKnownLanguages getKnownLanguages() throws SharkKBException;
 }

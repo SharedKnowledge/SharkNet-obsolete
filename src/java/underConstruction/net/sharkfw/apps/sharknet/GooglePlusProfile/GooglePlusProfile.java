@@ -22,5 +22,7 @@ public interface GooglePlusProfile {
     String END = "End";
     String CURRENT = "Current";
     String JOBDESCRIPTION = "JobDescription";
+    String TEST = "Test";
+    String TEST1 = "Test1";
 
 }

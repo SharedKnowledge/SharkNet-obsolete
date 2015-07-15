@@ -16,13 +16,12 @@ public interface GooglePlusProfile {
     String OCCUPATION = "Occupation";
     String SKILLS = "Skills";
     String EMPLOYMENT = "Employment";
+    String EMPLOYMENTS = "Employments";
     String EMPLOYERNAME = "EmployerName";
     String JOBTITLE = "JobTitle";
     String START = "Start";
     String END = "End";
     String CURRENT = "Current";
     String JOBDESCRIPTION = "JobDescription";
-    String TEST = "Test";
-    String TEST1 = "Test1";
 
 }

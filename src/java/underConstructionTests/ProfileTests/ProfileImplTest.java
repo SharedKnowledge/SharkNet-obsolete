@@ -78,8 +78,13 @@ public class ProfileImplTest {
         Profile p = profileFactory.createProfile(alice, alice);
         p.createProfileEntry("Name");
         p.addSubEntryInEntry("Name", "Surname", "Peter");
-        System.out.println(p.getProfileEntry("Name").getEntryFromList("Surname").getEntryName());
-
+        p.addSubEntryInEntry("Name", "LastName", "Schmitt");
+        p.addSubEntryInEntry("Name", "Alter", 22);
+        System.out.println(p.getProfileEntry("Name").getEntryFromList("Surname").getContent());
+        System.out.println(p.getProfileEntry("Name").getEntryFromList("LastName").getContent());
+        System.out.println(p.getProfileEntry("Name").getEntryFromList("Alter").getContent());
+        p.alterSubEntryContent("Name", "Surname", "HansPeter");
+        System.out.println(p.getProfileEntry("Name").getEntryFromList("Surname").getContent());
     }
 
     @Test

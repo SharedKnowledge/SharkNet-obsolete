@@ -6,7 +6,6 @@ import net.sharkfw.knowledgeBase.PeerSemanticTag;
 import net.sharkfw.knowledgeBase.SharkKBException;
 
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -39,6 +38,7 @@ public interface Profile {
     <T> void createProfileEntry(String identifier, T entryContent) throws SharkKBException;
     <T> void createProfileEntry(String identifier, List<Entry<T>> entryList) throws SharkKBException;
     <T> void addSubEntryInEntry(String superEntryName, String subEntryName, T content) throws SharkKBException;
+    <T> void alterSubEntryContent(String superEntryName, String subEntryName, T content) throws SharkKBException;
     Entry<?> getProfileEntry(String identifier) throws SharkKBException;
     void removeProfileEntry(String identifier);
 

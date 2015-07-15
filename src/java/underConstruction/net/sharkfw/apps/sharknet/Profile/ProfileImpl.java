@@ -1,12 +1,11 @@
 package Profile;
 
 import net.sharkfw.knowledgeBase.*;
-import net.sharkfw.knowledgeBase.inmemory.InMemoInformation;
-import net.sharkfw.system.L;
 
 import java.io.IOException;
 import java.io.Serializable;
-import java.util.*;
+import java.util.Date;
+import java.util.List;
 
 /**
  * Created by Mr.T on 16.04.2015.
@@ -18,18 +17,18 @@ public class ProfileImpl implements Profile, Serializable {
     private SharkKB kb;
     private PeerSemanticTag profileTarget = null;
     private PeerSemanticTag profileCreator = null;
-    ProfileImpl(SharkKB kb, PeerSemanticTag creator, PeerSemanticTag target) throws SharkKBException {
+    public ProfileImpl(SharkKB kb, PeerSemanticTag creator, PeerSemanticTag target) throws SharkKBException {
         this.kb = kb;
         this.profileTarget = target;
         this.profileCreator = creator;
         SemanticTag pr = ProfileFactoryImpl.getProfileSemanticTag();
         pr.setProperty(Profile.SHARK_PROFILE_VERSION_PROPERTY, "0");
-        ContextCoordinates cc = kb.createContextCoordinates(pr, creator, target, null, null, null, SharkCS.DIRECTION_INOUT);
+        ContextCoordinates cc = this.kb.createContextCoordinates(pr, creator, target, null, null, null, SharkCS.DIRECTION_INOUT);
         cp = this.kb.createContextPoint(cc);
     }
 
 
-    ProfileImpl(SharkKB kb, ContextPoint cp) {
+    public ProfileImpl(SharkKB kb, ContextPoint cp) {
         this.kb = kb;
         this.cp = cp;
         profileTarget = cp.getContextCoordinates().getPeer();
@@ -46,17 +45,16 @@ public class ProfileImpl implements Profile, Serializable {
     }
 
     private void addAndSerializeObjInContextPoint(String objName, Object obj) throws SharkKBException {
-        Information i = new InMemoInformation();
+        if (cp.getInformation(objName).hasNext()) {
+            cp.removeInformation(cp.getInformation(objName).next());
+        }
+        Information i = cp.addInformation();
         try {
             i.setContent(Serializer.serialize(obj));
         } catch (IOException e) {
             throw new SharkKBException(e.getMessage());
         }
         i.setName(objName);
-        if (cp.getInformation(objName).hasNext()) {
-            cp.removeInformation(cp.getInformation(objName).next());
-        }
-        cp.addInformation(i);
     }
 
     private Object getAndDeserializeObjFromContextPoint(String objName) throws SharkKBException {
@@ -115,6 +113,16 @@ public class ProfileImpl implements Profile, Serializable {
     public <T> void addSubEntryInEntry(String superEntryName, String subEntryName, T content) throws SharkKBException {
         Entry<T> entry = (Entry<T>) getAndDeserializeObjFromContextPoint(superEntryName);
         entry.addEntryInEntryList(subEntryName, content);
+        addAndSerializeObjInContextPoint(superEntryName, entry);
+        //System.out.println(entry.getEntryFromList(subEntryName).getContent() + "<--ProfileImpl");
+        //System.out.println(entry.getEntryName());
+    }
+
+    @Override
+    public <T> void alterSubEntryContent(String superEntryName, String subEntryName, T content) throws SharkKBException {
+        Entry<T> entry = (Entry<T>) getAndDeserializeObjFromContextPoint(superEntryName);
+        entry.alterEntryContentInEntryList(subEntryName, content);
+        addAndSerializeObjInContextPoint(superEntryName, entry);
     }
 
     @Override

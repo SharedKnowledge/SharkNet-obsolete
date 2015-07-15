@@ -30,7 +30,7 @@ public class ProfileFactoryImpl implements ProfileFactory {
         Enumeration<ContextPoint> contextPointEnumerations = kb.getAllContextPoints();
         //extract contextPoints mit specified topic von CSAlgebra
         List<Profile> profileList = new ArrayList<Profile>();
-        while (contextPointEnumerations.hasMoreElements() == true) {
+        while (contextPointEnumerations.hasMoreElements()) {
             profileList.add(new ProfileImpl(kb, contextPointEnumerations.nextElement()));
             //System.out.println(L.cp2String(contextPointEnumerations.nextElement()));
         }

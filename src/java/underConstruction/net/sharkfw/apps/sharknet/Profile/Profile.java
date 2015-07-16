@@ -37,6 +37,10 @@ public interface Profile {
     void createProfileEntry(String identifier) throws SharkKBException;
     <T> void createProfileEntry(String identifier, T entryContent) throws SharkKBException;
     <T> void createProfileEntry(String identifier, List<Entry<T>> entryList) throws SharkKBException;
+    void createSubEntry(String superEntryName, String saveNewSubEntryUnderThisEntryName, String subEntryName) throws SharkKBException;
+    <T> void createSubEntry(String superEntryName, String saveNewSubEntryUnderThisEntryName, String subEntryName, T content) throws SharkKBException;
+    <T> Entry<T> getSubEntry(String superEntryName, String subEntryName) throws SharkKBException;
+    <T> void addSubEntryInEntry(String superEntryName, String subEntryName) throws SharkKBException;
     <T> void addSubEntryInEntry(String superEntryName, String subEntryName, T content) throws SharkKBException;
     <T> void alterSubEntryContent(String superEntryName, String subEntryName, T content) throws SharkKBException;
     Entry<?> getProfileEntry(String identifier) throws SharkKBException;

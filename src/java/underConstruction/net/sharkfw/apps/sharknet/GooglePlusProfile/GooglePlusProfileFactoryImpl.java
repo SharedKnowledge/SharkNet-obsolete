@@ -14,12 +14,12 @@ import java.util.List;
 public class GooglePlusProfileFactoryImpl implements GooglePlusProfileFactory{
     private ProfileFactory pf;
 
-    GooglePlusProfileFactoryImpl(ProfileFactory pf) {
+    public GooglePlusProfileFactoryImpl(ProfileFactory pf) {
         this.pf = pf;
     }
 
-    public GooglePlusProfile createGooglePlusProfile(String profileURL) throws SharkKBException {
-        PeerSemanticTag peer = InMemoSharkKB.createInMemoPeerSemanticTag(null, profileURL, null);
+    public GooglePlusProfile createGooglePlusProfile(String name, String profileURL) throws SharkKBException {
+        PeerSemanticTag peer = InMemoSharkKB.createInMemoPeerSemanticTag(name, profileURL, null);
         Profile p = pf.createProfile(peer, peer);
         return new GooglePlusProfileImpl(p);
     }
@@ -29,14 +29,14 @@ public class GooglePlusProfileFactoryImpl implements GooglePlusProfileFactory{
     }
 
     @Override
-    public Profile getGooglePlusProfile(String profileURL) throws SharkKBException {
-        PeerSemanticTag peer = InMemoSharkKB.createInMemoPeerSemanticTag(null, profileURL, null);
+    public Profile getGooglePlusProfile(String name, String profileURL) throws SharkKBException {
+        PeerSemanticTag peer = InMemoSharkKB.createInMemoPeerSemanticTag(name, profileURL, null);
         return pf.getProfile(peer);
     }
 
     @Override
-    public void removeGooglePlusProfile(String profileURL) throws SharkKBException {
-        PeerSemanticTag peer = InMemoSharkKB.createInMemoPeerSemanticTag(null, profileURL, null);
+    public void removeGooglePlusProfile(String name, String profileURL) throws SharkKBException {
+        PeerSemanticTag peer = InMemoSharkKB.createInMemoPeerSemanticTag(name, profileURL, null);
         pf.removeProfile(peer, peer);
     }
 

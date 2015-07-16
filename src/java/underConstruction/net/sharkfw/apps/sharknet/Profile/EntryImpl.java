@@ -2,6 +2,7 @@ package Profile;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -39,6 +40,53 @@ public class EntryImpl<T> implements Entry<T>, Serializable {
     @Override
     public String getEntryName() {
         return entryName;
+    }
+
+    @Override
+    public void addSubEntry(Entry<?> rootEntry, String saveNewSubEntryUnderThisEntryName, String subEntryName) {
+        if (this.entryName.equals(saveNewSubEntryUnderThisEntryName)) {
+            this.addEntryInEntryList(subEntryName);
+        }
+        Iterator<Entry<T>> entryListIterator = entryList.iterator();
+        while (!this.entryName.equals(saveNewSubEntryUnderThisEntryName)) {
+            while (entryListIterator.hasNext()) {
+                addSubEntry(entryListIterator.next(), saveNewSubEntryUnderThisEntryName, subEntryName);
+            }
+        }
+    }
+
+    @Override
+    public void addSubEntry(Entry<T> rootEntry, String saveNewSubEntryUnderThisEntryName, String subEntryName, T content) {
+        if (this.entryName.equals(saveNewSubEntryUnderThisEntryName)) {
+            this.addEntryInEntryList(subEntryName, content);
+        }
+        else {
+            Iterator<Entry<T>> entryListIterator = entryList.iterator();
+            while (!this.entryName.equals(saveNewSubEntryUnderThisEntryName)) {
+                while (entryListIterator.hasNext()) {
+                    addSubEntry(entryListIterator.next(), saveNewSubEntryUnderThisEntryName, subEntryName, content);
+                }
+            }
+        }
+    }
+
+    @Override
+    public Entry<T> getSubEntry(Entry<T> rootEntry, String subEntryName) {
+        Entry<T> subEntry = null;
+        Entry<T> tempEntry;
+        if (this.entryName.equals(subEntryName)) {
+            return this;
+        }
+        else {
+            Iterator<Entry<T>> subEntryIterator = entryList.iterator();
+            while (subEntryIterator.hasNext()) {
+                tempEntry = getSubEntry(subEntryIterator.next(), subEntryName);
+                if (tempEntry.getEntryName().equals(subEntryName)) {
+                    subEntry = tempEntry;
+                }
+            }
+        }
+        return subEntry;
     }
 
     @Override

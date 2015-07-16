@@ -1,10 +1,9 @@
 package GooglePlusProfile;
 
 import Profile.Entry;
-import Profile.Profile;
 import Profile.EntryImpl;
+import Profile.Profile;
 import net.sharkfw.knowledgeBase.SharkKBException;
-import net.sharkfw.knowledgeBase.SpatialSemanticTag;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,6 +21,7 @@ public class GooglePlusProfileImpl implements GooglePlusProfile {
         this.p = p;
         createNameEntry();
         createHistory();
+        createWork();
     }
 
     private void createNameEntry() throws SharkKBException {
@@ -42,39 +42,24 @@ public class GooglePlusProfileImpl implements GooglePlusProfile {
         p.createProfileEntry(WORK);
         p.addSubEntryInEntry(WORK, OCCUPATION, "");
         p.addSubEntryInEntry(WORK, SKILLS, "");
-        p.createProfileEntry(EMPLOYMENTS);
-        createEmployment();
-
-        //List<Entry<?>> listEmploymentEntry = new ArrayList<Entry<?>>();
-        p.addSubEntryInEntry(WORK, EMPLOYMENTS, null);
+        p.addSubEntryInEntry(WORK, EMPLOYMENTS);
     }
 
-    private void createEmployment() throws SharkKBException {
-        p.createProfileEntry(EMPLOYMENT);
-        p.addSubEntryInEntry(EMPLOYMENT, EMPLOYERNAME, "");
-        p.addSubEntryInEntry(EMPLOYMENT,JOBTITLE, "");
-        p.addSubEntryInEntry(EMPLOYMENT, START, 0);
-        p.addSubEntryInEntry(EMPLOYMENT, END, 0);
-        p.addSubEntryInEntry(EMPLOYMENT, CURRENT, false);
-        p.addSubEntryInEntry(EMPLOYMENT, JOBDESCRIPTION, "");
+    public String getJobTitle(String employerName) throws SharkKBException {
+        Entry<?> entry = p.getSubEntry(WORK, employerName);
+        return entry.getEntryName();
     }
 
-    private void addEmployment(String employmentname, String jobtitle, int start, int end, boolean current, String jobdescription) throws SharkKBException {
+    public void addEmployment(String employmentName, String jobTitle, int start, int end, boolean current, String jobDescription) throws SharkKBException {
         List<Entry<?>> entryList = new ArrayList<Entry<?>>();
-        entryList.add(new EntryImpl<String>(EMPLOYERNAME, employmentname));
-        entryList.add(new EntryImpl<String>(JOBTITLE, jobtitle));
+        entryList.add(new EntryImpl<String>(EMPLOYERNAME, employmentName));
+        entryList.add(new EntryImpl<String>(JOBTITLE, jobTitle));
         entryList.add(new EntryImpl<Integer>(START, start));
         entryList.add(new EntryImpl<Integer>(END, end));
         entryList.add(new EntryImpl<Boolean>(CURRENT, current));
-        entryList.add(new EntryImpl<String>(JOBDESCRIPTION, jobdescription));
+        entryList.add(new EntryImpl<String>(JOBDESCRIPTION, jobDescription));
 
-        Entry<?> workEntry = p.getProfileEntry(WORK);
-        Entry<?> employments= workEntry.getEntryFromList(EMPLOYMENTS);
-        employments.addEntryInEntryList(EMPLOYMENT, entryList);
-        List<Entry<?>> employmentList =  employments.getEntryList();
-
-        List<Entry<?>> employmentList = p.getProfileEntry(WORK).getEntryFromList(EMPLOYMENTS).getEntryList();
-        employmentList.add(entryList);
+        p.createSubEntry(WORK, EMPLOYMENTS, employmentName, entryList);
     }
 
     public void setFirstName(String firstName) throws SharkKBException {

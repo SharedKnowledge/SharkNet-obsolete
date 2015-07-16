@@ -1,5 +1,7 @@
 package GooglePlusProfile;
 
+import net.sharkfw.knowledgeBase.SharkKBException;
+
 /**
  * Created by Mr.T on 03.07.2015.
  */
@@ -24,4 +26,6 @@ public interface GooglePlusProfile {
     String CURRENT = "Current";
     String JOBDESCRIPTION = "JobDescription";
 
+    String getJobTitle(String employerName) throws SharkKBException;
+    void addEmployment(String employmentName, String jobTitle, int start, int end, boolean current, String jobDescription) throws SharkKBException;
 }

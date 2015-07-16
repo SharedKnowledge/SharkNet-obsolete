@@ -110,12 +110,38 @@ public class ProfileImpl implements Profile, Serializable {
     }
 
     @Override
+    public void createSubEntry(String superEntryName, String saveNewSubEntryUnderThisEntryName, String subEntryName) throws SharkKBException {
+        Entry<?> entry = (Entry<?>) getAndDeserializeObjFromContextPoint(superEntryName);
+        entry.addSubEntry(entry, saveNewSubEntryUnderThisEntryName, subEntryName);
+        addAndSerializeObjInContextPoint(superEntryName, entry);
+    }
+
+    @Override
+    public <T> void createSubEntry(String superEntryName, String saveNewSubEntryUnderThisEntryName, String subEntryName, T content) throws SharkKBException {
+        Entry<T> entry = (Entry<T>) getAndDeserializeObjFromContextPoint(superEntryName);
+        entry.addSubEntry(entry, saveNewSubEntryUnderThisEntryName, subEntryName, content);
+        addAndSerializeObjInContextPoint(superEntryName, entry);
+    }
+
+    @Override
+    public <T> Entry<T> getSubEntry(String superEntryName, String subEntryName) throws SharkKBException {
+        Entry<T> rootEntry = (Entry<T>) getAndDeserializeObjFromContextPoint(superEntryName);
+        return rootEntry.getSubEntry(rootEntry, subEntryName);
+    }
+
+    @Override
+    public <T> void addSubEntryInEntry(String superEntryName, String subEntryName) throws SharkKBException {
+        Entry<T> entry = (Entry<T>) getAndDeserializeObjFromContextPoint(superEntryName);
+        entry.addEntryInEntryList(subEntryName);
+        addAndSerializeObjInContextPoint(superEntryName, entry);
+    }
+
+
+    @Override
     public <T> void addSubEntryInEntry(String superEntryName, String subEntryName, T content) throws SharkKBException {
         Entry<T> entry = (Entry<T>) getAndDeserializeObjFromContextPoint(superEntryName);
         entry.addEntryInEntryList(subEntryName, content);
         addAndSerializeObjInContextPoint(superEntryName, entry);
-        //System.out.println(entry.getEntryFromList(subEntryName).getContent() + "<--ProfileImpl");
-        //System.out.println(entry.getEntryName());
     }
 
     @Override

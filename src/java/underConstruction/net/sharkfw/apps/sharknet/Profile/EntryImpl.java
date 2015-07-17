@@ -2,7 +2,6 @@ package Profile;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -44,28 +43,22 @@ public class EntryImpl<T> implements Entry<T>, Serializable {
 
     @Override
     public void addSubEntry(Entry<?> rootEntry, String saveNewSubEntryUnderThisEntryName, String subEntryName) {
-        if (this.entryName.equals(saveNewSubEntryUnderThisEntryName)) {
-            this.addEntryInEntryList(subEntryName);
-        }
-        Iterator<Entry<T>> entryListIterator = entryList.iterator();
-        while (!this.entryName.equals(saveNewSubEntryUnderThisEntryName)) {
-            while (entryListIterator.hasNext()) {
-                addSubEntry(entryListIterator.next(), saveNewSubEntryUnderThisEntryName, subEntryName);
+        if (rootEntry.getEntryName().equals(saveNewSubEntryUnderThisEntryName)) {
+            rootEntry.addEntryInEntryList(subEntryName);
+        } else {
+            for (Entry<?> entry : rootEntry.getEntryList()) {
+                addSubEntry(entry, saveNewSubEntryUnderThisEntryName, subEntryName);
             }
         }
     }
 
     @Override
     public void addSubEntry(Entry<T> rootEntry, String saveNewSubEntryUnderThisEntryName, String subEntryName, T content) {
-        if (this.entryName.equals(saveNewSubEntryUnderThisEntryName)) {
-            this.addEntryInEntryList(subEntryName, content);
-        }
-        else {
-            Iterator<Entry<T>> entryListIterator = entryList.iterator();
-            while (!this.entryName.equals(saveNewSubEntryUnderThisEntryName)) {
-                while (entryListIterator.hasNext()) {
-                    addSubEntry(entryListIterator.next(), saveNewSubEntryUnderThisEntryName, subEntryName, content);
-                }
+        if (rootEntry.getEntryName().equals(saveNewSubEntryUnderThisEntryName)) {
+            rootEntry.addEntryInEntryList(subEntryName, content);
+        } else {
+            for (Entry<T> entry : rootEntry.getEntryList()) {
+                addSubEntry(entry, saveNewSubEntryUnderThisEntryName, subEntryName, content);
             }
         }
     }
@@ -74,16 +67,15 @@ public class EntryImpl<T> implements Entry<T>, Serializable {
     public Entry<T> getSubEntry(Entry<T> rootEntry, String subEntryName) {
         Entry<T> subEntry = null;
         Entry<T> tempEntry;
-        if (this.entryName.equals(subEntryName)) {
-            return this;
-        }
-        else {
-            Iterator<Entry<T>> subEntryIterator = entryList.iterator();
-            while (subEntryIterator.hasNext()) {
-                tempEntry = getSubEntry(subEntryIterator.next(), subEntryName);
-                if (tempEntry.getEntryName().equals(subEntryName)) {
+        if (rootEntry.getEntryName().equals(subEntryName)) {
+            return rootEntry;
+        } else {
+            for (Entry<T> entry : rootEntry.getEntryList()) {
+                tempEntry = getSubEntry(entry, subEntryName);
+                if (tempEntry != null) {
                     subEntry = tempEntry;
                 }
+
             }
         }
         return subEntry;
@@ -116,8 +108,8 @@ public class EntryImpl<T> implements Entry<T>, Serializable {
     }
 
     @Override
-    public void alterEntryContentInEntryList(String identifier, T content) {
-        Entry<T> entry = getEntryFromList(identifier);
+    public void alterContentFromEntry(Entry<T> rootEntry, String entryName, T content) {
+        Entry<T> entry = getSubEntry(rootEntry, entryName);
         entry.setContent(content);
     }
 }

@@ -16,5 +16,5 @@ public interface Entry<T> {
     void addEntryInEntryList(String identifier, T content);
     List<Entry<T>> getEntryList();
     Entry<T> getEntryFromList(String identifier);
-    void alterEntryContentInEntryList(String identifier, T content);
+    void alterContentFromEntry(Entry<T> rootEntry, String entryName, T content);
 }

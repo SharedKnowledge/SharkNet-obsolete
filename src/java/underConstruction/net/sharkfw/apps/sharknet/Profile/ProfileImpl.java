@@ -147,7 +147,7 @@ public class ProfileImpl implements Profile, Serializable {
     @Override
     public <T> void alterSubEntryContent(String superEntryName, String subEntryName, T content) throws SharkKBException {
         Entry<T> entry = (Entry<T>) getAndDeserializeObjFromContextPoint(superEntryName);
-        entry.alterEntryContentInEntryList(subEntryName, content);
+        entry.alterContentFromEntry(entry, subEntryName, content);
         addAndSerializeObjInContextPoint(superEntryName, entry);
     }
 

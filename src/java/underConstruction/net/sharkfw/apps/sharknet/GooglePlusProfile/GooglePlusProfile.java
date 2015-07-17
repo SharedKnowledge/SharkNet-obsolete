@@ -2,6 +2,8 @@ package GooglePlusProfile;
 
 import net.sharkfw.knowledgeBase.SharkKBException;
 
+import java.util.Date;
+
 /**
  * Created by Mr.T on 03.07.2015.
  */
@@ -28,6 +30,21 @@ public interface GooglePlusProfile {
     String END = "End";
     String CURRENT = "Current";
     String JOBDESCRIPTION = "JobDescription";
+
+    String EDUCATION = "Education";
+    String SCHOOLNAME = "SchoolName";
+    String MAJOR = "MajorOrFieldOfStudy";
+    String COURSEDESCRIPTION = "DescriptionOfCourses";
+
+    String PLACES = "Places";
+    String CITY = "City";
+
+    String BASICINFORMATION = "BasicInformation";
+    String GENDER = "Gender";
+    String LOOKINGFOR = "LookingFor";
+    String BIRTHDAY = "Birthday";
+    String RELATIONSHIP = "Relationship";
+    String OTHERNAMES = "OtherNames";
 
     String LINK = "Link";
     String OTHERPROFILES = "OtherProfiles";
@@ -59,4 +76,26 @@ public interface GooglePlusProfile {
     void removeEmployment(String entryName) throws SharkKBException;
     void addOtherProfiles(String label, String url) throws SharkKBException;
     void removeOtherProfiles(String entryName) throws SharkKBException;
+
+    String getSchoolName(String educationNumber) throws SharkKBException;
+    String getMajor(String educationNumber) throws SharkKBException;
+    int getStartOfEducation(String educationNumber) throws SharkKBException;
+    int getEndOfEducation(String educationNumber)throws SharkKBException;
+    boolean getIsEducationCurrent(String educationNumber) throws SharkKBException;
+    String getCourseDescription(String educationNumber) throws SharkKBException;
+    void addEducation(String schoolName, String major, int start, int end, boolean current, String courseDescription) throws SharkKBException;
+    void removeEducation(String educationNumber) throws SharkKBException;
+
+    String getCity(String placeNumber) throws SharkKBException;
+    boolean getIsPlaceCurrent(String placeNumber) throws SharkKBException;
+    void addPlace(String city) throws SharkKBException;
+    void removePlace(String placeNumber) throws SharkKBException;
+
+    String getGender() throws SharkKBException;
+    String getLookingFor() throws SharkKBException;
+    Date getBirthday() throws SharkKBException;
+    String getRelationship() throws SharkKBException;
+    String getOtherName(String nameNumber) throws SharkKBException;
+    void addOtherName(String name);
+    void removeOtherName(String nameNumber);
 }

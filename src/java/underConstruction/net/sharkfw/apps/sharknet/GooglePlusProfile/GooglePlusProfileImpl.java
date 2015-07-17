@@ -6,6 +6,7 @@ import Profile.Profile;
 import net.sharkfw.knowledgeBase.SharkKBException;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -22,7 +23,9 @@ public class GooglePlusProfileImpl implements GooglePlusProfile {
         createNameEntry();
         createHistory();
         createWork();
-
+        p.createProfileEntry(EDUCATION);
+        p.createProfileEntry(PLACES);
+        createBasicInformation();
 
         createLink();
     }
@@ -207,6 +210,138 @@ public class GooglePlusProfileImpl implements GooglePlusProfile {
         return (String) entryList.get(5).getContent();
     }
 
+    private void createBasicInformation() throws SharkKBException {
+        p.createProfileEntry(BASICINFORMATION);
+        p.addSubEntryInEntry(BASICINFORMATION, GENDER, "");
+        p.addSubEntryInEntry(BASICINFORMATION, LOOKINGFOR, "");
+        p.addSubEntryInEntry(BASICINFORMATION, BIRTHDAY, "");
+        p.addSubEntryInEntry(BASICINFORMATION, RELATIONSHIP, "");
+        p.addSubEntryInEntry(BASICINFORMATION, OTHERNAMES);
+    }
+
+    @Override
+    public String getSchoolName(String educationNumber) throws SharkKBException {
+        Entry<?> entry = p.getProfileEntry(EDUCATION);
+        List<Entry<?>> entryList = (List<Entry<?>>) entry.getContent();
+        return (String) entryList.get(0).getContent();
+    }
+
+    @Override
+    public String getMajor(String educationNumber) throws SharkKBException {
+        Entry<?> entry = p.getProfileEntry(EDUCATION);
+        List<Entry<?>> entryList = (List<Entry<?>>) entry.getContent();
+        return (String) entryList.get(1).getContent();
+    }
+
+    @Override
+    public int getStartOfEducation(String educationNumber) throws SharkKBException {
+        Entry<?> entry = p.getProfileEntry(EDUCATION);
+        List<Entry<?>> entryList = (List<Entry<?>>) entry.getContent();
+        return (Integer) entryList.get(2).getContent();
+    }
+
+    @Override
+    public int getEndOfEducation(String educationNumber) throws SharkKBException {
+        Entry<?> entry = p.getProfileEntry(EDUCATION);
+        List<Entry<?>> entryList = (List<Entry<?>>) entry.getContent();
+        return (Integer) entryList.get(3).getContent();
+    }
+
+    @Override
+    public boolean getIsEducationCurrent(String educationNumber) throws SharkKBException {
+        Entry<?> entry = p.getProfileEntry(EDUCATION);
+        List<Entry<?>> entryList = (List<Entry<?>>) entry.getContent();
+        return (boolean) entryList.get(4).getContent();
+    }
+
+    @Override
+    public String getCourseDescription(String educationNumber) throws SharkKBException {
+        Entry<?> entry = p.getProfileEntry(EDUCATION);
+        List<Entry<?>> entryList = (List<Entry<?>>) entry.getContent();
+        return (String) entryList.get(5).getContent();
+    }
+
+    @Override
+    public void addEducation(String schoolName, String major, int start, int end, boolean current, String courseDescription) throws SharkKBException {
+        List<Entry<?>> entryList = new ArrayList<Entry<?>>();
+        entryList.add(new EntryImpl<String>(SCHOOLNAME, schoolName));
+        entryList.add(new EntryImpl<String>(MAJOR, major));
+        entryList.add(new EntryImpl<Integer>(START, start));
+        entryList.add(new EntryImpl<Integer>(END, end));
+        entryList.add(new EntryImpl<Boolean>(CURRENT, current));
+        entryList.add(new EntryImpl<String>(COURSEDESCRIPTION, courseDescription));
+
+        int count = p.getProfileEntry(EDUCATION).getEntryList().size();
+        p.createSubEntry(EDUCATION, EDUCATION, Integer.toString(count), entryList);
+    }
+
+    @Override
+    public void removeEducation(String educationNumber) throws SharkKBException {
+
+    }
+
+    @Override
+    public String getCity(String placeNumber) throws SharkKBException {
+        Entry<?> entry = p.getProfileEntry(PLACES);
+        List<Entry<?>> entryList = (List<Entry<?>>) entry.getContent();
+        return (String) entryList.get(0).getContent();
+    }
+
+    @Override
+    public boolean getIsPlaceCurrent(String placeNumber) throws SharkKBException {
+        Entry<?> entry = p.getProfileEntry(PLACES);
+        List<Entry<?>> entryList = (List<Entry<?>>) entry.getContent();
+        return (boolean) entryList.get(1).getContent();
+    }
+
+    @Override
+    public void addPlace(String city) throws SharkKBException {
+        List<Entry<?>> entryList = new ArrayList<Entry<?>>();
+        entryList.add(new EntryImpl<String>(CITY, city));
+
+        int count = p.getProfileEntry(PLACES).getEntryList().size();
+        p.createSubEntry(PLACES, PLACES, Integer.toString(count), entryList);
+    }
+
+    @Override
+    public void removePlace(String placeNumber) throws SharkKBException {
+
+    }
+
+    @Override
+    public String getGender() throws SharkKBException {
+        return null;
+    }
+
+    @Override
+    public String getLookingFor() throws SharkKBException {
+        return null;
+    }
+
+    @Override
+    public Date getBirthday() throws SharkKBException {
+        return null;
+    }
+
+    @Override
+    public String getRelationship() throws SharkKBException {
+        return null;
+    }
+
+    @Override
+    public String getOtherName(String nameNumber) throws SharkKBException {
+        return null;
+    }
+
+    @Override
+    public void addOtherName(String name) {
+
+    }
+
+    @Override
+    public void removeOtherName(String nameNumber) {
+
+    }
 
 
 

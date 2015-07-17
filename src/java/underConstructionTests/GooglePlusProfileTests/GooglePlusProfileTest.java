@@ -29,6 +29,8 @@ public class GooglePlusProfileTest {
         GooglePlusProfile myGooglePlusProfile = googlePlusProfileFactory.createGooglePlusProfile("MyProfile", "https://MyProfile");
         myGooglePlusProfile.addEmployment("Simens", "MaschinenBauer", 1993, 2000, false, "It makes fun");
         System.out.println(myGooglePlusProfile.getJobTitle("0"));
+        myGooglePlusProfile.removeEmployment("0");
+        System.out.println(myGooglePlusProfile.getJobTitle("0"));
     }
 
 }

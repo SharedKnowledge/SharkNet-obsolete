@@ -164,6 +164,14 @@ public class ProfileImpl implements Profile, Serializable {
     }
 
     @Override
+    public <T> void removeSubEntry(String superEntryName, String entryName) throws SharkKBException {
+        Entry<T> entry = (Entry<T>) getAndDeserializeObjFromContextPoint(superEntryName);
+        entry.removeEntry(entry, entryName);
+        addAndSerializeObjInContextPoint(superEntryName, entry);
+
+    }
+
+    @Override
     public void setName(ProfileName profileName) throws SharkKBException {
         addAndSerializeObjInContextPoint(PROFILENAME, profileName);
         increaseVersion();

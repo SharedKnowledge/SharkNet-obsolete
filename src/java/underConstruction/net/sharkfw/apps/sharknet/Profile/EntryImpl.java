@@ -2,6 +2,7 @@ package Profile;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -111,5 +112,19 @@ public class EntryImpl<T> implements Entry<T>, Serializable {
     public void alterContentFromEntry(Entry<T> rootEntry, String entryName, T content) {
         Entry<T> entry = getSubEntry(rootEntry, entryName);
         entry.setContent(content);
+    }
+
+    @Override
+    public void removeEntry(Entry<T> rootEntry, String entryName) {
+        Entry<T> entry;
+        Iterator<Entry<T>> entryIterator = rootEntry.getEntryList().iterator();
+        while (entryIterator.hasNext()) {
+            entry = entryIterator.next();
+            if (entry.getEntryName().equals(entryName)) {
+                entryIterator.remove();
+            } else {
+                    removeEntry(entry, entryName);
+            }
+        }
     }
 }

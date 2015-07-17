@@ -17,4 +17,5 @@ public interface Entry<T> {
     List<Entry<T>> getEntryList();
     Entry<T> getEntryFromList(String identifier);
     void alterContentFromEntry(Entry<T> rootEntry, String entryName, T content);
+    void removeEntry(Entry<T> rootEntry, String entryName);
 }

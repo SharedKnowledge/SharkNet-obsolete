@@ -28,7 +28,7 @@ public class GooglePlusProfileTest {
     public void testCreateGooglePlusProfile() throws Exception {
         GooglePlusProfile myGooglePlusProfile = googlePlusProfileFactory.createGooglePlusProfile("MyProfile", "https://MyProfile");
         myGooglePlusProfile.addEmployment("Simens", "MaschinenBauer", 1993, 2000, false, "It makes fun");
-        System.out.println(myGooglePlusProfile.getJobTitle("Simens"));
+        System.out.println(myGooglePlusProfile.getJobTitle("0"));
     }
 
 }

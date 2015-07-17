@@ -26,6 +26,11 @@ public interface GooglePlusProfile {
     String CURRENT = "Current";
     String JOBDESCRIPTION = "JobDescription";
 
+    String getEmploymentName(String employmentNumber) throws SharkKBException;
     String getJobTitle(String employerName) throws SharkKBException;
+    int getStart(String employmentNumber) throws SharkKBException;
+    int getEnd(String employmentNumber) throws SharkKBException;
+    Boolean getCurrent(String employmentNumber) throws SharkKBException;
+    String getJobDescription(String employmentNumber) throws SharkKBException;
     void addEmployment(String employmentName, String jobTitle, int start, int end, boolean current, String jobDescription) throws SharkKBException;
 }

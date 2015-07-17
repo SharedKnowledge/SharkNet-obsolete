@@ -45,29 +45,6 @@ public class GooglePlusProfileImpl implements GooglePlusProfile {
         p.addSubEntryInEntry(WORK, EMPLOYMENTS);
     }
 
-    public String getJobTitle(String employerName) throws SharkKBException {
-        Entry<?> entry = p.getSubEntry(WORK, employerName);
-        List<Entry<?>> entryList = (List<Entry<?>>) entry.getContent();
-        return (String) entryList.get(1).getContent();
-    }
-
-    public void addEmployment(String employmentName, String jobTitle, int start, int end, boolean current, String jobDescription) throws SharkKBException {
-        List<Entry<?>> entryList = new ArrayList<Entry<?>>();
-        entryList.add(new EntryImpl<String>(EMPLOYERNAME, employmentName));
-        entryList.add(new EntryImpl<String>(JOBTITLE, jobTitle));
-        entryList.add(new EntryImpl<Integer>(START, start));
-        entryList.add(new EntryImpl<Integer>(END, end));
-        entryList.add(new EntryImpl<Boolean>(CURRENT, current));
-        entryList.add(new EntryImpl<String>(JOBDESCRIPTION, jobDescription));
-
-        p.createSubEntry(WORK, EMPLOYMENTS, employmentName, entryList);
-        System.out.println(p.getProfileEntry(WORK).getEntryList().get(2).getEntryList().get(0).getEntryName());
-        p.alterSubEntryContent(WORK, OCCUPATION, "Test");
-        System.out.println(p.getSubEntry(WORK, OCCUPATION).getContent());
-        //List<Entry<?>> entryList1 = (List<Entry<?>>) p.getProfileEntry(WORK).getEntryList().get(2).getEntryList().get(0).getContent();
-        //System.out.println(entryList1.get(1).getContent());
-    }
-
     public void setFirstName(String firstName) throws SharkKBException {
         p.addSubEntryInEntry(NAME, FIRTSTNAME, firstName);
     }
@@ -119,6 +96,55 @@ public class GooglePlusProfileImpl implements GooglePlusProfile {
     public String getBraggingRights() throws SharkKBException{
         Entry<?> entry = p.getProfileEntry(STORY);
         return (String) entry.getEntryFromList(BRAGGINGRIGHTS).getContent();
+    }
+
+    public void addEmployment(String employmentName, String jobTitle, int start, int end, boolean current, String jobDescription) throws SharkKBException {
+        List<Entry<?>> entryList = new ArrayList<Entry<?>>();
+        entryList.add(new EntryImpl<String>(EMPLOYERNAME, employmentName));
+        entryList.add(new EntryImpl<String>(JOBTITLE, jobTitle));
+        entryList.add(new EntryImpl<Integer>(START, start));
+        entryList.add(new EntryImpl<Integer>(END, end));
+        entryList.add(new EntryImpl<Boolean>(CURRENT, current));
+        entryList.add(new EntryImpl<String>(JOBDESCRIPTION, jobDescription));
+
+        int count = p.getSubEntry(WORK, EMPLOYMENTS).getEntryList().size();
+        p.createSubEntry(WORK, EMPLOYMENTS, Integer.toString(count), entryList);
+    }
+
+    public String getEmploymentName(String employmentNumber) throws SharkKBException {
+        Entry<?> entry = p.getSubEntry(WORK, employmentNumber);
+        List<Entry<?>> entryList = (List<Entry<?>>) entry.getContent();
+        return (String) entryList.get(0).getContent();
+    }
+
+    public String getJobTitle(String employmentNumber) throws SharkKBException {
+        Entry<?> entry = p.getSubEntry(WORK, employmentNumber);
+        List<Entry<?>> entryList = (List<Entry<?>>) entry.getContent();
+        return (String) entryList.get(1).getContent();
+    }
+
+    public int getStart(String employmentNumber) throws SharkKBException {
+        Entry<?> entry = p.getSubEntry(WORK, employmentNumber);
+        List<Entry<?>> entryList = (List<Entry<?>>) entry.getContent();
+        return (Integer) entryList.get(2).getContent();
+    }
+
+    public int getEnd(String employmentNumber) throws SharkKBException {
+        Entry<?> entry = p.getSubEntry(WORK, employmentNumber);
+        List<Entry<?>> entryList = (List<Entry<?>>) entry.getContent();
+        return (Integer) entryList.get(3).getContent();
+    }
+
+    public Boolean getCurrent(String employmentNumber) throws SharkKBException {
+        Entry<?> entry = p.getSubEntry(WORK, employmentNumber);
+        List<Entry<?>> entryList = (List<Entry<?>>) entry.getContent();
+        return (Boolean) entryList.get(4).getContent();
+    }
+
+    public String getJobDescription(String employmentNumber) throws SharkKBException {
+        Entry<?> entry = p.getSubEntry(WORK, employmentNumber);
+        List<Entry<?>> entryList = (List<Entry<?>>) entry.getContent();
+        return (String) entryList.get(5).getContent();
     }
 
 

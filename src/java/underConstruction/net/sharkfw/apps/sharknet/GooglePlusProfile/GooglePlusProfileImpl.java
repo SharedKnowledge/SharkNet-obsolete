@@ -58,7 +58,7 @@ public class GooglePlusProfileImpl implements GooglePlusProfile {
         p.addSubEntryInEntry(NAME, LASTNAME, lastName);
     }
 
-    public String getLastName() throws SharkKBException{
+    public String getLastName() throws SharkKBException {
         Entry<?> entry = p.getProfileEntry(NAME);
         return (String) entry.getEntryFromList(LASTNAME).getContent();
     }
@@ -66,7 +66,7 @@ public class GooglePlusProfileImpl implements GooglePlusProfile {
         p.addSubEntryInEntry(NAME, NICKNAME, nickname);
     }
 
-    public String getNickname() throws SharkKBException{
+    public String getNickname() throws SharkKBException {
         Entry<?> entry = p.getProfileEntry(NAME);
         return (String) entry.getEntryFromList(NICKNAME).getContent();
     }
@@ -75,7 +75,7 @@ public class GooglePlusProfileImpl implements GooglePlusProfile {
         p.addSubEntryInEntry(STORY, TAGLINE, tagline);
     }
 
-    public String getTagline() throws SharkKBException{
+    public String getTagline() throws SharkKBException {
         Entry<?> entry = p.getProfileEntry(STORY);
         return (String) entry.getEntryFromList(TAGLINE).getContent();
     }
@@ -84,7 +84,7 @@ public class GooglePlusProfileImpl implements GooglePlusProfile {
         p.addSubEntryInEntry(STORY, INTRODUCTION, introduction);
     }
 
-    public String getIntroduction() throws SharkKBException{
+    public String getIntroduction() throws SharkKBException {
         Entry<?> entry = p.getProfileEntry(STORY);
         return (String) entry.getEntryFromList(INTRODUCTION).getContent();
     }
@@ -93,7 +93,7 @@ public class GooglePlusProfileImpl implements GooglePlusProfile {
         p.addSubEntryInEntry(STORY, BRAGGINGRIGHTS, braggingRights);
     }
 
-    public String getBraggingRights() throws SharkKBException{
+    public String getBraggingRights() throws SharkKBException {
         Entry<?> entry = p.getProfileEntry(STORY);
         return (String) entry.getEntryFromList(BRAGGINGRIGHTS).getContent();
     }

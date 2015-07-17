@@ -26,7 +26,19 @@ public interface GooglePlusProfile {
     String CURRENT = "Current";
     String JOBDESCRIPTION = "JobDescription";
 
+    void setFirstName(String firstName) throws SharkKBException;
+    String getFirstName() throws SharkKBException;
+    void setLastName(String lastName) throws SharkKBException;
+    String getLastName() throws SharkKBException;
+    void setNickname(String nickname) throws SharkKBException;
+    String getNickname() throws SharkKBException;
     String getEmploymentName(String employmentNumber) throws SharkKBException;
+    void setTagline(String tagline) throws SharkKBException;
+    String getTagline() throws SharkKBException;
+    void setIntroduction(String introduction) throws SharkKBException;
+    String getIntroduction() throws SharkKBException;
+    void setBraggingRights(String braggingRights) throws SharkKBException;
+    String getBraggingRights() throws SharkKBException;
     String getJobTitle(String employerName) throws SharkKBException;
     int getStart(String employmentNumber) throws SharkKBException;
     int getEnd(String employmentNumber) throws SharkKBException;

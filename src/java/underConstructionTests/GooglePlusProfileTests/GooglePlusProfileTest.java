@@ -19,6 +19,7 @@ import java.util.List;
 
 import static java.util.Collections.list;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Created by Mr.T on 16.07.2015.
@@ -36,12 +37,12 @@ public class GooglePlusProfileTest {
 
     @Test
     public void testGooglePlusProfile() throws Exception {
+        //##########CreatingProfile##########
         GooglePlusProfile myGooglePlusProfile = googlePlusProfileFactory.createGooglePlusProfile("Alice", "http://www.sharksystem.net/alice.html");
         myGooglePlusProfile.setFirstName("Allllice");
         myGooglePlusProfile.setLastName("Alpha");
         myGooglePlusProfile.setNickname("Ali");
-        myGooglePlusProfile.setFirstName("AliceAlice");
-        assertEquals(myGooglePlusProfile.getFirstName(), "AliceAlice");
+        myGooglePlusProfile.setFirstName("Alice");
         myGooglePlusProfile.setTagline("Hi I´m Alice I like to solve complex problems and writing good code.");
         myGooglePlusProfile.setIntroduction("My story begins a long time ago, I was 14 when I created my first little program." +
                 "At this moment I was so interested in programing it even becomes one of my greatest hobbies.");
@@ -52,6 +53,65 @@ public class GooglePlusProfileTest {
         myGooglePlusProfile.addEducation("University of Applied Sciences", "Applied Computing", 2012, 2015, true, "I learned a lot about programming and software engineering.");
         myGooglePlusProfile.addPlace("Berlin", true);
         myGooglePlusProfile.addPlace("London", false);
+        myGooglePlusProfile.setGender("Female");
+        myGooglePlusProfile.setLookingforFriends(true);
+        myGooglePlusProfile.setLookingforDating(true);
+        myGooglePlusProfile.setLookingforNetworking(true);
+        myGooglePlusProfile.setLookingforRelationship(false);
+        myGooglePlusProfile.setBirthday("03.12.1992");
+        myGooglePlusProfile.setRelationship("I´m in a relation with Bob.");
+        myGooglePlusProfile.addOtherName("Jizy");
+        myGooglePlusProfile.addHomeContact("Mobile", "0151-2357823");
+        myGooglePlusProfile.addWorkContact("Phone", "030-28665432");
+        myGooglePlusProfile.addWorkContact("Address", "Rathenau Str. 42");
+        myGooglePlusProfile.addWorkContact("Fax", "030-28665433");
+        myGooglePlusProfile.addOtherProfiles("BobsProfile", "https://google/googlePlus/Profiles/Bob");
+        myGooglePlusProfile.addContributorTo("SharkNet", "http://www.sharksystem.net/apps.html");
+        myGooglePlusProfile.addLinks("My favorite website", "http://google.com");
+
+        //##########ReadingTheProfile##########
+        assertEquals("Alice", myGooglePlusProfile.getFirstName());
+        assertEquals("Alpha", myGooglePlusProfile.getLastName());
+        assertEquals("Ali", myGooglePlusProfile.getNickname());
+        assertEquals("Hi I´m Alice I like to solve complex problems and writing good code.", myGooglePlusProfile.getTagline());
+        assertEquals("My story begins a long time ago, I was 14 when I created my first little program." +
+                     "At this moment I was so interested in programing it even becomes one of my greatest hobbies.", myGooglePlusProfile.getIntroduction());
+        assertEquals("I wrote my own linux kernel.", myGooglePlusProfile.getBraggingRights());
+        assertEquals("I do my bachelors degree of applied science at the HTW subject: applied computing", myGooglePlusProfile.getOccupation());
+        assertEquals("Java, Scala, C++, C, PHP, HTML, CSS", myGooglePlusProfile.getSkills());
+        assertEquals("HTW", myGooglePlusProfile.getEmploymentName("0"));
+        assertEquals("Programmer", myGooglePlusProfile.getJobTitle("0"));
+        assertEquals(2012, myGooglePlusProfile.getStartOfEmployment("0"));
+        assertEquals(2015, myGooglePlusProfile.getEndOfEmployment("0"));
+        assertEquals(true, myGooglePlusProfile.getIsEmploymentCurrent("0"));
+        assertEquals("I write Scala and Java tests.", myGooglePlusProfile.getJobDescription("0"));
+        assertEquals("University of Applied Sciences", myGooglePlusProfile.getSchoolName("0"));
+        assertEquals("Applied Computing", myGooglePlusProfile.getMajor("0"));
+        assertEquals(2012, myGooglePlusProfile.getStartOfEducation("0"));
+        assertEquals(2015, myGooglePlusProfile.getEndOfEducation("0"));
+        assertEquals(true, myGooglePlusProfile.getIsEducationCurrent("0"));
+        assertEquals("I learned a lot about programming and software engineering.", myGooglePlusProfile.getCourseDescription("0"));
+        assertEquals("Berlin", myGooglePlusProfile.getCity("0"));
+        assertEquals(true, myGooglePlusProfile.getIsPlaceCurrent("0"));
+        assertEquals("London", myGooglePlusProfile.getCity("1"));
+        assertEquals(false, myGooglePlusProfile.getIsPlaceCurrent("1"));
+        assertEquals("Female", myGooglePlusProfile.getGender());
+        assertEquals(true, myGooglePlusProfile.getLookingForFriends());
+        assertEquals(true, myGooglePlusProfile.getLookingForDating());
+        assertEquals(true, myGooglePlusProfile.getLookingForNetworking());
+        assertEquals(false, myGooglePlusProfile.getLookingForRelationship());
+        assertEquals("03.12.1992", myGooglePlusProfile.getBirthday());
+        assertEquals("I´m in a relation with Bob.", myGooglePlusProfile.getRelationship());
+        assertEquals("Jizy", myGooglePlusProfile.getOtherName("0"));
+        assertTrue(myGooglePlusProfile.getHomeContactType(0).equals("Mobile") && myGooglePlusProfile.getHomeContactInfo(0).equals("0151-2357823"));
+        assertTrue(myGooglePlusProfile.getWorkContactType(0).equals("Phone") && myGooglePlusProfile.getWorkContactInfo(0).equals("030-28665432"));
+        assertTrue(myGooglePlusProfile.getWorkContactType(1).equals("Address") && myGooglePlusProfile.getWorkContactInfo(1).equals("Rathenau Str. 42"));
+        assertTrue(myGooglePlusProfile.getWorkContactType(2).equals("Fax") && myGooglePlusProfile.getWorkContactInfo(2).equals("030-28665433"));
+        assertTrue(myGooglePlusProfile.getOtherProfilesLabel(0).equals("BobsProfile") && myGooglePlusProfile.getOtherProfilesUrl(0).equals("https://google/googlePlus/Profiles/Bob"));
+        assertTrue(myGooglePlusProfile.getContributorsLabel(0).equals("SharkNet") && myGooglePlusProfile.getContributorsUrl(0).equals("http://www.sharksystem.net/apps.html"));
+        assertTrue(myGooglePlusProfile.getLinkLabel(0).equals("My favorite website") && myGooglePlusProfile.getLinkUrl(0).equals("http://google.com"));
+
+
     }
 
     @org.junit.Test

@@ -6,7 +6,6 @@ import Profile.Profile;
 import net.sharkfw.knowledgeBase.SharkKBException;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -206,42 +205,42 @@ public class GooglePlusProfileImpl implements GooglePlusProfile {
     //##########################EducationSection##########################
     @Override
     public String getSchoolName(String educationNumber) throws SharkKBException {
-        Entry<?> entry = p.getProfileEntry(EDUCATION);
+        Entry<?> entry = p.getSubEntry(EDUCATION, educationNumber);
         List<Entry<?>> entryList = (List<Entry<?>>) entry.getContent();
         return (String) entryList.get(0).getContent();
     }
 
     @Override
     public String getMajor(String educationNumber) throws SharkKBException {
-        Entry<?> entry = p.getProfileEntry(EDUCATION);
+        Entry<?> entry = p.getSubEntry(EDUCATION, educationNumber);
         List<Entry<?>> entryList = (List<Entry<?>>) entry.getContent();
         return (String) entryList.get(1).getContent();
     }
 
     @Override
     public int getStartOfEducation(String educationNumber) throws SharkKBException {
-        Entry<?> entry = p.getProfileEntry(EDUCATION);
+        Entry<?> entry = p.getSubEntry(EDUCATION, educationNumber);
         List<Entry<?>> entryList = (List<Entry<?>>) entry.getContent();
         return (Integer) entryList.get(2).getContent();
     }
 
     @Override
     public int getEndOfEducation(String educationNumber) throws SharkKBException {
-        Entry<?> entry = p.getProfileEntry(EDUCATION);
+        Entry<?> entry = p.getSubEntry(EDUCATION, educationNumber);
         List<Entry<?>> entryList = (List<Entry<?>>) entry.getContent();
         return (Integer) entryList.get(3).getContent();
     }
 
     @Override
     public boolean getIsEducationCurrent(String educationNumber) throws SharkKBException {
-        Entry<?> entry = p.getProfileEntry(EDUCATION);
+        Entry<?> entry = p.getSubEntry(EDUCATION, educationNumber);
         List<Entry<?>> entryList = (List<Entry<?>>) entry.getContent();
         return (Boolean) entryList.get(4).getContent();
     }
 
     @Override
     public String getCourseDescription(String educationNumber) throws SharkKBException {
-        Entry<?> entry = p.getProfileEntry(EDUCATION);
+        Entry<?> entry = p.getSubEntry(EDUCATION, educationNumber);
         List<Entry<?>> entryList = (List<Entry<?>>) entry.getContent();
         return (String) entryList.get(5).getContent();
     }
@@ -268,14 +267,14 @@ public class GooglePlusProfileImpl implements GooglePlusProfile {
     //##########################PlacesSection##########################
     @Override
     public String getCity(String placeNumber) throws SharkKBException {
-        Entry<?> entry = p.getProfileEntry(PLACES);
+        Entry<?> entry = p.getSubEntry(PLACES, placeNumber);
         List<Entry<?>> entryList = (List<Entry<?>>) entry.getContent();
         return (String) entryList.get(0).getContent();
     }
 
     @Override
     public boolean getIsPlaceCurrent(String placeNumber) throws SharkKBException {
-        Entry<?> entry = p.getProfileEntry(PLACES);
+        Entry<?> entry = p.getSubEntry(PLACES, placeNumber);
         List<Entry<?>> entryList = (List<Entry<?>>) entry.getContent();
         return (Boolean) entryList.get(1).getContent();
     }
@@ -317,9 +316,9 @@ public class GooglePlusProfileImpl implements GooglePlusProfile {
     }
 
     @Override
-    public String getLookingForFriends() throws SharkKBException {
+    public Boolean getLookingForFriends() throws SharkKBException {
         Entry<?> entry = p.getProfileEntry(BASICINFORMATION);
-        return (String) entry.getEntryFromList(LOOKINGFORFRIENDS).getContent();
+        return (Boolean) entry.getEntryFromList(LOOKINGFORFRIENDS).getContent();
     }
 
     @Override
@@ -328,9 +327,9 @@ public class GooglePlusProfileImpl implements GooglePlusProfile {
     }
 
     @Override
-    public String getLookingForDating() throws SharkKBException {
+    public Boolean getLookingForDating() throws SharkKBException {
         Entry<?> entry = p.getProfileEntry(BASICINFORMATION);
-        return (String) entry.getEntryFromList(LOOKINGFORDATING).getContent();
+        return (Boolean) entry.getEntryFromList(LOOKINGFORDATING).getContent();
     }
 
     @Override
@@ -339,9 +338,9 @@ public class GooglePlusProfileImpl implements GooglePlusProfile {
     }
 
     @Override
-    public String getLookingForRelationship() throws SharkKBException {
+    public Boolean getLookingForRelationship() throws SharkKBException {
         Entry<?> entry = p.getProfileEntry(BASICINFORMATION);
-        return (String) entry.getEntryFromList(LOOKINGFORRELATIONSHIP).getContent();
+        return (Boolean) entry.getEntryFromList(LOOKINGFORRELATIONSHIP).getContent();
     }
 
     @Override
@@ -350,21 +349,21 @@ public class GooglePlusProfileImpl implements GooglePlusProfile {
     }
 
     @Override
-    public String getLookingForNetworking() throws SharkKBException {
+    public Boolean getLookingForNetworking() throws SharkKBException {
         Entry<?> entry = p.getProfileEntry(BASICINFORMATION);
-        return (String) entry.getEntryFromList(LOOKINGFORNETWORKING).getContent();
+        return (Boolean) entry.getEntryFromList(LOOKINGFORNETWORKING).getContent();
     }
 
 
     @Override
-    public void setBirthday(Date birthday) throws SharkKBException {
+    public void setBirthday(String birthday) throws SharkKBException {
         p.addSubEntryInEntry(BASICINFORMATION, BIRTHDAY, birthday);
     }
 
     @Override
-    public Date getBirthday() throws SharkKBException {
+    public String getBirthday() throws SharkKBException {
         Entry<?> entry = p.getProfileEntry(BASICINFORMATION);
-        return (Date) entry.getEntryFromList(BIRTHDAY).getContent();
+        return (String) entry.getEntryFromList(BIRTHDAY).getContent();
     }
 
     @Override
@@ -380,7 +379,7 @@ public class GooglePlusProfileImpl implements GooglePlusProfile {
 
     @Override
     public String getOtherName(String nameNumber) throws SharkKBException {
-        Entry<?> entry = p.getSubEntry(WORK, nameNumber);
+        Entry<?> entry = p.getSubEntry(BASICINFORMATION, nameNumber);
         List<Entry<?>> entryList = (List<Entry<?>>) entry.getContent();
         return (String) entryList.get(0).getContent();
     }

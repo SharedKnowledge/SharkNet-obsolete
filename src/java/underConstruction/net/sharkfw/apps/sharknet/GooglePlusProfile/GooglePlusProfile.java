@@ -2,8 +2,6 @@ package GooglePlusProfile;
 
 import net.sharkfw.knowledgeBase.SharkKBException;
 
-import java.util.Date;
-
 /**
  * Created by Mr.T on 03.07.2015.
  */
@@ -107,15 +105,15 @@ public interface GooglePlusProfile {
     void setGender(String gender) throws SharkKBException;
     String getGender() throws SharkKBException;
     void setLookingforFriends(Boolean isLooking) throws SharkKBException;
-    String getLookingForFriends() throws SharkKBException;
+    Boolean getLookingForFriends() throws SharkKBException;
     void setLookingforDating(Boolean isLooking) throws SharkKBException;
-    String getLookingForDating() throws SharkKBException;
+    Boolean getLookingForDating() throws SharkKBException;
     void setLookingforRelationship(Boolean isLooking) throws SharkKBException;
-    String getLookingForRelationship() throws SharkKBException;
+    Boolean getLookingForRelationship() throws SharkKBException;
     void setLookingforNetworking(Boolean isLooking) throws SharkKBException;
-    String getLookingForNetworking() throws SharkKBException;
-    void setBirthday(Date birthday) throws SharkKBException;
-    Date getBirthday() throws SharkKBException;
+    Boolean getLookingForNetworking() throws SharkKBException;
+    void setBirthday(String birthday) throws SharkKBException;
+    String getBirthday() throws SharkKBException;
     void setRelationship(String relationship) throws SharkKBException;
     String getRelationship() throws SharkKBException;
     String getOtherName(String nameNumber) throws SharkKBException;

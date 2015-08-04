@@ -281,9 +281,10 @@ public class GooglePlusProfileImpl implements GooglePlusProfile {
     }
 
     @Override
-    public void addPlace(String city) throws SharkKBException {
+    public void addPlace(String city, boolean isCurrent) throws SharkKBException {
         List<Entry<?>> entryList = new ArrayList<Entry<?>>();
         entryList.add(new EntryImpl<String>(CITY, city));
+        entryList.add(new EntryImpl<Boolean>(ISCURRENT, isCurrent));
 
         int count = p.getProfileEntry(PLACES).getEntryList().size();
         p.createSubEntry(PLACES, PLACES, Integer.toString(count), entryList);

@@ -3,7 +3,6 @@ package GooglePlusProfileTests;
 import GooglePlusProfile.GooglePlusProfile;
 import GooglePlusProfile.GooglePlusProfileFactory;
 import GooglePlusProfile.GooglePlusProfileFactoryImpl;
-import Profile.Profile;
 import Profile.ProfileFactory;
 import Profile.ProfileFactoryImpl;
 import Profile.ProfileKP;
@@ -36,12 +35,23 @@ public class GooglePlusProfileTest {
     }
 
     @Test
-    public void testCreateGooglePlusProfile() throws Exception {
-        GooglePlusProfile myGooglePlusProfile = googlePlusProfileFactory.createGooglePlusProfile("MyProfile", "https://MyProfile");
-        myGooglePlusProfile.addEmployment("Simens", "MaschinenBauer", 1993, 2000, false, "It makes fun");
-        System.out.println(myGooglePlusProfile.getJobTitle("0"));
-        myGooglePlusProfile.removeEmployment("0");
-        System.out.println(myGooglePlusProfile.getJobTitle("0"));
+    public void testGooglePlusProfile() throws Exception {
+        GooglePlusProfile myGooglePlusProfile = googlePlusProfileFactory.createGooglePlusProfile("Alice", "http://www.sharksystem.net/alice.html");
+        myGooglePlusProfile.setFirstName("Allllice");
+        myGooglePlusProfile.setLastName("Alpha");
+        myGooglePlusProfile.setNickname("Ali");
+        myGooglePlusProfile.setFirstName("AliceAlice");
+        assertEquals(myGooglePlusProfile.getFirstName(), "AliceAlice");
+        myGooglePlusProfile.setTagline("Hi I´m Alice I like to solve complex problems and writing good code.");
+        myGooglePlusProfile.setIntroduction("My story begins a long time ago, I was 14 when I created my first little program." +
+                "At this moment I was so interested in programing it even becomes one of my greatest hobbies.");
+        myGooglePlusProfile.setBraggingRights("I wrote my own linux kernel.");
+        myGooglePlusProfile.setOccupation("I do my bachelors degree of applied science at the HTW subject: applied computing");
+        myGooglePlusProfile.setSkills("Java, Scala, C++, C, PHP, HTML, CSS");
+        myGooglePlusProfile.addEmployment("HTW", "Programmer", 2012, 2015, true, "I write Scala and Java tests.");
+        myGooglePlusProfile.addEducation("University of Applied Sciences", "Applied Computing", 2012, 2015, true, "I learned a lot about programming and software engineering.");
+        myGooglePlusProfile.addPlace("Berlin", true);
+        myGooglePlusProfile.addPlace("London", false);
     }
 
     @org.junit.Test

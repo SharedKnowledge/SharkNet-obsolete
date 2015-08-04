@@ -38,6 +38,7 @@ public interface GooglePlusProfile {
 
     String PLACES = "Places";
     String CITY = "City";
+    String ISCURRENT = "IsCurrent";
 
     String BASICINFORMATION = "BasicInformation";
     String GENDER = "Gender";
@@ -100,7 +101,7 @@ public interface GooglePlusProfile {
 
     String getCity(String placeNumber) throws SharkKBException;
     boolean getIsPlaceCurrent(String placeNumber) throws SharkKBException;
-    void addPlace(String city) throws SharkKBException;
+    void addPlace(String city, boolean isCurrent) throws SharkKBException;
     void removePlace(String placeNumber) throws SharkKBException;
 
     void setGender(String gender) throws SharkKBException;

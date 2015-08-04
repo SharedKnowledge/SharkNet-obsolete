@@ -41,7 +41,10 @@ public interface GooglePlusProfile {
 
     String BASICINFORMATION = "BasicInformation";
     String GENDER = "Gender";
-    String LOOKINGFOR = "LookingFor";
+    String LOOKINGFORFRIENDS = "LookingForFriends";
+    String LOOKINGFORDATING = "LookingForFriends";
+    String LOOKINGFORRELATIONSHIP = "LookingForRelationship";
+    String LOOKINGFORNETWORKING = "LookingForNetworking";
     String BIRTHDAY = "Birthday";
     String RELATIONSHIP = "Relationship";
     String OTHERNAMES = "OtherNames";
@@ -78,7 +81,7 @@ public interface GooglePlusProfile {
     void setSkills(String skills) throws SharkKBException;
     String getSkills() throws SharkKBException;
     void addEmployment(String employmentName, String jobTitle, int start, int end, boolean current, String jobDescription) throws SharkKBException;
-    void removeEmployment(String entryName) throws SharkKBException;
+    void removeEmployment(String employmentNumber) throws SharkKBException;
     String getEmploymentName(String employmentNumber) throws SharkKBException;
     String getJobTitle(String employmentNumber) throws SharkKBException;
     int getStartOfEmployment(String employmentNumber) throws SharkKBException;
@@ -100,33 +103,43 @@ public interface GooglePlusProfile {
     void addPlace(String city) throws SharkKBException;
     void removePlace(String placeNumber) throws SharkKBException;
 
+    void setGender(String gender) throws SharkKBException;
     String getGender() throws SharkKBException;
-    String getLookingFor() throws SharkKBException;
+    void setLookingforFriends(Boolean isLooking) throws SharkKBException;
+    String getLookingForFriends() throws SharkKBException;
+    void setLookingforDating(Boolean isLooking) throws SharkKBException;
+    String getLookingForDating() throws SharkKBException;
+    void setLookingforRelationship(Boolean isLooking) throws SharkKBException;
+    String getLookingForRelationship() throws SharkKBException;
+    void setLookingforNetworking(Boolean isLooking) throws SharkKBException;
+    String getLookingForNetworking() throws SharkKBException;
+    void setBirthday(Date birthday) throws SharkKBException;
     Date getBirthday() throws SharkKBException;
+    void setRelationship(String relationship) throws SharkKBException;
     String getRelationship() throws SharkKBException;
     String getOtherName(String nameNumber) throws SharkKBException;
-    void addOtherName(String name);
-    void removeOtherName(String nameNumber);
+    void addOtherName(String name) throws SharkKBException;
+    void removeOtherName(String nameNumber) throws SharkKBException;
 
     void addHomeContact(String contactType, String contactInfo) throws SharkKBException;
     String getHomeContactType(int contactNumber) throws SharkKBException;
     String getHomeContactInfo(int contactNumber) throws SharkKBException;
-    void removeHomeContact(String entryName) throws SharkKBException;
+    void removeHomeContact(String contactNumber) throws SharkKBException;
     void addWorkContact(String contactType, String contactInfo) throws SharkKBException;
     String getWorkContactType(int contactNumber) throws SharkKBException;
     String getWorkContactInfo(int contactNumber) throws SharkKBException;
-    void removeWorkContact(String entryName) throws SharkKBException;
+    void removeWorkContact(String contactNumber) throws SharkKBException;
 
     void addOtherProfiles(String label, String url) throws SharkKBException;
     String getOtherProfilesLabel(int otherProfilesNumber) throws SharkKBException;
     String getOtherProfilesUrl(int otherProfilesNumber) throws SharkKBException;
-    void removeOtherProfiles(String entryName) throws SharkKBException;
+    void removeOtherProfiles(String otherProfilesNumber) throws SharkKBException;
     void addContributorTo(String label, String url) throws SharkKBException;
     String getContributorsLabel(int contributorsNumber) throws SharkKBException;
     String getContributorsUrl(int contributorsNumber) throws SharkKBException;
-    void removeContributor(String entryName) throws SharkKBException;
+    void removeContributor(String contributorsNumber) throws SharkKBException;
     void addLinks(String label, String url) throws SharkKBException;
     String getLinkLabel(int linkNumber) throws SharkKBException;
     String getLinkUrl(int linkNumber) throws SharkKBException;
-    void removeLinks(String entryName) throws SharkKBException;
+    void removeLinks(String linkNumber) throws SharkKBException;
 }

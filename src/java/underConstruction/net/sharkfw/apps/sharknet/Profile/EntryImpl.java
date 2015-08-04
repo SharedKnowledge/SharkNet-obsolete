@@ -127,4 +127,19 @@ public class EntryImpl<T> implements Entry<T>, Serializable {
             }
         }
     }
+
+    @Override
+    public void removeEntryFromSubEntry(Entry<T> rootEntry, String subEntry, String entryName) {
+        Entry<T> entry;
+        Iterator<Entry<T>> entryIterator = rootEntry.getEntryList().iterator();
+        while (entryIterator.hasNext()) {
+            entry = entryIterator.next();
+            if (entry.getEntryName().equals(subEntry)) {
+                removeEntry(entry, entryName);
+            } else {
+                removeEntryFromSubEntry(entry, subEntry, entryName);
+            }
+        }
+    }
+
 }

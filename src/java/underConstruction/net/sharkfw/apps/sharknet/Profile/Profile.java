@@ -46,6 +46,7 @@ public interface Profile {
     Entry<?> getProfileEntry(String identifier) throws SharkKBException;
     void removeProfileEntry(String identifier);
     <T> void removeSubEntry(String superEntryName, String entryName) throws SharkKBException;
+    <T> void removeEntryFromSubEntry(String superEntryName, String subEntryName, String entryName) throws SharkKBException;
 
     /**Sets a profile name.
      * A profile name is represented as an profileName object.

@@ -21,12 +21,12 @@ public class GooglePlusProfileImpl implements GooglePlusProfile {
     GooglePlusProfileImpl(Profile p) throws SharkKBException {
         this.p = p;
         createNameEntry();
-        createHistory();
+        createStory();
         createWork();
         p.createProfileEntry(EDUCATION);
         p.createProfileEntry(PLACES);
         createBasicInformation();
-
+        createContactInformation();
         createLink();
     }
 
@@ -37,7 +37,7 @@ public class GooglePlusProfileImpl implements GooglePlusProfile {
         p.addSubEntryInEntry(NAME, NICKNAME, "");
     }
 
-    private void createHistory() throws SharkKBException {
+    private void createStory() throws SharkKBException {
         p.createProfileEntry(STORY);
         p.addSubEntryInEntry(STORY, TAGLINE, "");
         p.addSubEntryInEntry(STORY, INTRODUCTION, "");
@@ -51,51 +51,20 @@ public class GooglePlusProfileImpl implements GooglePlusProfile {
         p.addSubEntryInEntry(WORK, EMPLOYMENTS);
     }
 
-    public void addOtherProfiles(String label, String url) throws SharkKBException {
-        List<Entry<?>> entryList = new ArrayList<Entry<?>>();
-        entryList.add(new EntryImpl<String>(LABEL, label));
-        entryList.add(new EntryImpl<String>(URL, url));
-
-        int count = p.getSubEntry(LINK, OTHERPROFILES).getEntryList().size();
-        p.createSubEntry(LINK, OTHERPROFILES, Integer.toString(count), entryList);
+    private void createBasicInformation() throws SharkKBException {
+        p.createProfileEntry(BASICINFORMATION);
+        p.addSubEntryInEntry(BASICINFORMATION, GENDER, "");
+        p.addSubEntryInEntry(BASICINFORMATION, LOOKINGFOR, "");
+        p.addSubEntryInEntry(BASICINFORMATION, BIRTHDAY, "");
+        p.addSubEntryInEntry(BASICINFORMATION, RELATIONSHIP, "");
+        p.addSubEntryInEntry(BASICINFORMATION, OTHERNAMES);
     }
 
-    public String getOtherProfilesLabel(int otherProfilesNumber) throws SharkKBException {
-        List<Entry<?>> entryList = (List<Entry<?>>) p.getSubEntry(LINK, OTHERPROFILES).getEntryList().get(otherProfilesNumber).getContent();
-        return (String) entryList.get(0).getContent();
+    private void createContactInformation() throws SharkKBException {
+        p.createProfileEntry(CONTACTINFORMATION);
+        p.addSubEntryInEntry(CONTACTINFORMATION, HOME);
+        p.addSubEntryInEntry(CONTACTINFORMATION, WORK);
     }
-
-
-    public void removeOtherProfiles(String entryName) throws SharkKBException {
-        p.removeSubEntry(LINK, entryName);
-    }
-
-    public void addContributorTo(String label, String url) throws SharkKBException {
-        List<Entry<?>> entryList = new ArrayList<Entry<?>>();
-        entryList.add(new EntryImpl<String>(LABEL, label));
-        entryList.add(new EntryImpl<String>(URL, url));
-
-        int count = p.getSubEntry(LINK, CONTRIBUTORTO).getEntryList().size();
-        p.createSubEntry(LINK, CONTRIBUTORTO, Integer.toString(count), entryList);
-    }
-
-    public void removeContributor(String entryName) throws SharkKBException {
-        p.removeSubEntry(LINK, entryName);
-    }
-
-    public void addLinks(String label, String url) throws SharkKBException {
-        List<Entry<?>> entryList = new ArrayList<Entry<?>>();
-        entryList.add(new EntryImpl<String>(LABEL, label));
-        entryList.add(new EntryImpl<String>(URL, url));
-
-        int count = p.getSubEntry(LINK, LINKS).getEntryList().size();
-        p.createSubEntry(LINK, LINKS, Integer.toString(count), entryList);
-    }
-
-    public void removeLinks(String entryName) throws SharkKBException {
-        p.removeSubEntry(LINK, entryName);
-    }
-
 
     private void createLink() throws SharkKBException {
         p.createProfileEntry(LINK);
@@ -104,6 +73,7 @@ public class GooglePlusProfileImpl implements GooglePlusProfile {
         p.addSubEntryInEntry(LINK, LINKS);
     }
 
+    //##########################NameSection##########################
     public void setFirstName(String firstName) throws SharkKBException {
         p.addSubEntryInEntry(NAME, FIRTSTNAME, firstName);
     }
@@ -130,6 +100,7 @@ public class GooglePlusProfileImpl implements GooglePlusProfile {
         return (String) entry.getEntryFromList(NICKNAME).getContent();
     }
 
+    //##########################StorySection##########################
     public void setTagline(String tagline) throws SharkKBException {
         p.addSubEntryInEntry(STORY, TAGLINE, tagline);
     }
@@ -155,6 +126,25 @@ public class GooglePlusProfileImpl implements GooglePlusProfile {
     public String getBraggingRights() throws SharkKBException {
         Entry<?> entry = p.getProfileEntry(STORY);
         return (String) entry.getEntryFromList(BRAGGINGRIGHTS).getContent();
+    }
+
+    //##########################WorkSection##########################
+    public void setOccupation(String occupation) throws SharkKBException {
+        p.addSubEntryInEntry(WORK, OCCUPATION, occupation);
+    }
+
+    public String getOccupation() throws SharkKBException {
+        Entry<?> entry = p.getProfileEntry(WORK);
+        return (String) entry.getEntryFromList(OCCUPATION).getContent();
+    }
+
+    public void setSkills(String skills) throws SharkKBException {
+        p.addSubEntryInEntry(WORK, SKILLS, skills);
+    }
+
+    public String getSkills() throws SharkKBException {
+        Entry<?> entry = p.getProfileEntry(WORK);
+        return (String) entry.getEntryFromList(SKILLS).getContent();
     }
 
     public void addEmployment(String employmentName, String jobTitle, int start, int end, boolean current, String jobDescription) throws SharkKBException {
@@ -210,15 +200,7 @@ public class GooglePlusProfileImpl implements GooglePlusProfile {
         return (String) entryList.get(5).getContent();
     }
 
-    private void createBasicInformation() throws SharkKBException {
-        p.createProfileEntry(BASICINFORMATION);
-        p.addSubEntryInEntry(BASICINFORMATION, GENDER, "");
-        p.addSubEntryInEntry(BASICINFORMATION, LOOKINGFOR, "");
-        p.addSubEntryInEntry(BASICINFORMATION, BIRTHDAY, "");
-        p.addSubEntryInEntry(BASICINFORMATION, RELATIONSHIP, "");
-        p.addSubEntryInEntry(BASICINFORMATION, OTHERNAMES);
-    }
-
+    //##########################EducationSection##########################
     @Override
     public String getSchoolName(String educationNumber) throws SharkKBException {
         Entry<?> entry = p.getProfileEntry(EDUCATION);
@@ -251,7 +233,7 @@ public class GooglePlusProfileImpl implements GooglePlusProfile {
     public boolean getIsEducationCurrent(String educationNumber) throws SharkKBException {
         Entry<?> entry = p.getProfileEntry(EDUCATION);
         List<Entry<?>> entryList = (List<Entry<?>>) entry.getContent();
-        return (boolean) entryList.get(4).getContent();
+        return (Boolean) entryList.get(4).getContent();
     }
 
     @Override
@@ -280,6 +262,7 @@ public class GooglePlusProfileImpl implements GooglePlusProfile {
 
     }
 
+    //##########################PlacesSection##########################
     @Override
     public String getCity(String placeNumber) throws SharkKBException {
         Entry<?> entry = p.getProfileEntry(PLACES);
@@ -291,7 +274,7 @@ public class GooglePlusProfileImpl implements GooglePlusProfile {
     public boolean getIsPlaceCurrent(String placeNumber) throws SharkKBException {
         Entry<?> entry = p.getProfileEntry(PLACES);
         List<Entry<?>> entryList = (List<Entry<?>>) entry.getContent();
-        return (boolean) entryList.get(1).getContent();
+        return (Boolean) entryList.get(1).getContent();
     }
 
     @Override
@@ -308,6 +291,7 @@ public class GooglePlusProfileImpl implements GooglePlusProfile {
 
     }
 
+    //##########################BasicInformationSection##########################
     @Override
     public String getGender() throws SharkKBException {
         return null;
@@ -341,6 +325,127 @@ public class GooglePlusProfileImpl implements GooglePlusProfile {
     @Override
     public void removeOtherName(String nameNumber) {
 
+    }
+
+    //##########################ContactInformationSection##########################
+    public void addHomeContact(String contactType, String contactInfo) throws SharkKBException {
+        List<Entry<?>> entryList = new ArrayList<Entry<?>>();
+        entryList.add(new EntryImpl<String>(CONTACTTYPE, contactType));
+        entryList.add(new EntryImpl<String>(CONTACTINFO, contactInfo));
+
+        int count = p.getSubEntry(CONTACTINFORMATION, HOME).getEntryList().size();
+        p.createSubEntry(CONTACTINFORMATION, HOME, Integer.toString(count), entryList);
+    }
+
+    public String getHomeContactType(int contactNumber) throws SharkKBException {
+        List<Entry<?>> entryList = (List<Entry<?>>) p.getSubEntry(CONTACTINFORMATION, HOME).getEntryList().get(contactNumber).getContent();
+        return (String) entryList.get(0).getContent();
+    }
+
+    public String getHomeContactInfo(int contactNumber) throws SharkKBException {
+        List<Entry<?>> entryList = (List<Entry<?>>) p.getSubEntry(CONTACTINFORMATION, HOME).getEntryList().get(contactNumber).getContent();
+        return (String) entryList.get(1).getContent();
+    }
+
+    public void removeHomeContact(String entryName) throws SharkKBException {
+        p.removeEntryFromSubEntry(CONTACTINFORMATION, HOME, entryName);
+    }
+
+
+
+    public void addWorkContact(String contactType, String contactInfo) throws SharkKBException {
+        List<Entry<?>> entryList = new ArrayList<Entry<?>>();
+        entryList.add(new EntryImpl<String>(CONTACTTYPE, contactType));
+        entryList.add(new EntryImpl<String>(CONTACTINFO, contactInfo));
+
+        int count = p.getSubEntry(CONTACTINFORMATION, WORK).getEntryList().size();
+        p.createSubEntry(CONTACTINFORMATION, WORK, Integer.toString(count), entryList);
+    }
+
+    public String getWorkContactType(int contactNumber) throws SharkKBException {
+        List<Entry<?>> entryList = (List<Entry<?>>) p.getSubEntry(CONTACTINFORMATION, WORK).getEntryList().get(contactNumber).getContent();
+        return (String) entryList.get(0).getContent();
+    }
+
+    public String getWorkContactInfo(int contactNumber) throws SharkKBException {
+        List<Entry<?>> entryList = (List<Entry<?>>) p.getSubEntry(CONTACTINFORMATION, WORK).getEntryList().get(contactNumber).getContent();
+        return (String) entryList.get(1).getContent();
+    }
+
+    public void removeWorkContact(String entryName) throws SharkKBException {
+        p.removeEntryFromSubEntry(CONTACTINFORMATION, WORK, entryName);
+    }
+
+
+    //##########################LinkSection##########################
+    public void addOtherProfiles(String label, String url) throws SharkKBException {
+        List<Entry<?>> entryList = new ArrayList<Entry<?>>();
+        entryList.add(new EntryImpl<String>(LABEL, label));
+        entryList.add(new EntryImpl<String>(URL, url));
+
+        int count = p.getSubEntry(LINK, OTHERPROFILES).getEntryList().size();
+        p.createSubEntry(LINK, OTHERPROFILES, Integer.toString(count), entryList);
+    }
+
+    public String getOtherProfilesLabel(int otherProfilesNumber) throws SharkKBException {
+        List<Entry<?>> entryList = (List<Entry<?>>) p.getSubEntry(LINK, OTHERPROFILES).getEntryList().get(otherProfilesNumber).getContent();
+        return (String) entryList.get(0).getContent();
+    }
+
+    public String getOtherProfilesUrl(int otherProfilesNumber) throws SharkKBException {
+        List<Entry<?>> entryList = (List<Entry<?>>) p.getSubEntry(LINK, OTHERPROFILES).getEntryList().get(otherProfilesNumber).getContent();
+        return (String) entryList.get(1).getContent();
+    }
+
+    public void removeOtherProfiles(String entryName) throws SharkKBException {
+        p.removeEntryFromSubEntry(LINK, OTHERPROFILES, entryName);
+    }
+
+    public void addContributorTo(String label, String url) throws SharkKBException {
+        List<Entry<?>> entryList = new ArrayList<Entry<?>>();
+        entryList.add(new EntryImpl<String>(LABEL, label));
+        entryList.add(new EntryImpl<String>(URL, url));
+
+        int count = p.getSubEntry(LINK, CONTRIBUTORTO).getEntryList().size();
+        p.createSubEntry(LINK, CONTRIBUTORTO, Integer.toString(count), entryList);
+    }
+
+    public String getContributorsLabel(int contributorsNumber) throws SharkKBException {
+        List<Entry<?>> entryList = (List<Entry<?>>) p.getSubEntry(LINK, CONTRIBUTORTO).getEntryList().get(contributorsNumber).getContent();
+        return (String) entryList.get(0).getContent();
+    }
+
+    public String getContributorsUrl(int contributorsNumber) throws SharkKBException {
+        List<Entry<?>> entryList = (List<Entry<?>>) p.getSubEntry(LINK, CONTRIBUTORTO).getEntryList().get(contributorsNumber).getContent();
+        return (String) entryList.get(1).getContent();
+    }
+
+
+    public void removeContributor(String entryName) throws SharkKBException {
+        p.removeEntryFromSubEntry(LINK, CONTRIBUTORTO, entryName);
+    }
+
+    public void addLinks(String label, String url) throws SharkKBException {
+        List<Entry<?>> entryList = new ArrayList<Entry<?>>();
+        entryList.add(new EntryImpl<String>(LABEL, label));
+        entryList.add(new EntryImpl<String>(URL, url));
+
+        int count = p.getSubEntry(LINK, LINKS).getEntryList().size();
+        p.createSubEntry(LINK, LINKS, Integer.toString(count), entryList);
+    }
+
+    public String getLinkLabel(int linkNumber) throws SharkKBException {
+        List<Entry<?>> entryList = (List<Entry<?>>) p.getSubEntry(LINK, LINKS).getEntryList().get(linkNumber).getContent();
+        return (String) entryList.get(0).getContent();
+    }
+
+    public String getLinkUrl(int linkNumber) throws SharkKBException {
+        List<Entry<?>> entryList = (List<Entry<?>>) p.getSubEntry(LINK, LINKS).getEntryList().get(linkNumber).getContent();
+        return (String) entryList.get(1).getContent();
+    }
+
+    public void removeLinks(String entryName) throws SharkKBException {
+        p.removeEntryFromSubEntry(LINK, LINKS, entryName);
     }
 
 

@@ -110,12 +110,85 @@ public class GooglePlusProfileTest {
         assertTrue(myGooglePlusProfile.getOtherProfilesLabel(0).equals("BobsProfile") && myGooglePlusProfile.getOtherProfilesUrl(0).equals("https://google/googlePlus/Profiles/Bob"));
         assertTrue(myGooglePlusProfile.getContributorsLabel(0).equals("SharkNet") && myGooglePlusProfile.getContributorsUrl(0).equals("http://www.sharksystem.net/apps.html"));
         assertTrue(myGooglePlusProfile.getLinkLabel(0).equals("My favorite website") && myGooglePlusProfile.getLinkUrl(0).equals("http://google.com"));
+    }
 
+    @Test(expected=NullPointerException.class)
+    public void testRemoveEmployment() throws Exception {
+        GooglePlusProfile myGooglePlusProfile = googlePlusProfileFactory.createGooglePlusProfile("Alice", "http://www.sharksystem.net/alice.html");
+        myGooglePlusProfile.addEmployment("HTW", "Programmer", 2012, 2015, true, "I write Scala and Java tests.");
+        myGooglePlusProfile.removeEmployment("0");
+        myGooglePlusProfile.getEndOfEmployment("0");
+    }
 
+    @Test(expected=NullPointerException.class)
+    public void testRemoveEducation() throws Exception {
+        GooglePlusProfile myGooglePlusProfile = googlePlusProfileFactory.createGooglePlusProfile("Alice", "http://www.sharksystem.net/alice.html");
+        myGooglePlusProfile.addEducation("University of Applied Sciences", "Applied Computing", 2012, 2015, true, "I learned a lot about programming and software engineering.");
+        myGooglePlusProfile.removeEducation("0");
+        myGooglePlusProfile.getStartOfEducation("0");
+    }
+
+    @Test(expected=NullPointerException.class)
+    public void testRemovePlace() throws Exception {
+        GooglePlusProfile myGooglePlusProfile = googlePlusProfileFactory.createGooglePlusProfile("Alice", "http://www.sharksystem.net/alice.html");
+        myGooglePlusProfile.addPlace("Berlin", true);
+        myGooglePlusProfile.addPlace("London", false);
+        myGooglePlusProfile.removePlace("0");
+        myGooglePlusProfile.getCity("0");
+    }
+
+    @Test(expected=NullPointerException.class)
+    public void testRemoveOtherName() throws Exception {
+        GooglePlusProfile myGooglePlusProfile = googlePlusProfileFactory.createGooglePlusProfile("Alice", "http://www.sharksystem.net/alice.html");
+        myGooglePlusProfile.addOtherName("Jizy");
+        myGooglePlusProfile.removeOtherName("0");
+        myGooglePlusProfile.getOtherName("0");
+    }
+
+    @Test(expected=IndexOutOfBoundsException.class)
+    public void testRemoveHomeContact() throws Exception {
+        GooglePlusProfile myGooglePlusProfile = googlePlusProfileFactory.createGooglePlusProfile("Alice", "http://www.sharksystem.net/alice.html");
+        myGooglePlusProfile.addHomeContact("Mobile", "0151-2357823");
+        myGooglePlusProfile.removeHomeContact("0");
+        myGooglePlusProfile.getHomeContactInfo(0);
+    }
+
+    @Test
+    public void testRemoveWorkContact() throws Exception {
+        GooglePlusProfile myGooglePlusProfile = googlePlusProfileFactory.createGooglePlusProfile("Alice", "http://www.sharksystem.net/alice.html");
+        myGooglePlusProfile.addWorkContact("Phone", "030-28665432");
+        myGooglePlusProfile.addWorkContact("Address", "Rathenau Str. 42");
+        myGooglePlusProfile.addWorkContact("Fax", "030-28665433");
+        myGooglePlusProfile.removeWorkContact("0");
+        assertEquals("Address", myGooglePlusProfile.getWorkContactType(0));
+    }
+
+    @Test(expected=IndexOutOfBoundsException.class)
+    public void testRemoveOtherProfiles() throws Exception {
+        GooglePlusProfile myGooglePlusProfile = googlePlusProfileFactory.createGooglePlusProfile("Alice", "http://www.sharksystem.net/alice.html");
+        myGooglePlusProfile.addOtherProfiles("BobsProfile", "https://google/googlePlus/Profiles/Bob");
+        myGooglePlusProfile.removeOtherProfiles("0");
+        myGooglePlusProfile.getOtherProfilesLabel(0);
+    }
+
+    @Test(expected=IndexOutOfBoundsException.class)
+    public void testRemoveContributorTo() throws Exception {
+        GooglePlusProfile myGooglePlusProfile = googlePlusProfileFactory.createGooglePlusProfile("Alice", "http://www.sharksystem.net/alice.html");
+        myGooglePlusProfile.addContributorTo("SharkNet", "http://www.sharksystem.net/apps.html");
+        myGooglePlusProfile.removeContributor("0");
+        myGooglePlusProfile.getContributorsLabel(0);
+    }
+
+    @Test(expected=IndexOutOfBoundsException.class)
+    public void testRemoveLinks() throws Exception {
+        GooglePlusProfile myGooglePlusProfile = googlePlusProfileFactory.createGooglePlusProfile("Alice", "http://www.sharksystem.net/alice.html");
+        myGooglePlusProfile.addLinks("My favorite website", "http://google.com");
+        myGooglePlusProfile.removeLinks("0");
+        myGooglePlusProfile.getLinkLabel(0);
     }
 
     @org.junit.Test
-    public void testAsk4Profiles() throws Exception {
+    public void testGooglePlusProfileExchange() throws Exception {
         L.setLogLevel(L.LOGLEVEL_ALL);
         J2SEAndroidSharkEngine aliceSE = new J2SEAndroidSharkEngine();
         SharkKB aliceKB = new InMemoSharkKB();
@@ -129,6 +202,7 @@ public class GooglePlusProfileTest {
         //create contactlist of Alice
         PeerSTSet aliceContacts = aliceKB.getPeerSTSet();
         ProfileFactory alicePF = new ProfileFactoryImpl(aliceKB);
+        GooglePlusProfileFactory aliceGooglePlusPF = new GooglePlusProfileFactoryImpl(alicePF);
         ProfileKP aliceKP = new ProfileKP(aliceSE, aliceKB, alicePF, alice);
         aliceKP.setAcceptWithoutVerification(true);
 
@@ -144,8 +218,8 @@ public class GooglePlusProfileTest {
         //create Bobs profile
         ProfileFactory bobPF = new ProfileFactoryImpl(bobKB);
         GooglePlusProfileFactory bobGooglePlusPF = new GooglePlusProfileFactoryImpl(bobPF);
-        GooglePlusProfile bobGooglePlusProfile = bobGooglePlusPF.createGooglePlusProfile(bobLocal.getName(), bobLocal.getSI()[0]);
-
+        GooglePlusProfile bobProfile = bobGooglePlusPF.createGooglePlusProfile(bobLocal.getName(), bobLocal.getSI()[0]);
+        bobProfile.setFirstName("Bob");
 
         ProfileKP bobKP = new ProfileKP(bobSE, bobKB, bobPF, bobLocal);
         bobKP.setAcceptWithoutVerification(true);
@@ -159,7 +233,7 @@ public class GooglePlusProfileTest {
         aliceKP.ask4Profiles(aliceContactList.iterator());
         Thread.sleep(1000);
 
-        //assertEquals("Bob profiles should be the same", bobGooglePlusProfileProfile.getName().getSurname(), alicePF.getProfile(bob, bob).getName().getSurname());
+        assertEquals("Bob profiles should be the same", bobProfile.getFirstName(), aliceGooglePlusPF.getGooglePlusProfile(bob.getName(), bob.getSI()[0]).getFirstName());
 
         bobSE.stopTCP();
         aliceSE.stopTCP();

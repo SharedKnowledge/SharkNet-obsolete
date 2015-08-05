@@ -10,7 +10,7 @@ import java.util.List;
  */
 public interface GooglePlusProfileFactory {
     GooglePlusProfile createGooglePlusProfile(String name, String profileURL) throws SharkKBException;
-    List<Profile> getAllGooglePlusProfiles() throws SharkKBException;
-    Profile getGooglePlusProfile(String name, String profileURL) throws SharkKBException;
+    List<GooglePlusProfile> getAllGooglePlusProfiles() throws SharkKBException;
+    GooglePlusProfile getGooglePlusProfile(String name, String profileURL) throws SharkKBException;
     void removeGooglePlusProfile(String name, String profileURL) throws SharkKBException;
 }

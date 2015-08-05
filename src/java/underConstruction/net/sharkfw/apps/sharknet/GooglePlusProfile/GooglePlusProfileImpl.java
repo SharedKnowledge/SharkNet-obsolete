@@ -15,18 +15,18 @@ public class GooglePlusProfileImpl implements GooglePlusProfile {
 
     private Profile p;
 
-
-
-    GooglePlusProfileImpl(Profile p) throws SharkKBException {
+    GooglePlusProfileImpl(Profile p, Boolean isNew) throws SharkKBException {
         this.p = p;
-        createNameEntry();
-        createStory();
-        createWork();
-        p.createProfileEntry(EDUCATION);
-        p.createProfileEntry(PLACES);
-        createBasicInformation();
-        createContactInformation();
-        createLink();
+        if (isNew){
+            createNameEntry();
+            createStory();
+            createWork();
+            p.createProfileEntry(EDUCATION);
+            p.createProfileEntry(PLACES);
+            createBasicInformation();
+            createContactInformation();
+            createLink();
+        }
     }
 
     private void createNameEntry() throws SharkKBException {
@@ -261,7 +261,7 @@ public class GooglePlusProfileImpl implements GooglePlusProfile {
 
     @Override
     public void removeEducation(String educationNumber) throws SharkKBException {
-        p.removeSubEntry(WORK, educationNumber);
+        p.removeSubEntry(EDUCATION, educationNumber);
     }
 
     //##########################PlacesSection##########################

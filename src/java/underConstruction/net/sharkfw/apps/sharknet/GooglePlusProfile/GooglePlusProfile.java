@@ -20,7 +20,6 @@ public interface GooglePlusProfile {
     String WORK = "Work";
     String OCCUPATION = "Occupation";
     String SKILLS = "Skills";
-    String EMPLOYMENT = "Employment";
     String EMPLOYMENTS = "Employments";
     String EMPLOYERNAME = "EmployerName";
     String JOBTITLE = "JobTitle";

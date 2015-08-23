@@ -30,6 +30,7 @@ public class ProfileKPTest {
     /**
      * This scenario tests the ask4Profiles function. The sendProfiles function is tested implicitly as well.
      * Alice asks for Bobs profiles. Bob sends his profile to Alice.
+     *
      * @throws Exception
      */
     @org.junit.Test
@@ -90,6 +91,7 @@ public class ProfileKPTest {
      * unsigned messages. So the request doesn't go through and Alice doesn't receive Bob's  profile.
      * Then Bob sets the configuration acceptWithoutVerification to true and Alice asks for Bob's profiles again. Now
      * she should receive it.
+     *
      * @throws Exception
      */
     @org.junit.Test
@@ -153,7 +155,6 @@ public class ProfileKPTest {
     }
 
     /**
-     * 
      * @throws Exception
      */
     @org.junit.Test
@@ -171,6 +172,7 @@ public class ProfileKPTest {
      * profiles and receives it.
      * Then Bob asks for Alice's profiles. Alice has her sendProfiles2UnknownPeer configuration set to false, but she
      * already knows Bob, so she sends her profile.
+     *
      * @throws Exception
      */
     @org.junit.Test
@@ -252,6 +254,7 @@ public class ProfileKPTest {
      * This scenario tests the configuration sendMyProfileAutomatically.
      * Alice has her configuration sendMyProfileAutomatically set to true. So when she asks Bob for his profiles and he
      * sends them to Alice, she automatically sends her profile to Bob.
+     *
      * @throws Exception
      */
     @org.junit.Test
@@ -321,6 +324,7 @@ public class ProfileKPTest {
      * Bob's configuration aksForProfilesAutomatically is set to true. So when Alice asks for his profiles he
      * automatically asks Alice for her profiles as well. So he should receive her profile without explicitly calling
      * the ask4Profiles function.
+     *
      * @throws Exception
      */
     @org.junit.Test
@@ -392,6 +396,7 @@ public class ProfileKPTest {
      * profile of Clara which he made himself. So the profile is about someone else (Clara) than the owner (Bob). Since
      * Alice doesn't accept profiles like that, she doesn't receive Claras profile from Bob.
      * Then she sets acceptProfileWithDifferentOwner to true and asks again. Now Alice receives the profile of Clara.
+     *
      * @throws Exception
      */
     @org.junit.Test
@@ -474,6 +479,7 @@ public class ProfileKPTest {
      * connection to Bob is established (an any interest is sent) nothing happens.
      * Then she changes the configuration to true and a connection is established again. Now she asks for Bob's profiles
      * automatically. So he should receive his profile without explicitly calling the ask4Profiles function.
+     *
      * @throws Exception
      */
     @org.junit.Test
@@ -549,6 +555,7 @@ public class ProfileKPTest {
      * connection to Alice is established (an any interest is sent) nothing happens.
      * Then he changes the configuration to true and a connection is established again. Now Bob sends his profile
      * automatically. So alice should receive his profile without calling the ask4Profiles function.
+     *
      * @throws Exception
      */
     @org.junit.Test
@@ -626,6 +633,7 @@ public class ProfileKPTest {
      * with the latest profile version, her profile of Bob doesn't change.
      * Finally Clara asks her peers for their profiles again. The new profile of Bob is sent to her and since it has the
      * latest profile version the old profile of Bob in Clara's KnowledgeBase is overwritten with Bob's current profile.
+     *
      * @throws Exception
      */
     @org.junit.Test

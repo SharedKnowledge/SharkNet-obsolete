@@ -40,14 +40,15 @@ public class ProfileKP extends KnowledgePort implements ProfileKPApp, ProfileKPC
 
     /**
      * Checks whether a context space contains a context coordinate with a profile topic.
+     *
      * @param interest
      * @return true if there is a profile topic, false otherwise
      * @throws SharkKBException
      */
     private boolean check4ProfileTopic(SharkCS interest) throws SharkKBException {
         STSet topics = interest.getTopics();
-        for (Enumeration<SemanticTag> e = topics.tags(); e.hasMoreElements();){
-            if ((e.nextElement()).identical(ProfileFactoryImpl.getProfileSemanticTag())){
+        for (Enumeration<SemanticTag> e = topics.tags(); e.hasMoreElements(); ) {
+            if ((e.nextElement()).identical(ProfileFactoryImpl.getProfileSemanticTag())) {
                 return true;
             }
         }
@@ -56,15 +57,16 @@ public class ProfileKP extends KnowledgePort implements ProfileKPApp, ProfileKPC
 
     /**
      * Checks if the sender (the PeerSemanticTag) is in the KnowledgeBase (checks if the sender is known).
+     *
      * @param sender
      * @return true is the sender is known, false otherwise
      * @throws SharkKBException
      */
     private boolean checkIfSenderIsKnown(PeerSemanticTag sender) throws SharkKBException {
         PeerSTSet peers = this.kb.getPeerSTSet();
-        for (Enumeration<PeerSemanticTag> e = peers.peerTags(); e.hasMoreElements();){
+        for (Enumeration<PeerSemanticTag> e = peers.peerTags(); e.hasMoreElements(); ) {
             PeerSemanticTag peer = e.nextElement();
-            if (SharkCSAlgebra.identical(peer, sender)){
+            if (SharkCSAlgebra.identical(peer, sender)) {
                 return true;
             }
         }
@@ -73,16 +75,20 @@ public class ProfileKP extends KnowledgePort implements ProfileKPApp, ProfileKPC
 
     @Override
     protected void doExpose(SharkCS interest, KEPConnection kepConnection) {
-        if (!acceptWithoutVerification && !kepConnection.receivedMessageSigned()) { return; }
+        if (!acceptWithoutVerification && !kepConnection.receivedMessageSigned()) {
+            return;
+        }
 
         try {
-            if (!sendProfiles2UnknownPeer && !(checkIfSenderIsKnown(kepConnection.getSender()))) { return;}
+            if (!sendProfiles2UnknownPeer && !(checkIfSenderIsKnown(kepConnection.getSender()))) {
+                return;
+            }
         } catch (SharkKBException e) {
             L.e(e.getMessage(), this);
         }
         //WiFi Direct Connection (= any interest)
-        if (SharkCSAlgebra.isAny(interest)){
-            if (ask4ProfilesAutomaticallyOnWiFiDirectConnection){
+        if (SharkCSAlgebra.isAny(interest)) {
+            if (ask4ProfilesAutomaticallyOnWiFiDirectConnection) {
                 ContextCoordinates profileCC = getProfileCC(SharkCS.DIRECTION_IN);
                 try {
                     kepConnection.expose(profileCC);
@@ -90,7 +96,7 @@ public class ProfileKP extends KnowledgePort implements ProfileKPApp, ProfileKPC
                     L.w(e.getMessage(), this);
                 }
             }
-            if (sendProfileAutomaticallyOnWiFiDirectConnection){
+            if (sendProfileAutomaticallyOnWiFiDirectConnection) {
                 Iterator<Profile> profiles;
                 try {
                     profiles = pf.getProfiles(this.owner, this.owner).iterator();
@@ -102,15 +108,15 @@ public class ProfileKP extends KnowledgePort implements ProfileKPApp, ProfileKPC
                     L.e(e.getMessage(), this);
                 }
             }
-        //Interest in profile exchange
+            //Interest in profile exchange
         } else try {
-            if (check4ProfileTopic(interest)){
+            if (check4ProfileTopic(interest)) {
                 PeerSTSet sender = InMemoSharkKB.createInMemoPeerSTSet();
                 sender.merge(kepConnection.getSender());
                 List<PeerSemanticTag> senderList = list(sender.peerTags());
                 sendAllProfiles(senderList.iterator());
 
-                if (ask4ProfilesAutomatically){
+                if (ask4ProfilesAutomatically) {
                     ask4Profiles(senderList.iterator());
                 }
             }
@@ -121,24 +127,26 @@ public class ProfileKP extends KnowledgePort implements ProfileKPApp, ProfileKPC
 
     @Override
     protected void doInsert(Knowledge knowledge, KEPConnection kepConnection) {
-        if (!acceptWithoutVerification && !kepConnection.receivedMessageSigned()) { return; }
+        if (!acceptWithoutVerification && !kepConnection.receivedMessageSigned()) {
+            return;
+        }
 
-        for (Enumeration<ContextPoint> cpE = knowledge.contextPoints(); cpE.hasMoreElements();) {
+        for (Enumeration<ContextPoint> cpE = knowledge.contextPoints(); cpE.hasMoreElements(); ) {
             ContextPoint cp = cpE.nextElement();
             ContextCoordinates cc = cp.getContextCoordinates();
             //select contextpoints with profiles
             if (cc.getTopic().identical(ProfileFactoryImpl.getProfileSemanticTag())
-                    && (cc.getOriginator().identical(cc.getPeer())) || acceptProfileWithDifferentOwner){
+                    && (cc.getOriginator().identical(cc.getPeer())) || acceptProfileWithDifferentOwner) {
                 try {
                     ContextPoint profileCP = this.kb.getContextPoint(cc);
 
-                    if (profileCP == null){ //new profile
+                    if (profileCP == null) { //new profile
                         SharkCSAlgebra.merge(this.kb, cc, cp, true);
                     } else { //profile already exists
                         int existingProfileVersion = Integer.parseInt(profileCP.getContextCoordinates().getTopic().getProperty(Profile.SHARK_PROFILE_VERSION_PROPERTY));
                         int newProfileVersion = Integer.parseInt(cc.getTopic().getProperty(Profile.SHARK_PROFILE_VERSION_PROPERTY));
 
-                        if (newProfileVersion > existingProfileVersion){
+                        if (newProfileVersion > existingProfileVersion) {
                             pf.removeProfile(cc.getOriginator(), cc.getPeer());
                             SharkCSAlgebra.merge(this.kb, cc, cp, true);
                         }
@@ -147,7 +155,7 @@ public class ProfileKP extends KnowledgePort implements ProfileKPApp, ProfileKPC
                     L.e(e.getMessage(), this);
                 }
 
-                if (sendMyProfileAutomatically){
+                if (sendMyProfileAutomatically) {
                     try {
                         PeerSTSet recipients = InMemoSharkKB.createInMemoPeerSTSet();
                         recipients.merge(kepConnection.getSender());
@@ -163,10 +171,11 @@ public class ProfileKP extends KnowledgePort implements ProfileKPApp, ProfileKPC
 
     /**
      * Creates ContextCoordinates with the profile topic.
+     *
      * @param direction
      * @return ContextCoordinates with the profile topic
      */
-    private ContextCoordinates getProfileCC(int direction){
+    private ContextCoordinates getProfileCC(int direction) {
         SemanticTag profileTopic = ProfileFactoryImpl.getProfileSemanticTag();
         return InMemoSharkKB.createInMemoContextCoordinates(profileTopic, null, this.owner, null, null, null, direction);
     }
@@ -176,20 +185,17 @@ public class ProfileKP extends KnowledgePort implements ProfileKPApp, ProfileKPC
         try {
             ContextCoordinates profileCC = getProfileCC(SharkCS.DIRECTION_IN);
 
-            while (peers.hasNext()){
+            while (peers.hasNext()) {
                 PeerSemanticTag peer = peers.next();
-                if (!SharkCSAlgebra.identical(peer, this.owner)){
+                if (!SharkCSAlgebra.identical(peer, this.owner)) {
                     this.sendInterest(profileCC, peer);
                 }
             }
-        }
-        catch (SharkKBException e) {
+        } catch (SharkKBException e) {
             L.e(e.getMessage(), this);
-        }
-        catch (SharkSecurityException e) {
+        } catch (SharkSecurityException e) {
             L.e(e.getMessage(), this);
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             L.e(e.getMessage(), this);
         }
     }
@@ -218,19 +224,16 @@ public class ProfileKP extends KnowledgePort implements ProfileKPApp, ProfileKPC
 
     @Override
     public void sendProfiles(Iterator<Profile> profiles, Iterator<PeerSemanticTag> recipients) {
-        while (recipients.hasNext()){
+        while (recipients.hasNext()) {
             PeerSemanticTag recipient = recipients.next();
             try {
                 Knowledge k = pf.getKnowledge4Profiles(profiles);
                 this.sendKnowledge(k, recipient);
-            }
-            catch (SharkKBException e1) {
+            } catch (SharkKBException e1) {
                 L.e(e1.getMessage(), this);
-            }
-            catch (SharkSecurityException e1) {
+            } catch (SharkSecurityException e1) {
                 L.e(e1.getMessage(), this);
-            }
-            catch (IOException e1) {
+            } catch (IOException e1) {
                 L.e(e1.getMessage(), this);
             }
         }

@@ -248,7 +248,6 @@ public interface GooglePlusProfile {
     //##########################EducationSection##########################
 
     /**
-     *
      * @param educationNumber depends on the order in which the education entries were added, e.g. the first added education has the number "1", the second added education is number "2" and so on.
      * @return the school name of the education entry with the given education number
      * @throws SharkKBException if the entry name does not exist
@@ -256,7 +255,6 @@ public interface GooglePlusProfile {
     String getSchoolName(String educationNumber) throws SharkKBException;
 
     /**
-     *
      * @param educationNumber depends on the order in which the education entries were added, e.g. the first added education has the number "1", the second added education is number "2" and so on.
      * @return the major of field of study of the education entry with the given education number
      * @throws SharkKBException if the entry name does not exist
@@ -264,7 +262,6 @@ public interface GooglePlusProfile {
     String getMajor(String educationNumber) throws SharkKBException;
 
     /**
-     *
      * @param educationNumber depends on the order in which the education entries were added, e.g. the first added education has the number "1", the second added education is number "2" and so on.
      * @return the start year of the education entry with the given education number
      * @throws SharkKBException if the entry name does not exist
@@ -272,7 +269,6 @@ public interface GooglePlusProfile {
     int getStartOfEducation(String educationNumber) throws SharkKBException;
 
     /**
-     *
      * @param educationNumber depends on the order in which the education entries were added, e.g. the first added education has the number "1", the second added education is number "2" and so on.
      * @return the end year of the education entry with the given education number
      * @throws SharkKBException if the entry name does not exist
@@ -280,7 +276,6 @@ public interface GooglePlusProfile {
     int getEndOfEducation(String educationNumber) throws SharkKBException;
 
     /**
-     *
      * @param educationNumber depends on the order in which the education entries were added, e.g. the first added education has the number "1", the second added education is number "2" and so on.
      * @return true if the education is the user's current education, false otherwise
      * @throws SharkKBException if the entry name does not exist
@@ -288,7 +283,6 @@ public interface GooglePlusProfile {
     boolean getIsEducationCurrent(String educationNumber) throws SharkKBException;
 
     /**
-     *
      * @param educationNumber depends on the order in which the education entries were added, e.g. the first added education has the number "1", the second added education is number "2" and so on.
      * @return a course description of the education entry with the given education number
      * @throws SharkKBException if the entry name does not exist
@@ -298,6 +292,7 @@ public interface GooglePlusProfile {
     /**
      * This function adds an education entry to the profile. It includes the name of the school, the major of field of study,
      * the start and end year of the education, a course description and it states if it is the user's current education.
+     *
      * @param schoolName
      * @param major
      * @param start
@@ -310,6 +305,7 @@ public interface GooglePlusProfile {
 
     /**
      * Removes the education entry with the given education number
+     *
      * @param educationNumber depends on the order in which the education entries were added, e.g. the first added education has the number "1", the second added education is number "2" and so on.
      * @throws SharkKBException if the entry name does not exist
      */
@@ -319,7 +315,6 @@ public interface GooglePlusProfile {
     //##########################PlacesSection##########################
 
     /**
-     *
      * @param placeNumber depends on the order in which the place entries were added, e.g. the first added place has the number "1", the second added place is number "2" and so on.
      * @return the city of the place entry with the given place number
      * @throws SharkKBException if the entry name does not exist
@@ -327,7 +322,6 @@ public interface GooglePlusProfile {
     String getCity(String placeNumber) throws SharkKBException;
 
     /**
-     *
      * @param placeNumber depends on the order in which the place entries were added, e.g. the first added place has the number "1", the second added place is number "2" and so on.
      * @return true if the place is where the user is currently living, false otherwise
      * @throws SharkKBException if the entry name does not exist
@@ -337,6 +331,7 @@ public interface GooglePlusProfile {
     /**
      * This function adds a place entry to the user's profile. It includes a city and states if this is the place where
      * the user is currently living.
+     *
      * @param city
      * @param isCurrent
      * @throws SharkKBException if the entry name does not exist
@@ -345,6 +340,7 @@ public interface GooglePlusProfile {
 
     /**
      * Removes the place entry with the given place number.
+     *
      * @param placeNumber depends on the order in which the place entries were added, e.g. the first added place has the number "1", the second added place is number "2" and so on.
      * @throws SharkKBException if the entry name does not exist
      */

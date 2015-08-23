@@ -79,7 +79,7 @@ public class GooglePlusProfileTest {
         assertEquals("I wrote my own linux kernel.", myGooglePlusProfile.getBraggingRights());
         assertEquals("I do my bachelors degree of applied science at the HTW subject: applied computing", myGooglePlusProfile.getOccupation());
         assertEquals("Java, Scala, C++, C, PHP, HTML, CSS", myGooglePlusProfile.getSkills());
-        assertEquals("HTW", myGooglePlusProfile.getEmploymentName("0"));
+        assertEquals("HTW", myGooglePlusProfile.getEmployerName("0"));
         assertEquals("Programmer", myGooglePlusProfile.getJobTitle("0"));
         assertEquals(2012, myGooglePlusProfile.getStartOfEmployment("0"));
         assertEquals(2015, myGooglePlusProfile.getEndOfEmployment("0"));

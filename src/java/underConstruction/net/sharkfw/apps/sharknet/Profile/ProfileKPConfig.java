@@ -9,6 +9,11 @@ public interface ProfileKPConfig {
      * @param acceptWithoutVerification
      */
     public void setAcceptWithoutVerification(boolean acceptWithoutVerification);
+
+    /**
+     *
+     * @return true if unsigned messages are accepted, false otherwise
+     */
     public boolean getAcceptWithoutVerification();
 
     /**
@@ -16,6 +21,11 @@ public interface ProfileKPConfig {
      * @param sendProfiles2UnknownPeer
      */
     public void setSendProfiles2UnknownPeer(boolean sendProfiles2UnknownPeer);
+
+    /**
+     *
+     * @return true if profiles should be sent to an unknown peer, false otherwise
+     */
     public boolean getSendProfiles2UnknownPeer();
 
     /**
@@ -23,6 +33,11 @@ public interface ProfileKPConfig {
      * @param sendMyProfileAutomatically
      */
     public void setSendMyProfileAutomatically(boolean sendMyProfileAutomatically);
+
+    /**
+     *
+     * @return true if the users profile should be sent automatically when a profile is received, false otherwise
+     */
     public boolean getSendMyProfileAutomatically();
 
     /**
@@ -31,6 +46,11 @@ public interface ProfileKPConfig {
      * @param ask4ProfilesAutomatically
      */
     public void setAsk4ProfilesAutomatically(boolean ask4ProfilesAutomatically);
+
+    /**
+     *
+     * @return true if a peer that requests a profile from the user should be asked for his/her profiles, false otherwise
+     */
     public boolean getAsk4ProfilesAutomatically();
 
     /**
@@ -39,6 +59,11 @@ public interface ProfileKPConfig {
      * @param acceptProfileWithDifferentOwner
      */
     public void setAcceptProfileWithDifferentOwner(boolean acceptProfileWithDifferentOwner);
+
+    /**
+     *
+     * @return true if profiles with a different owner are accepted, false otherwise
+     */
     public boolean getAcceptProfileWithDifferentOwner();
 
     /**
@@ -47,6 +72,11 @@ public interface ProfileKPConfig {
      * @param ask4ProfilesAutomaticallyOnWiFiDirectConnection
      */
     public void setAsk4ProfilesAutomaticallyOnWiFiDirectConnection(boolean ask4ProfilesAutomaticallyOnWiFiDirectConnection);
+
+    /**
+     *
+     * @return true if peers should be asked for their profiles automatically on a WiFi-Direct connection, false otherwise
+     */
     public boolean getAsk4ProfilesAutomaticallyOnWiFiDirectConnection();
 
     /**
@@ -55,5 +85,10 @@ public interface ProfileKPConfig {
      * @param sendProfileAutomaticallyOnWiFiDirectConnection
      */
     public void setSendProfileAutomaticallyOnWiFiDirectConnection(boolean sendProfileAutomaticallyOnWiFiDirectConnection);
+
+    /**
+     *
+     * @return true if the users profile should be send automatically on a WiFi-Direct connection, false otherwise
+     */
     public boolean getSendProfileAutomaticallyOnWiFiDirectConnection();
 }

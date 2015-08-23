@@ -149,9 +149,9 @@ public class GooglePlusProfileImpl implements GooglePlusProfile {
         return (String) entry.getEntryFromList(SKILLS).getContent();
     }
 
-    public void addEmployment(String employmentName, String jobTitle, int start, int end, boolean current, String jobDescription) throws SharkKBException {
+    public void addEmployment(String employerName, String jobTitle, int start, int end, boolean current, String jobDescription) throws SharkKBException {
         List<Entry<?>> entryList = new ArrayList<Entry<?>>();
-        entryList.add(new EntryImpl<String>(EMPLOYERNAME, employmentName));
+        entryList.add(new EntryImpl<String>(EMPLOYERNAME, employerName));
         entryList.add(new EntryImpl<String>(JOBTITLE, jobTitle));
         entryList.add(new EntryImpl<Integer>(START, start));
         entryList.add(new EntryImpl<Integer>(END, end));
@@ -166,7 +166,7 @@ public class GooglePlusProfileImpl implements GooglePlusProfile {
         p.removeSubEntry(WORK, employmentNumber);
     }
 
-    public String getEmploymentName(String employmentNumber) throws SharkKBException {
+    public String getEmployerName(String employmentNumber) throws SharkKBException {
         Entry<?> entry = p.getSubEntry(WORK, employmentNumber);
         List<Entry<?>> entryList = (List<Entry<?>>) entry.getContent();
         return (String) entryList.get(0).getContent();

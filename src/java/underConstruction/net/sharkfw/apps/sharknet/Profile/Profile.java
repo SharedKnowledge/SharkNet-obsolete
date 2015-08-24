@@ -8,12 +8,24 @@ import net.sharkfw.knowledgeBase.SharkKBException;
 import java.util.Date;
 import java.util.List;
 
-/**
- * Created by Mr.T on 16.04.2015.
+/**This profile is a generic container/storage for information about a thing mostly a person.
+ * Profiles can be written over persons from other persons or the same person writes a profile from itself.
+ * At the end if the profile is filled with information it should represent the person or the thing.
+ * Generic container/storage means the type of the information which should be stored is not fixed.
+ * It could be any type or shape and its possible to store it persistently.
+ * Created by Thilo Stegemann on 16.04.2015.
  */
 public interface Profile {
+    /**This is a constant name to identify the shark profile version property.
+     */
     String SHARK_PROFILE_VERSION_PROPERTY = "SHARK_PROFILE_VERSION_PROPERTY";
+
+    /**Returned the context point of the profile.
+     *
+     * @return The context point of the profile.
+     */
     ContextPoint getContextPoint();
+
     /**Returns the current Version of the Profile.
      * Every time the Profile is altered the version will increase by 1.
      * If the Profile is created the version starts by 0.
@@ -34,18 +46,131 @@ public interface Profile {
      */
     PeerSemanticTag getProfileCreator();
 
+    /**Creates an empty entry and the identifier is the name of this entry.
+     *
+     * @param identifier Name of the entry.
+     * @throws SharkKBException This message is thrown when no SharkKB is found or if there is another problem with the SharkKB.
+     */
     void createProfileEntry(String identifier) throws SharkKBException;
+
+    /**Creates an entry with content and a name.
+     *
+     * @param identifier Name of the entry.
+     * @param entryContent Content of the entry.
+     * @param <T> Generic type of the content.
+     * @throws SharkKBException This message is thrown when no SharkKB is found or if there is another problem with the SharkKB.
+     */
     <T> void createProfileEntry(String identifier, T entryContent) throws SharkKBException;
+
+    /**Creates an entry with a list of entries as content and a name.
+     *
+     * @param identifier Name of the entry.
+     * @param entryList Content of the entry.
+     * @param <T> Generic type of the content.
+     * @throws SharkKBException
+     */
     <T> void createProfileEntry(String identifier, List<Entry<T>> entryList) throws SharkKBException;
+
+    /**Creates an empty sub entry in an existing entry under a specified entry from the root entry.
+     *
+     * @param superEntryName Name of the root entry.
+     * @param saveNewSubEntryUnderThisEntryName Sub entry is stored under this entry.
+     * @param subEntryName Name of the new sub entry.
+     * @throws SharkKBException This message is thrown when no SharkKB is found or if there is another problem with the SharkKB.
+     */
     void createSubEntry(String superEntryName, String saveNewSubEntryUnderThisEntryName, String subEntryName) throws SharkKBException;
+
+    /**Creates an sub entry with generic content in an existing entry under a specified entry from the root entry.
+     *
+     * @param superEntryName Name of the root entry.
+     * @param saveNewSubEntryUnderThisEntryName Sub entry is stored under this entry.
+     * @param subEntryName Name of the new sub entry.
+     * @param content Content of the new sub entry.
+     * @param <T> Generic type of the content.l
+     * @throws SharkKBException This message is thrown when no SharkKB is found or if there is another problem with the SharkKB.
+     */
     <T> void createSubEntry(String superEntryName, String saveNewSubEntryUnderThisEntryName, String subEntryName, T content) throws SharkKBException;
+
+    /**Returns a sub entry from an existing root entry.
+     *
+     * @param superEntryName Name of the root entry.
+     * @param subEntryName Name of the sub entry.
+     * @param <T> Generic type of the entry.
+     * @return The entry with the name of the sub entry.
+     * @throws SharkKBException This message is thrown when no SharkKB is found or if there is another problem with the SharkKB.
+     */
     <T> Entry<T> getSubEntry(String superEntryName, String subEntryName) throws SharkKBException;
+
+    /**This function is similar to createSubEntry(), it adds an empty sub entry under a root entry.
+     * The difference between these functions is addSubEntryInEntry can only add an entry under the root entry,
+     * so if the root entry is dimension 1 and directly under the root entry is dimension 2 its only possible to
+     * store entrys in dimension 2 but not in higher ones.
+     * CreateSubEntry() can store entries in dimension 4 ... 5 and so on.
+     *
+     * @param superEntryName Name of teh root entry.
+     * @param subEntryName Name of the new sub entry.
+     * @param <T> Generic type of the root entry.
+     * @throws SharkKBException This message is thrown when no SharkKB is found or if there is another problem with the SharkKB.
+     */
     <T> void addSubEntryInEntry(String superEntryName, String subEntryName) throws SharkKBException;
+
+
+    /**This function is similar to createSubEntry(), it adds a sub entry with content under a root entry.
+     * The difference between these functions is addSubEntryInEntry can only add an entry under the root entry,
+     * so if the root entry is dimension 1 and directly under the root entry is dimension 2 its only possible to
+     * store entrys in dimension 2 but not in higher ones.
+     * CreateSubEntry() can store entries in dimension 4 ... 5 and so on.
+     *
+     * @param superEntryName Name of the root entry.
+     * @param subEntryName Name of the new sub entry.
+     * @param content Content of the new sub entry.
+     * @param <T> Generic type of the content.
+     * @throws SharkKBException This message is thrown when no SharkKB is found or if there is another problem with the SharkKB.
+     */
     <T> void addSubEntryInEntry(String superEntryName, String subEntryName, T content) throws SharkKBException;
+
+    /**It changes the content of a sub entry.
+     *
+     * @param superEntryName Name of the root entry.
+     * @param subEntryName Name of the sub entry.
+     * @param content New content.
+     * @param <T> Generic type of the content.
+     * @throws SharkKBException This message is thrown when no SharkKB is found or if there is another problem with the SharkKB.
+     */
     <T> void alterSubEntryContent(String superEntryName, String subEntryName, T content) throws SharkKBException;
+
+    /**Returns a profile entry.
+     *
+     * @param identifier Name of the profile entry.
+     * @return The profile entry.
+     * @throws SharkKBException This message is thrown when no SharkKB is found or if there is another problem with the SharkKB.
+     */
     Entry<?> getProfileEntry(String identifier) throws SharkKBException;
+
+    /**Removes a profile entry.
+     *
+     * @param identifier Name of the entry which should be removed.
+     */
     void removeProfileEntry(String identifier);
+
+    /**Removes a sub entry of an root entry.
+     *
+     *
+     * @param superEntryName Name of the root entry.
+     * @param entryName Name of the sub entry which should be removed.
+     * @param <T> Generic type of the root entry.
+     * @throws SharkKBException This message is thrown when no SharkKB is found or if there is another problem with the SharkKB.
+     */
     <T> void removeSubEntry(String superEntryName, String entryName) throws SharkKBException;
+
+    /**Removes an entry from a sub entry of an root entry.
+     *
+     * @param superEntryName Name of the root entry.
+     * @param subEntryName Name of the sub entry.
+     * @param entryName Name of the entry which should be deleted.
+     * @param <T> Generic type of the root entry.
+     * @throws SharkKBException This message is thrown when no SharkKB is found or if there is another problem with the SharkKB.
+     */
     <T> void removeEntryFromSubEntry(String superEntryName, String subEntryName, String entryName) throws SharkKBException;
 
     /**Sets a profile name.
@@ -100,23 +225,6 @@ public interface Profile {
      * @throws SharkKBException This message is thrown when no SharkKB is found or if there is another problem with the SharkKB.
      */
     void clearPicture(String identifier) throws SharkKBException;
-
-    /**Sets a birthday "Date" in this profile.
-     * The Birthday is represented as a Date.
-     *
-     * @param datum The Birthday Date.
-     * @throws SharkKBException This message is thrown when no SharkKB is found or if there is another problem with the SharkKB.
-     */
-    void setBirthday(Date datum) throws SharkKBException;
-
-    /**Returns the birthday "Date" of this profile.
-     *
-     * @return The birthday Date.
-     * @throws SharkKBException This message is thrown when no SharkKB is found or if there is another problem with the SharkKB.
-     */
-    Date getBirthday() throws SharkKBException;
-
-    //das setProfileAdress ist überflüssig, aber das get ist gut in dem Fall
 
     /**Returns the addresses of the ProfileTarget.
      *

@@ -207,18 +207,6 @@ public class ProfileImpl implements Profile, Serializable {
         cp.removeInformation(getPicture(identifier));
     }
 
-
-    @Override
-    public void setBirthday(Date datum) throws SharkKBException {
-        addAndSerializeObjInContextPoint(PROFILEBIRTHDAY, datum);
-        increaseVersion();
-    }
-
-    @Override
-    public Date getBirthday() throws SharkKBException {
-        return (Date) getAndDeserializeObjFromContextPoint(PROFILEBIRTHDAY);
-    }
-
     @Override
     public String[] getProfileAddresses() {
         return profileTarget.getAddresses();

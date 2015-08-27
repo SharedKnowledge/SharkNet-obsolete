@@ -80,11 +80,11 @@ public class ProfileImplTest {
         p.addSubEntryInEntry("Name", "Surname", "Peter");
         p.addSubEntryInEntry("Name", "LastName", "Schmitt");
         p.addSubEntryInEntry("Name", "Alter", 22);
-        System.out.println(p.getProfileEntry("Name").getEntryFromList("Surname").getContent());
-        System.out.println(p.getProfileEntry("Name").getEntryFromList("LastName").getContent());
-        System.out.println(p.getProfileEntry("Name").getEntryFromList("Alter").getContent());
+        Assert.assertEquals("Peter", p.getProfileEntry("Name").getEntryFromList("Surname").getContent());
+        Assert.assertEquals("Schmitt", p.getProfileEntry("Name").getEntryFromList("LastName").getContent());
+        Assert.assertEquals(22, p.getProfileEntry("Name").getEntryFromList("Alter").getContent());
         p.alterSubEntryContent("Name", "Surname", "HansPeter");
-        System.out.println(p.getProfileEntry("Name").getEntryFromList("Surname").getContent());
+        Assert.assertEquals("HansPeter", p.getProfileEntry("Name").getEntryFromList("Surname").getContent());
     }
 
     @Test
@@ -111,13 +111,7 @@ public class ProfileImplTest {
         Assert.assertEquals("I am a picture", i.getContentAsString());
         Assert.assertEquals("ProfilePicture", i.getContentType());
         profile.clearPicture(identifier);
-        i = profile.getPicture(identifier);
-    }
-
-    @Test
-    public void testProfileBirthday() throws Exception {
-        PeerSemanticTag alice = createAlice();
-        Profile profile = profileFactory.createProfile(alice, alice);
+        profile.getPicture(identifier);
     }
 
     @Test

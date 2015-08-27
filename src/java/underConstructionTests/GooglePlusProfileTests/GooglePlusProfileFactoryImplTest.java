@@ -40,8 +40,8 @@ public class GooglePlusProfileFactoryImplTest {
         assertEquals("Alice", newAlice.getFirstName());
 
         List<GooglePlusProfile> profileList = googlePlusProfileFactory.getAllGooglePlusProfiles();
-        assertEquals("Alice", profileList.get(0).getFirstName());
-        assertEquals("Bob", profileList.get(1).getFirstName());
+        assertEquals("Alice", profileList.get(1).getFirstName());
+        assertEquals("Bob", profileList.get(0).getFirstName());
 
         googlePlusProfileFactory.removeGooglePlusProfile("Alice", "http://www.sharksystem.net/alice.html");
         profileList = googlePlusProfileFactory.getAllGooglePlusProfiles();

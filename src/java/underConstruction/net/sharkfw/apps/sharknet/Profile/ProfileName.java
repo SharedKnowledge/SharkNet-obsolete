@@ -11,25 +11,42 @@ import net.sharkfw.knowledgeBase.SharkKBException;
  * Entries are generic so we could simply add nickname variable to our entry.
  * But for fixed testing issues this class is useful too.
  *
- * Created by Mr.T on 22.04.2015.
+ * Created by Thilo Stegemann on 22.04.2015.
  */
 public interface ProfileName {
     /**Sets the surname of a profile.
      *
      * @param surname The surname.
-     * @throws SharkKBException This message is thrown when no SharkKB is found or if there is another problem with the SharkKB.
      */
-    void setSurname(String surname) throws SharkKBException;
+    void setSurname(String surname);
 
-    /**
+    /**Returns the surname of a profile.
      *
-     * @return
+     * @return The surname of a profile.
      */
     String getSurname();
 
+    /**Sets the last name of a profile.
+     *
+     * @param lastName The last name of a profile.
+     */
     void setLastName(String lastName);
+
+    /**Returns the last name of a profile.
+     *
+     * @return The last name of a profile.
+     */
     String getLastName();
 
+    /**Sets the title of a profile.
+     *
+     * @param title Title of a profile.
+     */
     void setTitle(String title);
+
+    /**Returns the title of a profile.
+     *
+     * @return Title of a profile.
+     */
     String getTitle();
 }

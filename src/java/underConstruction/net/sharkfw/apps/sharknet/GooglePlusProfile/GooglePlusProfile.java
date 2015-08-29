@@ -547,27 +547,99 @@ public interface GooglePlusProfile {
 
     //##########################LinkSection##########################
 
+    /**
+     * This function adds an other profiles entry to the profile. It includes the label of an other profile.
+     * A label is like a description of the other profile. And it includes the url of the other profile.
+     *
+     * @param label The label of an other profile
+     * @param url The url of an other profile
+     * @throws SharkKBException if the entry name does not exist
+     */
     void addOtherProfiles(String label, String url) throws SharkKBException;
 
+    /**
+     * @param otherProfilesNumber depends on the order in which the other profiles entries were added, e.g. the first added other profile has the number "1", the second added other profile is number "2" and so on.
+     * @return Label of the other profile
+     * @throws SharkKBException if the entry name does not exist
+     */
     String getOtherProfilesLabel(int otherProfilesNumber) throws SharkKBException;
 
+    /**
+     * @param otherProfilesNumber depends on the order in which the other profiles entries were added, e.g. the first added other profile has the number "1", the second added other profile is number "2" and so on.
+     * @return Url of the other profile
+     * @throws SharkKBException if the entry name does not exist
+     */
     String getOtherProfilesUrl(int otherProfilesNumber) throws SharkKBException;
 
+    /**
+     * Removes an other profile from the profile.
+     *
+     * @param otherProfilesNumber depends on the order in which the other profiles entries were added, e.g. the first added other profile has the number "1", the second added other profile is number "2" and so on.
+     * @throws SharkKBException if the entry name does not exist
+     */
     void removeOtherProfiles(String otherProfilesNumber) throws SharkKBException;
 
+    /**
+     * This function adds an contributor to entry to the profile. It includes the label of something the user contributes to.
+     * A label is like a description of something the user contributes to. And it includes the url of the thing he contributes to.
+     *
+     * @param label The label of contribution
+     * @param url The url of contribution
+     * @throws SharkKBException if the entry name does not exist
+     */
     void addContributorTo(String label, String url) throws SharkKBException;
 
+    /**
+     * @param contributorsNumber depends on the order in which the contributor to entries were added, e.g. the first added contributor to has the number "1", the second added contributor to is number "2" and so on.
+     * @return The label of something the user contributes to.
+     * @throws SharkKBException if the entry name does not exist
+     */
     String getContributorsLabel(int contributorsNumber) throws SharkKBException;
 
+    /**
+     * @param contributorsNumber depends on the order in which the contributor to entries were added, e.g. the first added contributor to has the number "1", the second added contributor to is number "2" and so on.
+     * @return The url of something the user contributes to.
+     * @throws SharkKBException if the entry name does not exist
+     */
     String getContributorsUrl(int contributorsNumber) throws SharkKBException;
 
+    /**
+     * Removes a contributor to from the profile.
+     *
+     * @param contributorsNumber depends on the order in which the contributor to entries were added, e.g. the first added contributor to has the number "1", the second added contributor to is number "2" and so on.
+     * @throws SharkKBException if the entry name does not exist
+     */
     void removeContributor(String contributorsNumber) throws SharkKBException;
 
+    /**
+     * This function adds an link entry to the profile. It includes the label of a link.
+     * A label is like a description of a link. And it includes the url of the thing he contributes to.
+     *
+     * @param label The label of the link
+     * @param url The url of the link
+     * @throws SharkKBException if the entry name does not exist
+     */
     void addLinks(String label, String url) throws SharkKBException;
 
+    /**
+     * @param linkNumber depends on the order in which the link entries were added, e.g. the first added link has the number "1", the second added link is number "2" and so on.
+     * @return The label of the link
+     * @throws SharkKBException if the entry name does not exist
+     */
     String getLinkLabel(int linkNumber) throws SharkKBException;
 
+    /**
+     * @param linkNumber depends on the order in which the link entries were added, e.g. the first added link has the number "1", the second added link is number "2" and so on.
+     * @return The url of the link
+     * @throws SharkKBException if the entry name does not exist
+     */
     String getLinkUrl(int linkNumber) throws SharkKBException;
 
+    /**
+     * Removes a link from the profile.
+     *
+     * @param linkNumber depends on the order in which the link entries were added, e.g. the first added link has the number "1", the second added link is number "2" and so on.
+     * @throws SharkKBException if the entry name does not exist
+     */
     void removeLinks(String linkNumber) throws SharkKBException;
 }

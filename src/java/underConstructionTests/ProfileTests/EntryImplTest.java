@@ -1,6 +1,7 @@
 package ProfileTests;
 
 import Profile.*;
+import junit.framework.Assert;
 import net.sharkfw.knowledgeBase.PeerSemanticTag;
 import net.sharkfw.knowledgeBase.SharkKB;
 import net.sharkfw.knowledgeBase.SharkKBException;
@@ -12,6 +13,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+
+import static org.junit.Assert.assertEquals;
 
 /**
  * Created by Mr.T on 13.07.2015.
@@ -38,20 +41,24 @@ public class EntryImplTest {
     }
 
     @Test
-    public void testCreateEntry() throws Exception {
-    }
-
-    @Test
-    public void testCreatingProfileNameEntry() {
-
+    public void testCreatingProfileNameEntry() throws SharkKBException {
+        Profile aliceProfile = createProfileAlice();
+        List<Entry<?>> entryList = new ArrayList<>();
+        entryList.add(new EntryImpl<String>("Surname", "Alice"));
+        entryList.add(new EntryImpl<String>("LastName", "Alpha"));
+        entryList.add(new EntryImpl<String>("Title", "Dr."));
+        aliceProfile.createProfileEntry("ProfileName", entryList);
+        entryList = (List<Entry<?>>) aliceProfile.getSubEntry("ProfileName", "ProfileName").getContent();
+        assertEquals("Alice", entryList.get(0).getContent());
+        assertEquals("Alpha", entryList.get(1).getContent());
+        assertEquals("Dr.", entryList.get(2).getContent());
     }
     @Test
     public void testCreateProfileName() throws SharkKBException {
         Profile aliceProfile = createProfileAlice();
         aliceProfile.createProfileEntry("Surname", "Hannes");
         Profile newAlice = profileFactory.getProfile(alice, alice);
-        Entry<?> entry = newAlice.getProfileEntry("Surname");
-        System.out.println(entry.getEntryName());
+        assertEquals("Hannes", newAlice.getProfileEntry("Surname").getContent());
     }
     @Test
     public void testCreatingProfileProblemEntry() throws SharkKBException, IOException, ClassNotFoundException {
@@ -64,21 +71,16 @@ public class EntryImplTest {
         aliceProfile.createProfileEntry("ProfileProblem", entryList);
 
         Profile newAlice = profileFactory.getProfile(alice, alice);
-        Entry<?> profileProblem = newAlice.getProfileEntry("ProfileProblem");
-        List<Entry<?>> entryListNew = (List<Entry<?>>) profileProblem.getContent();
-        Entry<String> problemName = (Entry<String>) entryListNew.get(0);
-        System.out.println(problemName.getContent());
-        Entry<byte[]> content = (Entry<byte[]>) entryListNew.get(1);
-        System.out.println(Serializer.deserialize(content.getContent()));
+        entryList = (List<Entry<?>>) newAlice.getProfileEntry("ProfileProblem").getContent();
+        assertEquals("Bridge is destroyed", entryList.get(0).getContent());
+        assertEquals(Serializer.deserialize(bytes), Serializer.deserialize((byte[]) entryList.get(1).getContent()));
     }
 
     @Test
     public void testGetEntry() throws Exception {
-
-    }
-
-    @Test
-    public void testGetEntries() throws Exception {
-
+        Profile aliceProfile = createProfileAlice();
+        aliceProfile.createProfileEntry("Root");
+        aliceProfile.createSubEntry("Root", "Root", "Node1", "Information");
+        assertEquals("Information", aliceProfile.getSubEntry("Root", "Node1").getContent());
     }
 }

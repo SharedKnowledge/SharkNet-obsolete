@@ -333,7 +333,7 @@ public class GooglePlusProfileImpl implements GooglePlusProfile {
     }
 
     @Override
-    public void setLookingforRelationship(Boolean isLooking) throws SharkKBException {
+    public void setLookingForRelationship(Boolean isLooking) throws SharkKBException {
         p.addSubEntryInEntry(BASICINFORMATION, LOOKINGFORRELATIONSHIP, isLooking);
     }
 
@@ -344,7 +344,7 @@ public class GooglePlusProfileImpl implements GooglePlusProfile {
     }
 
     @Override
-    public void setLookingforNetworking(Boolean isLooking) throws SharkKBException {
+    public void setLookingForNetworking(Boolean isLooking) throws SharkKBException {
         p.addSubEntryInEntry(BASICINFORMATION, LOOKINGFORNETWORKING, isLooking);
     }
 

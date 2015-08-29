@@ -65,7 +65,7 @@ public interface GooglePlusProfile {
     /**
      * Sets the first name of the user.
      *
-     * @param firstName
+     * @param firstName First name of the user
      * @throws SharkKBException if the entry name does not exist
      */
     void setFirstName(String firstName) throws SharkKBException;
@@ -79,7 +79,7 @@ public interface GooglePlusProfile {
     /**
      * Sets the last name of the user.
      *
-     * @param lastName
+     * @param lastName Last name of the user
      * @throws SharkKBException if the entry name does not exist
      */
     void setLastName(String lastName) throws SharkKBException;
@@ -93,7 +93,7 @@ public interface GooglePlusProfile {
     /**
      * Sets the nickname of the user.
      *
-     * @param nickname
+     * @param nickname Nickname of the user
      * @throws SharkKBException if the entry name does not exist
      */
     void setNickname(String nickname) throws SharkKBException;
@@ -110,7 +110,7 @@ public interface GooglePlusProfile {
     /**
      * Sets the tagline of the user.
      *
-     * @param tagline
+     * @param tagline Tagline of the user
      * @throws SharkKBException if the entry name does not exist
      */
     void setTagline(String tagline) throws SharkKBException;
@@ -124,7 +124,7 @@ public interface GooglePlusProfile {
     /**
      * Sets the introduction of the user.
      *
-     * @param introduction
+     * @param introduction Introduction of the user
      * @throws SharkKBException if the entry name does not exist
      */
     void setIntroduction(String introduction) throws SharkKBException;
@@ -138,7 +138,7 @@ public interface GooglePlusProfile {
     /**
      * Sets the user's bragging rights
      *
-     * @param braggingRights
+     * @param braggingRights Bragging rights of the user
      * @throws SharkKBException if the entry name does not exist
      */
     void setBraggingRights(String braggingRights) throws SharkKBException;
@@ -155,7 +155,7 @@ public interface GooglePlusProfile {
     /**
      * Sets the user's occupation
      *
-     * @param occupation
+     * @param occupation Occupation of the user
      * @throws SharkKBException if the entry name does not exist
      */
     void setOccupation(String occupation) throws SharkKBException;
@@ -169,7 +169,7 @@ public interface GooglePlusProfile {
     /**
      * Sets the skills of the user.
      *
-     * @param skills
+     * @param skills Skills of the user
      * @throws SharkKBException if the entry name does not exist
      */
     void setSkills(String skills) throws SharkKBException;
@@ -184,12 +184,12 @@ public interface GooglePlusProfile {
      * This function adds an employment entry to the user's profile. It includes the employer name, job title, start
      * and end year of the employment, a job description and it states if it is the current employment of the user.
      *
-     * @param employerName
-     * @param jobTitle
-     * @param start
-     * @param end
-     * @param current
-     * @param jobDescription
+     * @param employerName Name of the employer
+     * @param jobTitle Title of the job
+     * @param start When the job starts
+     * @param end When the job ends
+     * @param current Is this the current job
+     * @param jobDescription Description of the job
      * @throws SharkKBException if the entry name does not exist
      */
     void addEmployment(String employerName, String jobTitle, int start, int end, boolean current, String jobDescription) throws SharkKBException;
@@ -293,12 +293,12 @@ public interface GooglePlusProfile {
      * This function adds an education entry to the profile. It includes the name of the school, the major of field of study,
      * the start and end year of the education, a course description and it states if it is the user's current education.
      *
-     * @param schoolName
-     * @param major
-     * @param start
-     * @param end
-     * @param current
-     * @param courseDescription
+     * @param schoolName Name of the school
+     * @param major Major of field of study
+     * @param start Start year of education
+     * @param end End year of education
+     * @param current Flag if its the user`s current education
+     * @param courseDescription Description of the course
      * @throws SharkKBException if the entry name does not exist
      */
     void addEducation(String schoolName, String major, int start, int end, boolean current, String courseDescription) throws SharkKBException;
@@ -332,8 +332,8 @@ public interface GooglePlusProfile {
      * This function adds a place entry to the user's profile. It includes a city and states if this is the place where
      * the user is currently living.
      *
-     * @param city
-     * @param isCurrent
+     * @param city City of the user
+     * @param isCurrent Flag if its the city where the user is currently living
      * @throws SharkKBException if the entry name does not exist
      */
     void addPlace(String city, boolean isCurrent) throws SharkKBException;
@@ -346,56 +346,206 @@ public interface GooglePlusProfile {
      */
     void removePlace(String placeNumber) throws SharkKBException;
 
+    //##########################BasicInformationSection##########################
 
+    /**
+     * Sets the user`s gender.
+     *
+     * @param gender Gender of the user
+     * @throws SharkKBException if the entry name does not exist
+     */
     void setGender(String gender) throws SharkKBException;
 
+    /**
+     * @return Gender of the user.
+     * @throws SharkKBException if the entry name does not exist
+     */
     String getGender() throws SharkKBException;
 
+    /**
+     * Set a statement if the user is looking for friends.
+     *
+     * @param isLooking Flag if the user is looking for friends
+     * @throws SharkKBException if the entry name does not exist
+     */
     void setLookingforFriends(Boolean isLooking) throws SharkKBException;
 
+    /**
+     *
+     * @return Flag if the user is looking for friends
+     * @throws SharkKBException if the entry name does not exist
+     */
     Boolean getLookingForFriends() throws SharkKBException;
 
+    /**
+     * Set a statement(flag) if the user is looking for a date.
+     *
+     * @param isLooking Flag if the user is looking for a date.
+     * @throws SharkKBException if the entry name does not exist
+     */
     void setLookingforDating(Boolean isLooking) throws SharkKBException;
 
+    /**
+     *
+     * @return Flag if the user is looking for a date.
+     * @throws SharkKBException if the entry name does not exist
+     */
     Boolean getLookingForDating() throws SharkKBException;
 
-    void setLookingforRelationship(Boolean isLooking) throws SharkKBException;
+    /**
+     * Set a statement(flag) if the user is looking for a relationship.
+     *
+     * @param isLooking Flag if the user is looking for a relationship.
+     * @throws SharkKBException if the entry name does not exist
+     */
+    void setLookingForRelationship(Boolean isLooking) throws SharkKBException;
 
+    /**
+     *
+     * @return Flag if the user is looking for a relationship
+     * @throws SharkKBException if the entry name does not exist
+     */
     Boolean getLookingForRelationship() throws SharkKBException;
 
-    void setLookingforNetworking(Boolean isLooking) throws SharkKBException;
+    /**
+     * Set a statement(flag) if the user is looking for networking.
+     * @param isLooking Flag if the user is looking for networking
+     * @throws SharkKBException if the entry name does not exist
+     */
+    void setLookingForNetworking(Boolean isLooking) throws SharkKBException;
 
+    /**
+     *
+     * @return Flag if the user is looking for networking
+     * @throws SharkKBException if the entry name does not exist
+     */
     Boolean getLookingForNetworking() throws SharkKBException;
 
+    /**
+     * Sets the birthday of the user.
+     * @param birthday Birthday of the user
+     * @throws SharkKBException if the entry name does not exist
+     */
     void setBirthday(String birthday) throws SharkKBException;
 
+    /**
+     *
+     * @return Birthday of the user
+     * @throws SharkKBException
+     */
     String getBirthday() throws SharkKBException;
 
+    /**
+     * Sets the relationship of the user.
+     *
+     * @param relationship Relationship of the user
+     * @throws SharkKBException if the entry name does not exist
+     */
     void setRelationship(String relationship) throws SharkKBException;
 
+    /**
+     *
+     * @return Relationship of the user
+     * @throws SharkKBException if the entry name does not exist
+     */
     String getRelationship() throws SharkKBException;
 
+    /**
+     * @param nameNumber depends on the order in which the other name entries were added, e.g. the first added other name has the number "1", the second added other name is number "2" and so on.
+     * @return For example maiden name or name with alternate spelling.
+     * @throws SharkKBException if the entry name does not exist
+     */
     String getOtherName(String nameNumber) throws SharkKBException;
 
+    /**
+     * Adds an other name so a name with different/alternate spelling or e.g. the maidens name.
+     *
+     * @param name Other Name of the user
+     * @throws SharkKBException if the entry name does not exist
+     */
     void addOtherName(String name) throws SharkKBException;
 
+    /**
+     * Removes an other name from the profile.
+     *
+     * @param nameNumber depends on the order in which the other name entries were added, e.g. the first added other name has the number "1", the second added other name is number "2" and so on.
+     * @throws SharkKBException if the entry name does not exist
+     */
     void removeOtherName(String nameNumber) throws SharkKBException;
 
+    //##########################ContactInformationSection##########################
+
+    /**
+     * This function adds an home contact entry to the profile. It includes the contact type e.g. mobile number, home address, FAX number and so on.
+     * And it includes contact info like the content of the contact type.
+     * Contact type = Mobile Number and contact info = 0172-44552213.
+     *
+     * @param contactType The kind of information stored
+     * @param contactInfo Content of the type
+     * @throws SharkKBException if the entry name does not exist
+     */
     void addHomeContact(String contactType, String contactInfo) throws SharkKBException;
 
+    /**
+     *
+     * @param contactNumber depends on the order in which the home contact entries were added, e.g. the first added home contact has the number "1", the second added home contact is number "2" and so on.
+     * @return Home contact type
+     * @throws SharkKBException if the entry name does not exist
+     */
     String getHomeContactType(int contactNumber) throws SharkKBException;
 
+    /**
+     *
+     * @param contactNumber depends on the order in which the home contact entries were added, e.g. the first added home contact has the number "1", the second added home contact is number "2" and so on.
+     * @return Home contact info
+     * @throws SharkKBException if the entry name does not exist
+     */
     String getHomeContactInfo(int contactNumber) throws SharkKBException;
 
+    /**
+     * Removes a home contact from the profile.
+     *
+     * @param contactNumber depends on the order in which the home contact entries were added, e.g. the first added home contact has the number "1", the second added home contact is number "2" and so on.
+     * @throws SharkKBException if the entry name does not exist
+     */
     void removeHomeContact(String contactNumber) throws SharkKBException;
 
+    /**
+     * This function adds an work contact entry to the profile. It includes the contact type e.g. mobile number, home address, FAX number and so on.
+     * And it includes contact info like the content of the contact type.
+     * Contact type = Mobile Number and contact info = 0172-44552213.
+     *
+     * @param contactType The kind of information stored
+     * @param contactInfo Content of the type
+     * @throws SharkKBException if the entry name does not exist
+     */
     void addWorkContact(String contactType, String contactInfo) throws SharkKBException;
 
+    /**
+     *
+     * @param contactNumber depends on the order in which the home contact entries were added, e.g. the first added home contact has the number "1", the second added home contact is number "2" and so on.
+     * @return Work contact type
+     * @throws SharkKBException if the entry name does not exist
+     */
     String getWorkContactType(int contactNumber) throws SharkKBException;
 
+    /**
+     *
+     * @param contactNumber depends on the order in which the home contact entries were added, e.g. the first added home contact has the number "1", the second added home contact is number "2" and so on.
+     * @return Work contact info
+     * @throws SharkKBException if the entry name does not exist
+     */
     String getWorkContactInfo(int contactNumber) throws SharkKBException;
 
+    /**
+     * Removes a work contact from the profile.
+     *
+     * @param contactNumber depends on the order in which the home contact entries were added, e.g. the first added home contact has the number "1", the second added home contact is number "2" and so on.
+     * @throws SharkKBException if the entry name does not exist
+     */
     void removeWorkContact(String contactNumber) throws SharkKBException;
+
+    //##########################LinkSection##########################
 
     void addOtherProfiles(String label, String url) throws SharkKBException;
 

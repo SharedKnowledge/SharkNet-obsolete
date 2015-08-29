@@ -56,8 +56,8 @@ public class GooglePlusProfileTest {
         myGooglePlusProfile.setGender("Female");
         myGooglePlusProfile.setLookingforFriends(true);
         myGooglePlusProfile.setLookingforDating(true);
-        myGooglePlusProfile.setLookingforNetworking(true);
-        myGooglePlusProfile.setLookingforRelationship(false);
+        myGooglePlusProfile.setLookingForNetworking(true);
+        myGooglePlusProfile.setLookingForRelationship(false);
         myGooglePlusProfile.setBirthday("03.12.1992");
         myGooglePlusProfile.setRelationship("I´m in a relation with Bob.");
         myGooglePlusProfile.addOtherName("Jizy");

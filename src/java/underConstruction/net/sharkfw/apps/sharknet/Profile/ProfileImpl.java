@@ -7,9 +7,6 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-/**
- * Created by Mr.T on 16.04.2015.
- */
 public class ProfileImpl implements Profile, Serializable {
     public static final String PROFILENAME = "ProfileName";
     public static final String PROFILEBIRTHDAY = "ProfileBirthday";

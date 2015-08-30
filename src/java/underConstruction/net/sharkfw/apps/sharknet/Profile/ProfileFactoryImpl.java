@@ -8,9 +8,6 @@ import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
 
-/**
- * Created by Mr.T on 06.05.2015.
- */
 public class ProfileFactoryImpl implements ProfileFactory {
     private SharkKB kb = null;
     private static SemanticTag profileSemanticTag = null;

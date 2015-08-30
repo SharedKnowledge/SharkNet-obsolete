@@ -18,7 +18,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 /**
- * Created by Mr.T on 29.05.2015.
+ * Created by Thilo Stegemann on 29.05.2015.
  */
 public class ProfileFactoryImplTest {
     private SharkKB kb = new InMemoSharkKB();

@@ -8,9 +8,6 @@ import net.sharkfw.knowledgeBase.SharkKBException;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Mr.T on 03.07.2015.
- */
 public class GooglePlusProfileImpl implements GooglePlusProfile {
 
     private Profile p;

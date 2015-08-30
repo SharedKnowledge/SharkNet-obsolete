@@ -3,9 +3,6 @@ package Profile;
 
 import java.io.Serializable;
 
-/**
- * Created by Mr.T on 22.04.2015.
- */
 public class ProfileNameImpl implements ProfileName, Serializable {
     private String surname = "";
     private String lastName = "";

@@ -22,7 +22,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 /**
- * Created by Mr.T on 16.07.2015.
+ * Created by Thilo Stegemann and Maximilian Herzog on 16.07.2015.
  */
 public class GooglePlusProfileTest {
 

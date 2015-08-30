@@ -9,9 +9,6 @@ import net.sharkfw.knowledgeBase.inmemory.InMemoSharkKB;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Mr.T on 15.07.2015.
- */
 public class GooglePlusProfileFactoryImpl implements GooglePlusProfileFactory{
     private ProfileFactory pf;
 

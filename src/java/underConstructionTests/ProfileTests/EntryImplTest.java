@@ -17,7 +17,7 @@ import java.util.List;
 import static org.junit.Assert.assertEquals;
 
 /**
- * Created by Mr.T on 13.07.2015.
+ * Created by Thilo Stegemann on 13.07.2015.
  */
 public class EntryImplTest {
     private SharkKB kb = new InMemoSharkKB();

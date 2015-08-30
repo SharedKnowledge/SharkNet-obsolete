@@ -15,7 +15,7 @@ import java.util.List;
 import static org.junit.Assert.*;
 
 /**
- * Created by Wayne on 05.08.2015.
+ * Created by Thilo Stegemann and Maximilian Herzog on 05.08.2015.
  */
 public class GooglePlusProfileFactoryImplTest {
 

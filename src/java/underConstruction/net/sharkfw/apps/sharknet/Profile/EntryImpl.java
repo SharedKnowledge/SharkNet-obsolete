@@ -5,9 +5,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-/**
- * Created by Mr.T on 03.07.2015.
- */
 public class EntryImpl<T> implements Entry<T>, Serializable {
     private String entryName = "";
     private T content = null;

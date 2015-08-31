@@ -4,7 +4,7 @@ import java.util.List;
 
 /**An entry is an approach to be a generic container for information.
  * Different kinds of information should be stored in entries.
- * So the structure of entries is also customisable.
+ * So the structure of entries is also alterable.
  * Entry structure is a little bit like a file system or a tree
  * and if you navigate through the paths at the end there is an information.
  *

@@ -4,7 +4,7 @@ import net.sharkfw.knowledgeBase.SharkKBException;
 
 /**
  * A google plus profile is like a specified profile.
- * The content which could be stored in this profile is very similar to an real google plus profile.
+ * The content which could be stored in this profile is very similar to a real google plus profile.
  * One of the main reasons for this google plus profile approach is to make an wrapper/interface for google plus profile information.
  * If there is a stream from google which provides data from google plus profiles we can easily make an google plus profile object
  * and fill it with data from the stream.
